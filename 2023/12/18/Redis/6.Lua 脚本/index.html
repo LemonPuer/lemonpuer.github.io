@@ -11,7 +11,7 @@
   <!-- Global site tag (gtag.js) - Google Analytics -->
 
 
-  <title>Redis系列第七章 | Lemon</title>
+  <title>Redis系列第六章 | Lemon</title>
 
   <link rel="icon" type="image/x-icon, image/vnd.microsoft.icon" href="/bitbug_favicon.ico">
   <link rel="stylesheet" href="https://at.alicdn.com/t/font_1911880_c1nvbyezg17.css">
@@ -609,14 +609,14 @@
   <div class="post-detail-header_info-box">
     <div class="title-box">
       <span class="title">
-        Redis系列第七章
+        Redis系列第六章
       </span>
     </div>
     
     
       
         <span class="post-detail-header_date">
-          <i class="fas fa-calendar"></i> 发表于：2023-12-17 |
+          <i class="fas fa-calendar"></i> 发表于：2023-12-18 |
         </span>
       
 
@@ -634,11 +634,11 @@
       
         <div class="post-detail-header_wordcount">
           <span class="totalcount">
-            <i class="fas fa-file-text-o"></i> 字数统计: 3k |
+            <i class="fas fa-file-text-o"></i> 字数统计: 4.8k |
           </span>
   
           <span class="min2read">
-            <i class="fas fa-clock"></i> 阅读时长: 11分钟 |
+            <i class="fas fa-clock"></i> 阅读时长: 17分钟 |
           </span>
   
           
@@ -665,83 +665,521 @@
   <div class="main-content">
     <article class="post post-detail">
       <div class="post-content">
-        <h1 id="简介"><a href="#简介" class="headerlink" title="简介"></a>简介</h1><p>分布式锁是控制分布式系统间同步访问共享资源的一种方式，其可以保证共享资源在并发场景下的数据一致性。</p>
-<p>工作原理：</p>
-<p>为了达到同步访问的目的，规定，让这些线程在访问共享资源之前先要获取到一个令牌 token，只有具有令牌的线程才可以访问共享资源。这个令牌就是通过各种技术实现的分布式锁。而这个分布锁是一种“互斥资源”，即只有一个。只要有线程抢到了锁，那么其它线程只能等待，直到锁被释放或等待超时。</p>
-<p>实现：像 Redis 中的 setnx，数据库中创建相同主键都可以达到目的，删除即可释放</p>
-<h2 id="场景引入"><a href="#场景引入" class="headerlink" title="场景引入"></a>场景引入</h2><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">@RestController</span></span><br><span class="line"><span class="keyword">public</span> <span class="keyword">class</span> <span class="title class_">Seckill</span> &#123;</span><br><span class="line">    <span class="meta">@Autowired(required = false)</span></span><br><span class="line">    <span class="keyword">private</span> StringRedisTemplate srt;</span><br><span class="line">    <span class="meta">@GetMapping(&quot;/sk&quot;)</span></span><br><span class="line">    <span class="keyword">public</span> String <span class="title function_">sk</span><span class="params">()</span>&#123;</span><br><span class="line">        String stock=srt.opsForValue().get(<span class="string">&quot;commodity&quot;</span>);</span><br><span class="line">        <span class="type">int</span> amount=stock==<span class="literal">null</span>?<span class="number">0</span>:Integer.parseInt(stock);</span><br><span class="line">        <span class="keyword">if</span>(amount&gt;<span class="number">0</span>)&#123;</span><br><span class="line">            srt.opsForValue().set(<span class="string">&quot;commodity&quot;</span>,--amount+<span class="string">&quot;&quot;</span>);</span><br><span class="line">            <span class="keyword">return</span> <span class="string">&quot;库存：&quot;</span>+amount;</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">return</span> <span class="string">&quot;抱歉，您没抢到&quot;</span>;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+        <h1 id="简介"><a href="#简介" class="headerlink" title="简介"></a>简介</h1><p>Lua 是一个由标准 C 语言开发的、开源的、可扩展的、轻量级的、弱类型的、解释型脚本语言。官网：<a target="_blank" rel="noopener" href="https://www.lua.org/">The Programming Language Lua</a></p>
+<h2 id="Linux-系统"><a href="#Linux-系统" class="headerlink" title="Linux 系统"></a>Linux 系统</h2><p>CentOS7 中自带 Lua ：</p>
+<p><img src="https://cdn.jsdelivr.net/gh/lemonpuer/figure@latest/blog-images/20231216171944.png" class="lazyload placeholder" data-srcset="https://cdn.jsdelivr.net/gh/lemonpuer/figure@latest/blog-images/20231216171944.png" srcset="https://pic1.zhimg.com/v2-cd38920285d125be80b3eb504052c550_b.webp" alt="df968885da161258d077acdba147663e.png"></p>
+<p>使用高版本的Lua需要安装：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">#解压Lua源码</span><br><span class="line">tar -zxvf lua-5.4.4.tar.gz -C /opt/apps/</span><br><span class="line">#进入Lua的解压目录准备编译环境</span><br><span class="line">yum -y install gcc gcc-c++</span><br><span class="line">#编译</span><br><span class="line">make linux test</span><br><span class="line">#安装</span><br><span class="line">make install</span><br></pre></td></tr></table></figure>
 
-<p>在商品秒杀背景下，一定会存在很多用户同时读取 Redis 缓存中的 commodity 这个 key，那么大家读取到的 value 很可能是相同的，均可购买，此时就会出现“超卖”</p>
-<p>我们可以使用 synchronized () 上锁，但如果服务器不止一台，锁便会失效（每个服务器都会带一个锁）</p>
-<p>此时我们便可以使用分布式锁</p>
-<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">@GetMapping(&quot;/sk1&quot;)</span></span><br><span class="line"><span class="keyword">public</span> String <span class="title function_">sk1</span><span class="params">()</span>&#123;</span><br><span class="line">    <span class="keyword">try</span> &#123;</span><br><span class="line">        <span class="type">Boolean</span> <span class="variable">lock</span> <span class="operator">=</span> srt.opsForValue().setIfAbsent(<span class="string">&quot;Lock&quot;</span>, <span class="string">&quot;lock&quot;</span>);</span><br><span class="line">        <span class="keyword">if</span>(!lock)</span><br><span class="line">            <span class="keyword">return</span> <span class="string">&quot;没抢到锁&quot;</span>;</span><br><span class="line">        String stock=srt.opsForValue().get(<span class="string">&quot;commodity&quot;</span>);</span><br><span class="line">        <span class="type">int</span> amount=stock==<span class="literal">null</span>?<span class="number">0</span>:Integer.parseInt(stock);</span><br><span class="line">        <span class="keyword">if</span>(amount&gt;<span class="number">0</span>)&#123;</span><br><span class="line">            srt.opsForValue().set(<span class="string">&quot;commodity&quot;</span>,--amount+<span class="string">&quot;&quot;</span>);</span><br><span class="line">            <span class="keyword">return</span> <span class="string">&quot;库存：&quot;</span>+amount;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125; <span class="keyword">finally</span> &#123;</span><br><span class="line">        srt.delete(<span class="string">&quot;Lock&quot;</span>);</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">return</span> <span class="string">&quot;抱歉，您没抢到&quot;</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-
-<p>但此时又会产生新的问题：如果添加完锁后宕机，那么服务器会因为锁的存在永久阻塞</p>
-<p>我们可以为锁添加过期时间，同时为了避免业务没执行完锁就过期导致最终误删其他请求的锁，我们可以为锁添加标识</p>
-<p>为了实现这个效果，为每个申请锁的客户端随机生成一个 UUID，使用这个 UUID 作为该客户端标识，然后将该 UUID 作为该客户端申请到的锁的 value。在删除锁时，只有在发起当前删除操作的客户端的 UUID 与锁的 value 相同时才可以。</p>
-<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">@GetMapping(&quot;/sk2&quot;)</span></span><br><span class="line"><span class="keyword">public</span> String <span class="title function_">sk2</span><span class="params">()</span>&#123;</span><br><span class="line">    String uuid= UUID.randomUUID().toString();</span><br><span class="line">    <span class="keyword">try</span> &#123;</span><br><span class="line">        <span class="type">Boolean</span> <span class="variable">lock</span> <span class="operator">=</span> srt.opsForValue().setIfAbsent(<span class="string">&quot;Lock&quot;</span>, uuid,<span class="number">5</span>, TimeUnit.SECONDS);</span><br><span class="line">        <span class="keyword">if</span>(!lock)</span><br><span class="line">            <span class="keyword">return</span> <span class="string">&quot;没抢到锁&quot;</span>;</span><br><span class="line">        String stock=srt.opsForValue().get(<span class="string">&quot;commodity&quot;</span>);</span><br><span class="line">        <span class="type">int</span> amount=stock==<span class="literal">null</span>?<span class="number">0</span>:Integer.parseInt(stock);</span><br><span class="line">        <span class="keyword">if</span>(amount&gt;<span class="number">0</span>)&#123;</span><br><span class="line">            srt.opsForValue().set(<span class="string">&quot;commodity&quot;</span>,--amount+<span class="string">&quot;&quot;</span>);</span><br><span class="line">            <span class="keyword">return</span> <span class="string">&quot;库存：&quot;</span>+amount;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125; <span class="keyword">finally</span> &#123;</span><br><span class="line">        <span class="keyword">if</span>(srt.opsForValue().get(<span class="string">&quot;Lock&quot;</span>).equals(uuid))</span><br><span class="line">            srt.delete(<span class="string">&quot;Lock&quot;</span>);</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">return</span> <span class="string">&quot;抱歉，您没抢到&quot;</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-
-<p>但删除与判断操作不具备原子性，有可能判断成功时恰好key过期，也会导致误删，此时我们可以使用Lua脚本来实现原子性的操作</p>
-<p>Redis 中提供了执行Lua脚本的命令 <strong>eval</strong>，eval 命令在 RedisTemplate 中没有对应的方法，我们需要使用 Jedis 客户端</p>
-<p>eval 语法格式：</p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">eval script numkeys [key [key...]] [arg [arg...]]</span><br></pre></td></tr></table></figure>
-
-<p><img src="https://cdn.jsdelivr.net/gh/lemonpuer/figure@latest/blog-images/20231216172744.png" class="lazyload placeholder" data-srcset="https://cdn.jsdelivr.net/gh/lemonpuer/figure@latest/blog-images/20231216172744.png" srcset="https://pic1.zhimg.com/v2-cd38920285d125be80b3eb504052c550_b.webp" alt="d9e9181ba7826ad5b8013023fd4b30d9.png"></p>
+<p>重启后便能使用新版本的Lua</p>
 <blockquote>
-<p>Lua 中使用<code>redis.call</code>可以调用 redis 命令</p>
+<p>lua -v 可以查看Lua版本</p>
 </blockquote>
-<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">@value(&quot;$&#123;spring.redis.host&#125;&quot;)</span></span><br><span class="line"><span class="keyword">private</span> String redisHost;</span><br><span class="line"><span class="meta">@value(&quot;$&#123;spring.redis.port&#125;&quot;)</span></span><br><span class="line"><span class="keyword">private</span> String redisPort;</span><br><span class="line">...</span><br><span class="line"><span class="keyword">finally</span>&#123;</span><br><span class="line">    JedisPool jedisPool=<span class="keyword">new</span> <span class="title class_">JedisPool</span>(redisHost,redisPort);</span><br><span class="line">    <span class="keyword">try</span>(Jedis jedis=jedisPool.getResource())&#123;</span><br><span class="line">        String script=<span class="string">&quot;if redis.call(&#x27;get&#x27;,KEYS[1])==ARGV[1] &quot;</span>+</span><br><span class="line">            <span class="string">&quot;then return redis.call(&#x27;del&#x27;,KEYS[1]) &quot;</span>+</span><br><span class="line">            <span class="string">&quot;return 0 &quot;</span>+</span><br><span class="line">            <span class="string">&quot;end&quot;</span>;</span><br><span class="line">        Object eval=jedis.eval(script,Collections.singletonList(<span class="string">&quot;Lock&quot;</span>),Collections.singletonList(uuid));</span><br><span class="line">        <span class="keyword">if</span>(<span class="string">&quot;1&quot;</span>.equals(eval.toString()))&#123;</span><br><span class="line">            System.out.println(<span class="string">&quot;释放锁成功&quot;</span>);</span><br><span class="line">        &#125;<span class="keyword">else</span>&#123;</span><br><span class="line">            System.out.println(<span class="string">&quot;释放锁失败&quot;</span>);</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h3 id="交互模式"><a href="#交互模式" class="headerlink" title="交互模式"></a>交互模式</h3><p>Lua 为用户提供了两种交互模式：命令行模式与脚本文件模式。</p>
+<h4 id="命令行模式："><a href="#命令行模式：" class="headerlink" title="命令行模式："></a>命令行模式：</h4><p>在任意目录下使用 lua 命令进入 lua 命令行模式，在其中输入语句后回车即可运行显示出结果。使用 Ctrl + C 退出模式。</p>
+<p>lua 对语句后的分号要求不是强制性的，有没有都行。</p>
+<p><img src="https://cdn.jsdelivr.net/gh/lemonpuer/figure@latest/blog-images/20231216171950.png" class="lazyload placeholder" data-srcset="https://cdn.jsdelivr.net/gh/lemonpuer/figure@latest/blog-images/20231216171950.png" srcset="https://pic1.zhimg.com/v2-cd38920285d125be80b3eb504052c550_b.webp" alt="6e4784bd08dae341f68b32bf771e9839.png"></p>
+<h4 id="脚本文件模式："><a href="#脚本文件模式：" class="headerlink" title="脚本文件模式："></a>脚本文件模式：</h4><p>该模式是先要编写脚本文件，然后再使用 lua 命令来运行文件。</p>
+<p>创建 hello.lua</p>
+<figure class="highlight lua"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">print</span>(<span class="string">&quot;hello lua&quot;</span>);</span><br></pre></td></tr></table></figure>
 
-<p>以上代码仍然是存在问题的：请求 a 的锁过期，但其业务还未执行完毕；请求 b 申请到了锁，其也正在处理业务。如果此时两个请求都同时修改了共享的库存数据，那么就又会出现数据不一致的问题。</p>
-<p>我们可以采用 “锁续约” 方式解决：在当前业务进程开始执行时，fork 出 一个子进程，用于启动一个定时任务。该定时任务的定时时间小于锁的过期时间，其会定时查看处理当前请求的业务进程的锁是否已被删除。</p>
-<h2 id="Redisson-可重入锁"><a href="#Redisson-可重入锁" class="headerlink" title="Redisson 可重入锁"></a>Redisson 可重入锁</h2><p>Redisson 内部使用 Lua 脚本实现了对可重入锁的添加、重入、续约（续命）、释放。Redisson 需要用户为锁指定一个 key，但无需为锁指定过期时间，因为它有默认过期时间(也可指定)。由于该锁具有“可重入”功能，所以 Redisson 会为该锁生成一个计数器，记录一个线程重入锁的次数。</p>
-<figure class="highlight xml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">dependency</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">groupId</span>&gt;</span>org.redisson<span class="tag">&lt;/<span class="name">groupId</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">artifactId</span>&gt;</span>redisson<span class="tag">&lt;/<span class="name">artifactId</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">version</span>&gt;</span>3.17.6<span class="tag">&lt;/<span class="name">version</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">dependency</span>&gt;</span></span><br></pre></td></tr></table></figure>
+<p>运行：<code>lua hello.lua</code></p>
+<p>运行方式二：</p>
+<p>在脚本文件第一行增加<code>#!/usr/bin/lua</code>，表示当前文件将使用 lua  命令运行。</p>
+<figure class="highlight lua"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">#!/usr/bin/lua</span><br><span class="line"><span class="built_in">print</span>(<span class="string">&quot;hello lua&quot;</span>);</span><br></pre></td></tr></table></figure>
 
-<p>添加一个由单 Redis 节点构建的 Redisson 的 Bean</p>
-<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">@value(&quot;$&#123;spring.redis.host&#125;&quot;)</span></span><br><span class="line"><span class="keyword">private</span> String redisHost;</span><br><span class="line"><span class="meta">@value(&quot;$&#123;spring.redis.port&#125;&quot;)</span></span><br><span class="line"><span class="keyword">private</span> String redisPort;</span><br><span class="line"><span class="meta">@Bean</span></span><br><span class="line"><span class="keyword">public</span> Redisson <span class="title function_">redisson</span><span class="params">()</span>&#123;</span><br><span class="line">    Config config=<span class="keyword">new</span> <span class="title class_">Config</span>();</span><br><span class="line">    config.useSingleServer()</span><br><span class="line">        .setAddress(redisHost+<span class="string">&quot;:&quot;</span>+redisPort)</span><br><span class="line">        .setDataBase(<span class="number">0</span>);</span><br><span class="line">    <span class="keyword">return</span> (Redission) Redisson.create(config);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>修改文件执行权限即可运行，类似 shell 脚本</p>
+<h2 id="Windows-系统"><a href="#Windows-系统" class="headerlink" title="Windows 系统"></a>Windows 系统</h2><p>在 Windows 系统中 Lua 的运行环境。最常用的为 SciTE。</p>
+<p>SciTE 是一款 Lua 脚本测试编辑器，提供 Lua 的编辑运行环境。官方下载地址：<a target="_blank" rel="noopener" href="https://github.com/rjpcomputing/luaforwindows/releases">Releases · rjpcomputing&#x2F;luaforwindows · GitHub</a></p>
+<h1 id="语法基础"><a href="#语法基础" class="headerlink" title="语法基础"></a>语法基础</h1><p>Lua 的行注释为两个连续的减号，段注释以 –[[ 开头，以 –]] 结尾。</p>
+<h2 id="数据类型"><a href="#数据类型" class="headerlink" title="数据类型"></a>数据类型</h2><p>Lua 中有 8 种类型，分别为：nil、boolean、number、string、userdata、function、thread  和 table。通过 type()函数可以查看一个数据的类型</p>
+<table>
+<thead>
+<tr>
+<th align="center">数据类型</th>
+<th>描述</th>
+</tr>
+</thead>
+<tbody><tr>
+<td align="center">nil</td>
+<td>只有值 nil 属于该类，表示一个无效值，与 Java 中的 null 类似。但在条件表达式中相当于 false。</td>
+</tr>
+<tr>
+<td align="center">boolean</td>
+<td>包含两个值：false 和 true。</td>
+</tr>
+<tr>
+<td align="center">number</td>
+<td>表示双精度类型的实浮点数。</td>
+</tr>
+<tr>
+<td align="center">string</td>
+<td>字符串，由一对双引号或单引号括起来。当一个字符串包含多行时，可以在第一行中以[[开头，在最后一行中以]]结尾，那么在[[与]]括起来的这多行内容就是一个字符串。换行符为字符串”\n”。</td>
+</tr>
+<tr>
+<td align="center">table</td>
+<td>类似于 Java 中的数组，但比数组的功能更强大，更灵活。</td>
+</tr>
+<tr>
+<td align="center">function</td>
+<td>由 C 或 Lua 编写的函数。</td>
+</tr>
+<tr>
+<td align="center">thread</td>
+<td>协同线程，是协同函数的执行体，即正在执行的协同函数。</td>
+</tr>
+<tr>
+<td align="center">userdata</td>
+<td>一种用户自定义数据，用于表示一种由应用程序或 C&#x2F;C++ 语言库所创建的类型，可以将任意 C&#x2F;C++ 的任意数据类型的数据存储到 Lua 变量中调用。</td>
+</tr>
+</tbody></table>
+<h2 id="标识符"><a href="#标识符" class="headerlink" title="标识符"></a>标识符</h2><p>程序设计语言中的标识符主要包含保留字、变量、常量、方法名、函数名、类名等。Lua 的标识符由字母、数字与下划线组成，但不能以数字开头。Lua 是大小写敏感的。</p>
+<h3 id="保留字"><a href="#保留字" class="headerlink" title="保留字"></a>保留字</h3><p>Lua 常见的保留字共有 22 个。除了这 22 个外，Lua 中还定义了很多的内置全局变量，这些内置全局变量的一个共同特征是，以下划线开头后跟全大写字母。我们在定义自己的标识符时不能与这些保留字、内置全局变量重复。</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">and		break		do		else</span><br><span class="line">elseif		end		false		for</span><br><span class="line">function	if		in		local</span><br><span class="line">nil 		not		or		repeat</span><br><span class="line">return		then		true		until</span><br><span class="line">while 		goto</span><br></pre></td></tr></table></figure>
 
-<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">@Autowired</span></span><br><span class="line"><span class="keyword">private</span> Redisson redisson;</span><br><span class="line"><span class="meta">@GetMapping(&quot;/sk3&quot;)</span></span><br><span class="line"><span class="keyword">public</span> String <span class="title function_">sk3</span><span class="params">()</span>&#123;</span><br><span class="line">    RLock rLock=redisson.getLock(<span class="string">&quot;Lock&quot;</span>);</span><br><span class="line">    <span class="keyword">try</span> &#123;</span><br><span class="line">        <span class="type">Boolean</span> <span class="variable">lock</span> <span class="operator">=</span> rLock.tryLock();</span><br><span class="line">        <span class="keyword">if</span>(!lock)</span><br><span class="line">            <span class="keyword">return</span> <span class="string">&quot;没抢到锁&quot;</span>;</span><br><span class="line">        String stock=srt.opsForValue().get(<span class="string">&quot;commodity&quot;</span>);</span><br><span class="line">        <span class="type">int</span> amount=stock==<span class="literal">null</span>?<span class="number">0</span>:Integer.parseInt(stock);</span><br><span class="line">        <span class="keyword">if</span>(amount&gt;<span class="number">0</span>)&#123;</span><br><span class="line">            srt.opsForValue().set(<span class="string">&quot;commodity&quot;</span>,--amount+<span class="string">&quot;&quot;</span>);</span><br><span class="line">            <span class="keyword">return</span> <span class="string">&quot;库存：&quot;</span>+amount;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125; <span class="keyword">finally</span> &#123;</span><br><span class="line">        rLock.unLock();</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">return</span> <span class="string">&quot;抱歉，您没抢到&quot;</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h3 id="变量"><a href="#变量" class="headerlink" title="变量"></a>变量</h3><p>Lua 是弱类型语言，变量无需类型声明即可直接使用。</p>
+<p>变量分为全局变量与局部变量。Lua 中的变量默认都是全局变量，即使声明在语句块或函数里。全局变量一旦声明，在当前文件中的任何地方都可访问。</p>
+<p>局部变量 local 相当于 Java 中的 private 变量，只能在声明的语句块中 使用。</p>
+<p>Lua 是动态类型语言，变量的类型可以随时改变，无需声明。</p>
+<h2 id="运算符"><a href="#运算符" class="headerlink" title="运算符"></a>运算符</h2><h3 id="算术运算符"><a href="#算术运算符" class="headerlink" title="算术运算符"></a>算术运算符</h3><table>
+<thead>
+<tr>
+<th align="center">操作符</th>
+<th>描述</th>
+</tr>
+</thead>
+<tbody><tr>
+<td align="center">+</td>
+<td>加法</td>
+</tr>
+<tr>
+<td align="center">-</td>
+<td>减法</td>
+</tr>
+<tr>
+<td align="center">*</td>
+<td>乘法</td>
+</tr>
+<tr>
+<td align="center">&#x2F;</td>
+<td>除法</td>
+</tr>
+<tr>
+<td align="center">%</td>
+<td>取余</td>
+</tr>
+<tr>
+<td align="center">^</td>
+<td>乘幂</td>
+</tr>
+<tr>
+<td align="center">-</td>
+<td>负号</td>
+</tr>
+<tr>
+<td align="center">&#x2F;&#x2F;</td>
+<td>整除运算（&gt;&#x3D;lua5.3）</td>
+</tr>
+</tbody></table>
+<blockquote>
+<p><code>5/2=2.5; 5//2=2</code></p>
+</blockquote>
+<h3 id="关系运算符"><a href="#关系运算符" class="headerlink" title="关系运算符"></a>关系运算符</h3><table>
+<thead>
+<tr>
+<th align="center">操作符</th>
+<th>描述</th>
+</tr>
+</thead>
+<tbody><tr>
+<td align="center">&#x3D;&#x3D;</td>
+<td>等于</td>
+</tr>
+<tr>
+<td align="center">~&#x3D;</td>
+<td>不等于</td>
+</tr>
+<tr>
+<td align="center">&gt;</td>
+<td>大于</td>
+</tr>
+<tr>
+<td align="center">&lt;</td>
+<td>小于</td>
+</tr>
+<tr>
+<td align="center">&gt;&#x3D;</td>
+<td>大于等于</td>
+</tr>
+<tr>
+<td align="center">&lt;&#x3D;</td>
+<td>小于等于</td>
+</tr>
+</tbody></table>
+<h3 id="逻辑运算符"><a href="#逻辑运算符" class="headerlink" title="逻辑运算符"></a>逻辑运算符</h3><p>Lua 系统将 false 与 nil 作为假，将 true 与非 nil 作为真，即使是 0 也是真。</p>
+<table>
+<thead>
+<tr>
+<th align="center">操作符</th>
+<th>描述</th>
+</tr>
+</thead>
+<tbody><tr>
+<td align="center">and</td>
+<td>逻辑与</td>
+</tr>
+<tr>
+<td align="center">or</td>
+<td>逻辑或</td>
+</tr>
+<tr>
+<td align="center">not</td>
+<td>逻辑非</td>
+</tr>
+</tbody></table>
+<h3 id="特殊运算符"><a href="#特殊运算符" class="headerlink" title="特殊运算符"></a>特殊运算符</h3><table>
+<thead>
+<tr>
+<th align="center">操作符</th>
+<th>描述</th>
+</tr>
+</thead>
+<tbody><tr>
+<td align="center">..(两个点)</td>
+<td>字符串连接符</td>
+</tr>
+<tr>
+<td align="center">#</td>
+<td>返回字符串或表的长度</td>
+</tr>
+</tbody></table>
+<h2 id="函数"><a href="#函数" class="headerlink" title="函数"></a>函数</h2><p>Lua 中函数的定义是以 function 开头，后跟函数名与参数列表，以 end 结尾。其可以没有返回值，也可以一次返回多个值。</p>
+<ol>
+<li>固定参函数</li>
+</ol>
+<p>Lua 中的函数在调用时不要求实参的个数必须与函数中形参的个数同。如果实参个数少于形参个数，则系统自动使用 nil 填充；如果实参个数多于形参个数，多出的将被系统自动忽略。</p>
+<p><img src="https://cdn.jsdelivr.net/gh/lemonpuer/figure@latest/blog-images/ae95dfa12faa0c1b97beb371cd9b2209.png" class="lazyload placeholder" data-srcset="https://cdn.jsdelivr.net/gh/lemonpuer/figure@latest/blog-images/ae95dfa12faa0c1b97beb371cd9b2209.png" srcset="https://pic1.zhimg.com/v2-cd38920285d125be80b3eb504052c550_b.webp" alt="ae95dfa12faa0c1b97beb371cd9b2209.png"></p>
+<ol start="2">
+<li>可变参函数</li>
+</ol>
+<p>在函数定义时不给出具体形参的个数，而是使用三个连续的点号。在函数调用时就可以向该函数传递任意个数的参数，函数可以全部接收。</p>
+<ol start="3">
+<li>可返回多个值</li>
+</ol>
+<p>Lua 中的函数一次可以返回多个值，但需要有多个变量来同时接收。</p>
+<p><img src="https://cdn.jsdelivr.net/gh/lemonpuer/figure@latest/blog-images/20231216171959.png" class="lazyload placeholder" data-srcset="https://cdn.jsdelivr.net/gh/lemonpuer/figure@latest/blog-images/20231216171959.png" srcset="https://pic1.zhimg.com/v2-cd38920285d125be80b3eb504052c550_b.webp" alt="033a1faed42736b9ce1ff706c12666d6.png"></p>
+<ol start="4">
+<li>函数作为参数</li>
+</ol>
+<p>Lua 的函数中，允许函数作为参数。而作为参数的函数，可以是已经定义好的普通函数，也可以是匿名函数。</p>
+<h2 id="控制语句"><a href="#控制语句" class="headerlink" title="控制语句"></a>控制语句</h2><h3 id="流程控制语句"><a href="#流程控制语句" class="headerlink" title="流程控制语句"></a>流程控制语句</h3><h4 id="if"><a href="#if" class="headerlink" title="if"></a>if</h4><p>Lua 提供了 if…then 用于表示条件判断，其中 if 的判断条件可以是任意表达式。</p>
+<p>Lua 中的 if 语句的判断条件可以使用小括号括起来，也可以不使用。</p>
+<p>Lua 中提供了专门的关键字 elseif 来做 if 嵌套语句。</p>
+<p><img src="https://cdn.jsdelivr.net/gh/lemonpuer/figure@latest/blog-images/20231216172007.png" class="lazyload placeholder" data-srcset="https://cdn.jsdelivr.net/gh/lemonpuer/figure@latest/blog-images/20231216172007.png" srcset="https://pic1.zhimg.com/v2-cd38920285d125be80b3eb504052c550_b.webp" alt="e154464edc36890d2567ddf82ea37132.png"></p>
+<h3 id="循环控制语句"><a href="#循环控制语句" class="headerlink" title="循环控制语句"></a>循环控制语句</h3><p>Lua 提供了四种循环控制语句：while…do 循环、repeat…until 循环、数值 for 循环，及泛型 for 循环。同时，Lua 还提供了 break 与 goto 两种循环流程控制语句。</p>
+<p><img src="https://cdn.jsdelivr.net/gh/lemonpuer/figure@latest/blog-images/9d1ed5ffda6f4f5436aad7d640630744.png" class="lazyload placeholder" data-srcset="https://cdn.jsdelivr.net/gh/lemonpuer/figure@latest/blog-images/9d1ed5ffda6f4f5436aad7d640630744.png" srcset="https://pic1.zhimg.com/v2-cd38920285d125be80b3eb504052c550_b.webp" alt="9d1ed5ffda6f4f5436aad7d640630744.png"></p>
+<p>其中 for 循环只参用于循环变量为数值型的情况。</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">其语法格式为：</span><br><span class="line">for var=exp1, exp2, exp3 do</span><br><span class="line"> 循环体</span><br><span class="line">end</span><br></pre></td></tr></table></figure>
 
-<p>在 Redis 单机情况下，以上代码是没有问题的。但如果是在 Redis 主从集群中，那么其还存在锁丢失问题：master响应了应用服务器，但在同步前宕机，新master中没有key会再释放一个请求造成并发问题</p>
-<p>因为主从集群丢失了一次锁申请，该问题称为主从集群的锁丢失问题。</p>
-<h2 id="Redisson-红锁"><a href="#Redisson-红锁" class="headerlink" title="Redisson 红锁"></a>Redisson 红锁</h2><p>Redisson 红锁可以防止主从集群锁丢失问题。Redisson 红锁要求，必须要构建出至少三个 Redis 主从集群。若一个请求要申请锁，必须向所有主从集群中提交 key 写入请求，只有当大多数集群锁写入成功后，该锁才算申请成功。</p>
-<p><img src="https://cdn.jsdelivr.net/gh/lemonpuer/figure@latest/blog-images/20231216172752.png" class="lazyload placeholder" data-srcset="https://cdn.jsdelivr.net/gh/lemonpuer/figure@latest/blog-images/20231216172752.png" srcset="https://pic1.zhimg.com/v2-cd38920285d125be80b3eb504052c550_b.webp" alt="da32ce04a44155b619f02568d88918e9.png"></p>
-<p>无论前面使用的是哪种锁，都是将所有请求通过锁实现串行化。而串行化在高并发场景下势必会引发性能问题。</p>
-<h2 id="分段锁"><a href="#分段锁" class="headerlink" title="分段锁"></a>分段锁</h2><p>无论前面使用的是哪种锁，它们解决并发问题的思路都是相同的，那就将所有请求通过锁实现串行化。而串行化在高并发场景下势必会引发性能问题。</p>
-<p>例如秒杀商品1000件，分成10份，分别为 sk:01，sk:02，sk:03 … sk:0008:10。 这样的话，就需要 10 把锁来控制所有请求的并发。</p>
-<h2 id="Redisson-详解"><a href="#Redisson-详解" class="headerlink" title="Redisson 详解"></a>Redisson 详解</h2><h3 id="简介-1"><a href="#简介-1" class="headerlink" title="简介"></a>简介</h3><p>Redisson 是一个在 Redis 的基础上实现的 Java 驻内存数据网格（In-Memory Data Grid）。它不仅提供了一系列的分布式的 Java 常用对象，还提供了许多分布式服务。</p>
-<p>Redisson 底层采用的是 Netty 框架。Redisson 官网：<a target="_blank" rel="noopener" href="https://redisson.org/">https://redisson.org/</a></p>
-<p>在生产中，对于 Redisson 使用最多的场景就是其分布式锁 RLock。</p>
-<p>为了避免锁到期但业务逻辑没有执行完毕而引发的多个线程同时访问共享资源的情况发生，Redisson 内部为锁提供了一个监控锁的看门狗 watch dog，其会在锁到期前不断延长锁的到期时间，直到锁被主动释放。即会自动完成“锁续命”。</p>
-<h3 id="可重入锁"><a href="#可重入锁" class="headerlink" title="可重入锁"></a>可重入锁</h3><p>Redisson 的分布式锁 RLock 是一种可重入锁。当一个线程获取到锁之后，这个线程可以再次获取本对象上的锁，而其他的线程不可以。</p>
+<p>var 为指定的循环变量，exp1 为循环起始值，exp2 为循环结束值，exp3 为循环步长。 步长默认为 1，可省略。</p>
 <ul>
-<li>JDK 中的 ReentrantLock 是可重入锁，其是通过 AQS(抽象队列同步器)实现的锁机制</li>
-<li>JDK 中的 ReentrantLock 是可重入锁，其是通过 AQS(抽象队列同步器)实现的锁机制</li>
+<li>泛型 for</li>
 </ul>
-<h3 id="公平锁"><a href="#公平锁" class="headerlink" title="公平锁"></a>公平锁</h3><p>当有多个线程同时申请锁时，这些线程会进入到一个 FIFO 队列，只有队首元素才会获取到锁，其它元素等待。只有当锁被释放后，才会再将锁分配给当前的队首元素。</p>
-<p>Redisson 的可重入锁 RLock 默认是一种非公平锁，但也支持可重入公平锁 FailLock。</p>
-<h3 id="联锁"><a href="#联锁" class="headerlink" title="联锁"></a>联锁</h3><p>Redisson 分布式锁可以实现联锁 MultiLock。当一个线程需要同时处理多个共享资源时，可使用联锁。即一次性申请多个锁，同时锁定多个共享资源。联锁可预防死锁。相当于对共享资源的申请实现了原子性：要么都申请到，只要缺少一个资源，则将申请到的所有资源全部释放。其是 OS 底层原理中 AND 型信号量机制的典型应用。</p>
-<h3 id="红锁"><a href="#红锁" class="headerlink" title="红锁"></a>红锁</h3><p>Redisson 分布式锁可以实现红锁 RedLock。红锁由多个锁构成，只有当这些锁中的大部分锁申请成功时，红锁才申请成功。红锁一般用于解决 Redis 主从集群锁丢失问题。</p>
-<p>红锁与联锁的区别是，红锁实现的是对一个共享资源的同步访问控制，而联锁实现的是多个共享资源的同步访问控制。</p>
-<h3 id="读写锁"><a href="#读写锁" class="headerlink" title="读写锁"></a>读写锁</h3><p>通过 Redisson 可以获取到读写锁 RReadWriteLock。通过 RReadWriteLock 实例可分别获取到读锁 RedissonReadLock 与写锁 RedissonWriteLock。读锁与写锁分别是实现了 RLock 的可重入锁。</p>
-<p>一个共享资源，在没有写锁的情况下，允许同时添加多个读锁。只要添加了写锁，任何读锁与写锁都不能再次添加。即读锁是共享锁，写锁为排他锁。</p>
-<p>这个和操作系统知识关联较大</p>
-<h3 id="信号量"><a href="#信号量" class="headerlink" title="信号量"></a>信号量</h3><p>通过Redisson可以获取到信号量RSemaphore。RSemaphore的常用场景有两种：无论谁添加的锁，任何其它线程都可以解锁，就可以使用 RSemaphore。另外，当一个线程需要一次申请多个资源时，可使用 RSemaphore。RSemaphore 是信号量机制的典型应用。</p>
-<p>和操作系统知识关联较大</p>
-<p><img src="https://cdn.jsdelivr.net/gh/lemonpuer/figure@latest/blog-images/20231216172831.png" class="lazyload placeholder" data-srcset="https://cdn.jsdelivr.net/gh/lemonpuer/figure@latest/blog-images/20231216172831.png" srcset="https://pic1.zhimg.com/v2-cd38920285d125be80b3eb504052c550_b.webp" alt="d251cb4dd1c55f1a135fef16ff3ee728.png"></p>
-<h3 id="可过期信号量"><a href="#可过期信号量" class="headerlink" title="可过期信号量"></a>可过期信号量</h3><p>通过 Redisson 可以获取到可过期信号量 PermitExpirableSemaphore。该信号量是在 RSemaphore 基础上，为每个信号增加了一个过期时间，且每个信号都可以通过独立的 ID 来辨识。释放时也只能通过提交该 ID 才能释放。</p>
-<p>与 RSemaphore 不同：一个线程每次只能申请一个信号量</p>
-<p>该信号量为互斥信号量时，其就等同于可重入锁。或者说，可重入锁就相当于信号量为 1 的可过期信号量。</p>
-<p>可过期信号量与可重入锁的区别：</p>
+<p>泛型 for 用于遍历 table 中的所有值，其需要与 Lua 的迭代器联合使用。</p>
 <ul>
-<li>可重入锁：相当于用户每次只能申请 1 个信号量，且只有一个用户可以申请成功</li>
-<li>可过期信号量：用户每次只能申请 1 个信号量，但可以有多个用户申请成功</li>
+<li>break</li>
 </ul>
-<p><img src="https://cdn.jsdelivr.net/gh/lemonpuer/figure@latest/blog-images/20231216172852.png" class="lazyload placeholder" data-srcset="https://cdn.jsdelivr.net/gh/lemonpuer/figure@latest/blog-images/20231216172852.png" srcset="https://pic1.zhimg.com/v2-cd38920285d125be80b3eb504052c550_b.webp" alt="17e83f62847f9eeb8510b81ea932e907.png"></p>
-<h3 id="分布式闭锁"><a href="#分布式闭锁" class="headerlink" title="分布式闭锁"></a>分布式闭锁</h3><p>通过 Redisson 可以获取到分布式闭锁 RCountDownLatch，其与 JDK 的 JUC 中的闭锁 CountDownLatch 原理相同，用法类似。其常用于一个或者多个线程的执行必须在其它某些任务执行完毕的场景。</p>
-<p>闭锁中定义了一个计数器和一个阻塞队列。阻塞队列中存放着待执行的线程。每当一个并行任务执行完毕，计数器就减 1。当计数器递减到 0 时就会唤醒阻塞队列的所有线程。</p>
-<p>通常使用 Barrier 队列解决该问题，而 Barrier 队列通常使用 Zookeeper 实现</p>
-<p><img src="https://cdn.jsdelivr.net/gh/lemonpuer/figure@latest/blog-images/20231216172919.png" class="lazyload placeholder" data-srcset="https://cdn.jsdelivr.net/gh/lemonpuer/figure@latest/blog-images/20231216172919.png" srcset="https://pic1.zhimg.com/v2-cd38920285d125be80b3eb504052c550_b.webp" alt="137bbecb7c0004c331b7878d1554cb74.png"></p>
+<p>break 语句可以提前终止循环，只能用于循环之中。</p>
+<ul>
+<li>goto</li>
+</ul>
+<p>goto 语句可以将执行流程无条件地跳转到指定的标记语句处开始执行</p>
+<p>语句标记使用一对双冒号括起来，置于语句前面。goto 语句可以使用在循环之外。 注意，Lua5.1 中不支持双冒号的语句标记。</p>
+<p>该语法不建议使用</p>
+<p><img src="https://cdn.jsdelivr.net/gh/lemonpuer/figure@latest/blog-images/20231216172051.png" class="lazyload placeholder" data-srcset="https://cdn.jsdelivr.net/gh/lemonpuer/figure@latest/blog-images/20231216172051.png" srcset="https://pic1.zhimg.com/v2-cd38920285d125be80b3eb504052c550_b.webp" alt="31fd63711e58bad4873f8415f27bc347.png"></p>
+<h1 id="语法进阶"><a href="#语法进阶" class="headerlink" title="语法进阶"></a>语法进阶</h1><h2 id="table"><a href="#table" class="headerlink" title="table"></a>table</h2><h3 id="数组"><a href="#数组" class="headerlink" title="数组"></a>数组</h3><p>使用 table 可以定义一维、二维、多维数组。Lua 中的数组索引是从 1 开始的，且无需声明数组长度，可以随时增加元素。当然，同一数组中的元素可以是任意类型。</p>
+<p><img src="https://cdn.jsdelivr.net/gh/lemonpuer/figure@latest/blog-images/20231216172058.png" class="lazyload placeholder" data-srcset="https://cdn.jsdelivr.net/gh/lemonpuer/figure@latest/blog-images/20231216172058.png" srcset="https://pic1.zhimg.com/v2-cd38920285d125be80b3eb504052c550_b.webp" alt="4abc6878d630643c734767174f5bb9d0.png"></p>
+<h3 id="map"><a href="#map" class="headerlink" title="map"></a>map</h3><p>使用 table 也可以定义出类似 map 的 key-value 数据结构。其可以定义 table 时直接指定 key-value，也可单独指定 key-value。而访问时，一般都是通过 table 的 key 直接访问，也可以数组索引方式来访问，此时的 key 即为索引。</p>
+<p><img src="https://cdn.jsdelivr.net/gh/lemonpuer/figure@latest/blog-images/20231216172130.png" class="lazyload placeholder" data-srcset="https://cdn.jsdelivr.net/gh/lemonpuer/figure@latest/blog-images/20231216172130.png" srcset="https://pic1.zhimg.com/v2-cd38920285d125be80b3eb504052c550_b.webp" alt="4bed0658e87155a719862ec9c79241bc.png"></p>
+<h3 id="混合结构"><a href="#混合结构" class="headerlink" title="混合结构"></a>混合结构</h3><p>Lua 允许将数组与 key-value 混合在同一个 table 中进行定义。key-value 不会占用数组的数字索引值。</p>
+<h2 id="table-操作函数"><a href="#table-操作函数" class="headerlink" title="table 操作函数"></a>table 操作函数</h2><p>Lua 中提供了对 table 进行操作的函数。</p>
+<ul>
+<li>table.concat()</li>
+</ul>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">table.concat (table [, sep [, start [, end]]])</span><br></pre></td></tr></table></figure>
+
+<p>该函数用于将指定的 table 数组元素进行字符串连接。连接从 start 索引位置到 end 索引位置的所有数组元素, 元素间使用指定的分隔符 sep 隔开。如果 table 是一个混合结构，那么仅是连接数组元素。</p>
+<ul>
+<li>table.unpack()</li>
+</ul>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">table.unpack (table [, i [, j]])</span><br></pre></td></tr></table></figure>
+
+<p>该函数返回指定 table 的数组中的从第 i 个元素到第 j 个元素值。i 与 j 是可选的，默认 i 为 1，j 为数组的最后一个元素。Lua5.1 不支持该函数。</p>
+<ul>
+<li>table.pack()</li>
+</ul>
+<p>该函数的参数是一个可变参，其可将指定的参数打包为一个 table 返回。这个返回的 table 中具有一个属性 n，用于表示该 table 包含的元素个数。Lua5.1 不支持该函数。</p>
+<ul>
+<li>table.maxn()</li>
+</ul>
+<p><code>table.maxn(table)</code></p>
+<p>该函数返回指定 table 的数组中的最大索引值，即数组包含元素的个数。</p>
+<ul>
+<li>table.insert()</li>
+</ul>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">table.insert (table, [pos,] value)</span><br></pre></td></tr></table></figure>
+
+<p>该函数用于在指定 table 的数组部分指定位置 pos 插入值为 value 的一个元素。其后的元素会被后移。pos 参数可选，默认为数组部分末尾。</p>
+<ul>
+<li>table.remove ()</li>
+</ul>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">table.remove (table [, pos])</span><br></pre></td></tr></table></figure>
+
+<p>该函数用于删除并返回指定 table 中数组部分位于 pos 位置的元素。其后的元素会被前移。pos 参数可选，默认删除数组中的最后一个元素。</p>
+<ul>
+<li>table.sort()</li>
+</ul>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">table.sort(table [,fun(a,b)])</span><br></pre></td></tr></table></figure>
+
+<p>该函数用于对指定的 table 的数组元素进行升序排序，也可按照指定函数 fun(a,b) 中指定的规则进行排序。fun(a,b)是一个用于比较 a 与 b 的函数，a 与 b 分别代表数组中的两个相邻元素。</p>
+<ul>
+<li>如果 arr 中的元素既有字符串又有数值型，那么对其进行排序会报错。</li>
+<li>如果数组中多个元素相同，则其相同的多个元素的排序结果不确定</li>
+<li>如果数组元素中包含 nil，则排序会报错。</li>
+</ul>
+<h3 id="迭代器"><a href="#迭代器" class="headerlink" title="迭代器"></a>迭代器</h3><p>Lua 提供了两个迭代器 pairs(table)与 ipairs(table)。这两个迭代器通常会应用于泛型 for 循环中，用于遍历指定的 table。</p>
+<ul>
+<li>ipairs(table)：仅会迭代指定 table 中的数组元素。</li>
+<li>pairs(table)：会迭代整个 table 元素，无论是数组元素，还是 key-value。</li>
+</ul>
+<p><img src="https://cdn.jsdelivr.net/gh/lemonpuer/figure@latest/blog-images/20231216172148.png" class="lazyload placeholder" data-srcset="https://cdn.jsdelivr.net/gh/lemonpuer/figure@latest/blog-images/20231216172148.png" srcset="https://pic1.zhimg.com/v2-cd38920285d125be80b3eb504052c550_b.webp" alt="2b125b87dc279ed3c0effc0539065a54.png"></p>
+<h3 id="模块"><a href="#模块" class="headerlink" title="模块"></a>模块</h3><p>模块是Lua中特有的一种数据结构。从 Lua 5.1 开始，Lua 加入了标准的模块管理机制，可以把一些公用的代码放在一个文件里，以 API 接口的形式在其他地方调用，有利于代码的重用和降低代码耦合度。</p>
+<p>模块文件主要由 table 组成。在 table 中添加相应的变量、函数，最后文件返回该 table 即可。如果其它文件中需要使用该模块，只需通过 require 将该模块导入即可。</p>
+<ol>
+<li>定义模块</li>
+</ol>
+<p>模块是一个 lua 文件，其中会包含一个 table。一般情况下该文件名与该 table 名称相同，但其并不是必须的。</p>
+<ol start="2">
+<li>使用模块</li>
+</ol>
+<p>require(“文件路径”)，其中文件名是不能写.lua 扩展名的。该函数可以将指定的 lua 文件静态导入（合并为一个文件）。该函数的使用可 以省略小括号，写为 require “文件路径”。</p>
+<p>require()函数是有返回值的，返回的就是模块文件最后 return 的 table。可以使用一个变量接收该 table 值作为模块的别名，就可以使用别名来访问模块了。</p>
+<h3 id="元表与元方法"><a href="#元表与元方法" class="headerlink" title="元表与元方法"></a>元表与元方法</h3><p>元表，即 Lua 中普通 table 的元数据表，而元方法则是元表中定义的普通表的默认行为。Lua 中的每个普通 table 都可为其定义一个元表，用于扩展该普通 table 的行为功能。</p>
+<p>元表中有两个重要函数：</p>
+<ul>
+<li>setmetatable(table,metatable)：将 metatable 指定为普通表 table 的元表。</li>
+<li>getmetatable(table)：获取指定普通表 table 的元表。</li>
+</ul>
+<h4 id="元方法"><a href="#元方法" class="headerlink" title="元方法"></a>元方法</h4><ul>
+<li>_ _index</li>
+</ul>
+<p>当用户在对 table 进行读取访问时，如果访问的数组索引或 key 不存在，那么系统就会<br>自动调用元表的_ _index 元方法。该重写的方法可以是一个函数，也可以是另一个表。如果重写的_ _index 元方法是函数，且有返回值，则直接返回；如果没有返回值，则返回 nil。</p>
+<p><img src="https://cdn.jsdelivr.net/gh/lemonpuer/figure@latest/blog-images/20231216172154.png" class="lazyload placeholder" data-srcset="https://cdn.jsdelivr.net/gh/lemonpuer/figure@latest/blog-images/20231216172154.png" srcset="https://pic1.zhimg.com/v2-cd38920285d125be80b3eb504052c550_b.webp" alt="f76bdc8c6197b4c7c61eabc143739129.png"></p>
+<p><img src="https://cdn.jsdelivr.net/gh/lemonpuer/figure@latest/blog-images/20231216172156.png" class="lazyload placeholder" data-srcset="https://cdn.jsdelivr.net/gh/lemonpuer/figure@latest/blog-images/20231216172156.png" srcset="https://pic1.zhimg.com/v2-cd38920285d125be80b3eb504052c550_b.webp" alt="7fe41de0916ede6dde6cfe53d48a50e9.png"></p>
+<ul>
+<li>_ _newindex</li>
+</ul>
+<p>当用户为 table 中一个不存在的索引或 key 赋值时，就会自动调用元表的_ _newindex 元方法。该重写的方法可以是一个函数，也可以是另一个表。如果重写的_ _newindex 元方法是函数，且有返回值，则直接返回；如果没有返回值，则返回 nil。</p>
+<p><img src="https://cdn.jsdelivr.net/gh/lemonpuer/figure@latest/blog-images/20231216172215.png" class="lazyload placeholder" data-srcset="https://cdn.jsdelivr.net/gh/lemonpuer/figure@latest/blog-images/20231216172215.png" srcset="https://pic1.zhimg.com/v2-cd38920285d125be80b3eb504052c550_b.webp" alt="5be037635f0f0580fe1dcfe7d3f9f1a6.png"></p>
+<ul>
+<li>运算符元方法</li>
+</ul>
+<p>如果要为一个表扩展加号(+)、减号(-)、等于(&#x3D;&#x3D;)、小于(&lt;)等运算功能，则可重写相应的元方法。</p>
+<table>
+<thead>
+<tr>
+<th align="center">元方法</th>
+<th>说明</th>
+<th align="center">元方法</th>
+<th>说明</th>
+</tr>
+</thead>
+<tbody><tr>
+<td align="center">__add</td>
+<td>加法，+</td>
+<td align="center">__band</td>
+<td>按位与，&amp;</td>
+</tr>
+<tr>
+<td align="center">__sub</td>
+<td>减法，-</td>
+<td align="center">__bor</td>
+<td>按位或，|</td>
+</tr>
+<tr>
+<td align="center">__mul</td>
+<td>乘法，*</td>
+<td align="center">__bxor</td>
+<td>按位异或，~</td>
+</tr>
+<tr>
+<td align="center">__div</td>
+<td>除法，&#x2F;</td>
+<td align="center">__bnot</td>
+<td>按位非，~</td>
+</tr>
+<tr>
+<td align="center">__mod</td>
+<td>取模，%</td>
+<td align="center">__shl</td>
+<td>按位左移，&lt;&lt;</td>
+</tr>
+<tr>
+<td align="center">__pow</td>
+<td>次幂，^</td>
+<td align="center">__shr</td>
+<td>按位右移，&gt;&gt;</td>
+</tr>
+<tr>
+<td align="center">__unm</td>
+<td>取反，-</td>
+<td align="center">__eq</td>
+<td>等于，&#x3D;&#x3D;</td>
+</tr>
+<tr>
+<td align="center">__idiv</td>
+<td>取整除法，&#x2F;&#x2F;</td>
+<td align="center">__lt</td>
+<td>小于，&lt;</td>
+</tr>
+<tr>
+<td align="center">__concat</td>
+<td>字符串连接，..</td>
+<td align="center">__le</td>
+<td>小于等于，&lt;&#x3D;</td>
+</tr>
+<tr>
+<td align="center">__len</td>
+<td>字符串长度，#</td>
+<td align="center"></td>
+<td></td>
+</tr>
+</tbody></table>
+<p><img src="https://cdn.jsdelivr.net/gh/lemonpuer/figure@latest/blog-images/20231216172225.png" class="lazyload placeholder" data-srcset="https://cdn.jsdelivr.net/gh/lemonpuer/figure@latest/blog-images/20231216172225.png" srcset="https://pic1.zhimg.com/v2-cd38920285d125be80b3eb504052c550_b.webp" alt="184f26dd60b20c81c2bd592c069f497c.png"></p>
+<ul>
+<li>_ _tostring</li>
+</ul>
+<p>直接输出一个 table，其输出的内容为类型与 table 的存放地址。如果想让其输出 table 中的内容，可重写_ _tostring 元方法。</p>
+<p><img src="https://cdn.jsdelivr.net/gh/lemonpuer/figure@latest/blog-images/20231216172234.png" class="lazyload placeholder" data-srcset="https://cdn.jsdelivr.net/gh/lemonpuer/figure@latest/blog-images/20231216172234.png" srcset="https://pic1.zhimg.com/v2-cd38920285d125be80b3eb504052c550_b.webp" alt="de3c8ec34e1cbcfa4a0e025aa6f35f22.png"></p>
+<ul>
+<li>__call</li>
+</ul>
+<p>当将一个 table 以函数形式来使用时，系统会自动调用重写的_ _call 元方法。该用法主要是可以简化对 table 的相关操作，将对 table 的操作与函数直接相结合。</p>
+<p><img src="https://cdn.jsdelivr.net/gh/lemonpuer/figure@latest/blog-images/20231216172253.png" class="lazyload placeholder" data-srcset="https://cdn.jsdelivr.net/gh/lemonpuer/figure@latest/blog-images/20231216172253.png" srcset="https://pic1.zhimg.com/v2-cd38920285d125be80b3eb504052c550_b.webp" alt="c1b9cbb5c1531e1eeb971753a1954dea.png"></p>
+<ul>
+<li>元表单独定义</li>
+</ul>
+<p>为了便于管理与复用，可以将元素单独定义为一个文件。该文件中仅可定义一个元表，且一般文件名与元表名称相同。</p>
+<p>若一个文件要使用其它文件中定义的元表，只需使用 require “元表文件名”即可将元表导入使用。 如果用户想扩展该元表，则可在用户自己文件中重写其相应功能的元方法。</p>
+<h2 id="面向对象"><a href="#面向对象" class="headerlink" title="面向对象"></a>面向对象</h2><p>Lua 中没有类的概念，但通过 table、function 与元表可以模拟和构造出具有类这样功能的结构。</p>
+<p><img src="https://cdn.jsdelivr.net/gh/lemonpuer/figure@latest/blog-images/20231216172309.png" class="lazyload placeholder" data-srcset="https://cdn.jsdelivr.net/gh/lemonpuer/figure@latest/blog-images/20231216172309.png" srcset="https://pic1.zhimg.com/v2-cd38920285d125be80b3eb504052c550_b.webp" alt="a159c884c79f08ec89fd1d580ad5ea19.png"></p>
+<p>Lua 中使用 table、function 与元表可以定义出类：使用一个表作为基础类，使用一个 function 作为该基础类的 new()方法。在该 new()方法中创建一个空表，再为该空表指定一个 元表。该元表重写_ _index 元方法，且将基础表指定为重写的_ _index 元方法。由于 new() 中的表是空表，所以用户访问的所有 key 都会从基础类（表）中查找。</p>
+<p><img src="https://cdn.jsdelivr.net/gh/lemonpuer/figure@latest/blog-images/20231216172436.png" class="lazyload placeholder" data-srcset="https://cdn.jsdelivr.net/gh/lemonpuer/figure@latest/blog-images/20231216172436.png" srcset="https://pic1.zhimg.com/v2-cd38920285d125be80b3eb504052c550_b.webp" alt="e6fa697c8c77856967133623746b492b.png"></p>
+<h2 id="协同线程与协同函数"><a href="#协同线程与协同函数" class="headerlink" title="协同线程与协同函数"></a>协同线程与协同函数</h2><h4 id="协同线程"><a href="#协同线程" class="headerlink" title="协同线程"></a>协同线程</h4><p>Lua 中有一种特殊的线程，称为 coroutine，协同线程，简称协程。其可以在运行时暂停执行，然后转去执行其它线程，然后还可返回再继续执行没有执行完毕的内容。</p>
+<p>协同线程也称为协作多线程，在 Lua 中表示独立的执行线程。任意时刻只会有一个协程执行，而不会出现多个协程同时执行的情况。协同线程的类型为 thread，其启动、暂停、重启等，都需要通过函数来控制。</p>
+<table>
+<thead>
+<tr>
+<th align="center">方法</th>
+<th>描述</th>
+</tr>
+</thead>
+<tbody><tr>
+<td align="center">create(function)</td>
+<td>创建一个协同线程实例，即返回的是 thread 类型。参数是一个 function。其需要通过 resume()来启动协同线程的执行</td>
+</tr>
+<tr>
+<td align="center">resume(thread, …)</td>
+<td>启动指定的协同线程的执行，使其从开始处或前面挂起处开始执行。可以向 create()的内置函数传递相应的参数。如果内置函数具有返回值，resume()会全部接收并返回。</td>
+</tr>
+<tr>
+<td align="center">running()</td>
+<td>返回正在运行的协同线程实例，即 thread 类型值</td>
+</tr>
+<tr>
+<td align="center">yield()</td>
+<td>挂起协同线程，并将协同线程设置为挂起状态。resume()可从挂起处重启被挂起的协同线程</td>
+</tr>
+<tr>
+<td align="center">status(thread)</td>
+<td>查看协同线程的状态。状态有三种：运行态 running，挂起态 suspended，消亡态 dead</td>
+</tr>
+<tr>
+<td align="center">close()</td>
+<td>关闭协同线程</td>
+</tr>
+<tr>
+<td align="center">wrap(function)</td>
+<td>创建一个协同函数，返回的是 function 类型。一旦调用该函数就会创建并执行一个协同线程实例</td>
+</tr>
+</tbody></table>
+<h4 id="协同函数"><a href="#协同函数" class="headerlink" title="协同函数"></a>协同函数</h4><p>协同线程可以单独创建执行，也可以通过协同函数的调用启动执行。使用 coroutine 的 wrap() 函数创建的就是协同函数，其类型为 function。</p>
+<p>由于协同函数的本质就是函数，所以协同函数的调用方式就是标准的函数调用方式。只不过，协同函数的调用会启动其内置的协同线程。</p>
+<p><img src="https://cdn.jsdelivr.net/gh/lemonpuer/figure@latest/blog-images/20231216172506.png" class="lazyload placeholder" data-srcset="https://cdn.jsdelivr.net/gh/lemonpuer/figure@latest/blog-images/20231216172506.png" srcset="https://pic1.zhimg.com/v2-cd38920285d125be80b3eb504052c550_b.webp" alt="62013d3f8bd177e0868c4f6abf4a4024.png"></p>
+<h2 id="文件IO"><a href="#文件IO" class="headerlink" title="文件IO"></a>文件IO</h2><p>Lua 中提供了大量对文件进行 IO 操作的函数。静态函数是指通过 io.xxx()方式对文件进行操作的函数，而实例函数则是通过 Lua 中面向对象方式操作的函数。</p>
+<h3 id="常用静态函数"><a href="#常用静态函数" class="headerlink" title="常用静态函数"></a>常用静态函数</h3><ol>
+<li>io.open()</li>
+</ol>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">io.open (filename [, mode])</span><br></pre></td></tr></table></figure>
+
+<p>以指定模式打开指定文件，返回要打开文件的句柄(对象)。其中模式 mode 有三种，但同时还可配合两个符号使用：</p>
+<ul>
+<li>r：只读，默认模式</li>
+<li>w：只写，写入内容会覆盖文件原有内容</li>
+<li>a：只写，以追加方式写入内容</li>
+<li>+：增加符，在 r+、w+、a+均变为了读写</li>
+<li>b：二进制表示符。如果要操作的文件为二进制文件，则需要变为 rb、wb、ab。</li>
+</ul>
+<p>2 .io.input()</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">io.input (file)</span><br></pre></td></tr></table></figure>
+
+<p>指定要读取的文件。</p>
+<ol start="3">
+<li>io.output()</li>
+</ol>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">io.output()</span><br></pre></td></tr></table></figure>
+
+<p>指定要写入的文件。</p>
+<ol start="4">
+<li>io.read()</li>
+</ol>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">io.read([format])</span><br></pre></td></tr></table></figure>
+
+<p>以指定格式读取 io.input()中指定的输入文件。其中 format 格式有：</p>
+<ul>
+<li>*l：从当前位置的下一个位置开始读取整个行，默认格式</li>
+<li>*n：读取下一个数字，其将作为浮点数或整数</li>
+<li>*a：从当前位置的下一个位置开始读取整个文件</li>
+<li>number：这是一个数字，表示要读取的字符的个数</li>
+</ul>
+<ol start="5">
+<li>io.write()</li>
+</ol>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">io.write(data)</span><br></pre></td></tr></table></figure>
+
+<p>将指定的数据 data 写入到 io.output()中指定的输出文件。</p>
+<p>实例：</p>
+<p><img src="https://cdn.jsdelivr.net/gh/lemonpuer/figure@latest/blog-images/20231216172534.png" class="lazyload placeholder" data-srcset="https://cdn.jsdelivr.net/gh/lemonpuer/figure@latest/blog-images/20231216172534.png" srcset="https://pic1.zhimg.com/v2-cd38920285d125be80b3eb504052c550_b.webp" alt="1bb5861331d4dbb4e6bfbd09760988b6.png"></p>
+<h3 id="常用实例函数"><a href="#常用实例函数" class="headerlink" title="常用实例函数"></a>常用实例函数</h3><ol>
+<li>file:read()</li>
+</ol>
+<p>这里的 file 使用的是 io.open()函数返回的 file，其实际就是 Lua 中的一个对象。其用法与 io.read()的相同。</p>
+<ol start="2">
+<li>file:write()</li>
+</ol>
+<p>用法与 io.write()的相同。</p>
+<ol start="3">
+<li>file:seek()</li>
+</ol>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">file:seek ([whence [, offset]])</span><br></pre></td></tr></table></figure>
+
+<p>该函数用于获取或设置文件读写指针的当前位置。位置从 1 开始计数，除文件最后一行外，每行都有行结束符，其会占两个字符位置。位置 0 表示文件第一个位置的前面位置。</p>
+<p>当 seek()为无参时会返回读写指针的当前位置。参数 whence 的值有三种，表示将指针定位的不同位置。而 offset 则表示相对于 whence 指定位置的偏移量，offset 的默认值为 0，为正表示向后偏移，为负表示向前偏移。</p>
+<ul>
+<li>set：表示将指针定位到文件开头处，即 0 位置处</li>
+<li>cur：表示指针保持当前位置不变，默认值</li>
+<li>end：表示将指针定位到文件结尾处</li>
+</ul>
 
       </div>
       <div class="post-tags-categories">
@@ -768,17 +1206,18 @@
   <div class="post-nav-prev post-nav-item">
     <div class="post-nav-img" style="background-size: cover; 
       background-position: center center;">
-      <img class="lazyload lazyload placeholder" src="https://images.wallpaperscraft.com/image/single/bouquet_flowers_composition_137663_1920x1080.jpg" class="lazyload placeholder" data-srcset="https://images.wallpaperscraft.com/image/single/bouquet_flowers_composition_137663_1920x1080.jpg" srcset="https://pic1.zhimg.com/v2-cd38920285d125be80b3eb504052c550_b.webp" alt="">
+      <img class="lazyload lazyload placeholder" src="https://images.wallpaperscraft.com/image/single/fern_plant_leaves_108470_1920x1080.jpg" class="lazyload placeholder" data-srcset="https://images.wallpaperscraft.com/image/single/fern_plant_leaves_108470_1920x1080.jpg" srcset="https://pic1.zhimg.com/v2-cd38920285d125be80b3eb504052c550_b.webp" alt="">
     </div>
-    <a href="/2023/12/18/%E4%B8%AD%E9%97%B4%E4%BB%B6/3.Zookeeper/" class="post-nav-link">
+    <a href="/2023/12/18/Redis/7.%E5%88%86%E5%B8%83%E5%BC%8F%E9%94%81/" class="post-nav-link">
       <div class="title">
         <i class="fas fa-angle-left"></i> 上一篇:
-        <div class="title-text">Zookeeper</div>
+        <div class="title-text">Redis系列第七章</div>
       </div>
       
       <!-- <div class="content">
-        介绍官网：Apache ZooKeeper
-Zookeeper 是一个开源的分布式的，为分布式框架提供协调服务的 Apa
+        简介分布式锁是控制分布式系统间同步访问共享资源的一种方式，其可以保证共享资源在并发场景下的数据一致性。
+工作原理：
+为了
       </div> -->
     </a>
   </div>
@@ -791,13 +1230,13 @@ Zookeeper 是一个开源的分布式的，为分布式框架提供协调服务�
       background-position: center center;">
       <img class="lazyload lazyload placeholder" src="https://images.wallpaperscraft.com/image/single/fern_plant_leaves_108470_1920x1080.jpg" class="lazyload placeholder" data-srcset="https://images.wallpaperscraft.com/image/single/fern_plant_leaves_108470_1920x1080.jpg" srcset="https://pic1.zhimg.com/v2-cd38920285d125be80b3eb504052c550_b.webp" src="" alt="">
     </div>
-    <a href="/2023/12/17/Redis/6.Lua%20%E8%84%9A%E6%9C%AC/" class="post-nav-link">
+    <a href="/2023/12/18/Redis/5.%E5%88%86%E5%B8%83%E5%BC%8F%E7%B3%BB%E7%BB%9F%E4%B8%8E%E7%BC%93%E5%AD%98/" class="post-nav-link">
       <div class="title">
         下一篇: <i class="fas fa-angle-right"></i>
-        <div class="title-text">Redis系列第六章</div>
+        <div class="title-text">Redis系列第五章</div>
       </div>
       <!-- <div class="content">
-        简介Lua 是一个由标准 C 语言开发的、开源的、可扩展的、轻量级的、弱类型的、解释型脚本语言。官网：The Progr
+        Redis 分布式系统Redis 分布式系统，官方称为 Redis Cluster，Redis 集群，其是 Redis 
       </div> -->
     </a>
   </div>
@@ -937,7 +1376,7 @@ Zookeeper 是一个开源的分布式的，为分布式框架提供协调服务�
   <div class='content'>
     <div class="toc-main">
       <div class="toc-content">
-        <!-- <ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#%E7%AE%80%E4%BB%8B"><span class="toc-text">简介</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%9C%BA%E6%99%AF%E5%BC%95%E5%85%A5"><span class="toc-text">场景引入</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Redisson-%E5%8F%AF%E9%87%8D%E5%85%A5%E9%94%81"><span class="toc-text">Redisson 可重入锁</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Redisson-%E7%BA%A2%E9%94%81"><span class="toc-text">Redisson 红锁</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%88%86%E6%AE%B5%E9%94%81"><span class="toc-text">分段锁</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Redisson-%E8%AF%A6%E8%A7%A3"><span class="toc-text">Redisson 详解</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E7%AE%80%E4%BB%8B-1"><span class="toc-text">简介</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%8F%AF%E9%87%8D%E5%85%A5%E9%94%81"><span class="toc-text">可重入锁</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%85%AC%E5%B9%B3%E9%94%81"><span class="toc-text">公平锁</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E8%81%94%E9%94%81"><span class="toc-text">联锁</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E7%BA%A2%E9%94%81"><span class="toc-text">红锁</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E8%AF%BB%E5%86%99%E9%94%81"><span class="toc-text">读写锁</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E4%BF%A1%E5%8F%B7%E9%87%8F"><span class="toc-text">信号量</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%8F%AF%E8%BF%87%E6%9C%9F%E4%BF%A1%E5%8F%B7%E9%87%8F"><span class="toc-text">可过期信号量</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%88%86%E5%B8%83%E5%BC%8F%E9%97%AD%E9%94%81"><span class="toc-text">分布式闭锁</span></a></li></ol></li></ol></li></ol> -->
+        <!-- <ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#%E7%AE%80%E4%BB%8B"><span class="toc-text">简介</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#Linux-%E7%B3%BB%E7%BB%9F"><span class="toc-text">Linux 系统</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E4%BA%A4%E4%BA%92%E6%A8%A1%E5%BC%8F"><span class="toc-text">交互模式</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#%E5%91%BD%E4%BB%A4%E8%A1%8C%E6%A8%A1%E5%BC%8F%EF%BC%9A"><span class="toc-text">命令行模式：</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%E8%84%9A%E6%9C%AC%E6%96%87%E4%BB%B6%E6%A8%A1%E5%BC%8F%EF%BC%9A"><span class="toc-text">脚本文件模式：</span></a></li></ol></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Windows-%E7%B3%BB%E7%BB%9F"><span class="toc-text">Windows 系统</span></a></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#%E8%AF%AD%E6%B3%95%E5%9F%BA%E7%A1%80"><span class="toc-text">语法基础</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E6%95%B0%E6%8D%AE%E7%B1%BB%E5%9E%8B"><span class="toc-text">数据类型</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E6%A0%87%E8%AF%86%E7%AC%A6"><span class="toc-text">标识符</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E4%BF%9D%E7%95%99%E5%AD%97"><span class="toc-text">保留字</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%8F%98%E9%87%8F"><span class="toc-text">变量</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E8%BF%90%E7%AE%97%E7%AC%A6"><span class="toc-text">运算符</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E7%AE%97%E6%9C%AF%E8%BF%90%E7%AE%97%E7%AC%A6"><span class="toc-text">算术运算符</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%85%B3%E7%B3%BB%E8%BF%90%E7%AE%97%E7%AC%A6"><span class="toc-text">关系运算符</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E9%80%BB%E8%BE%91%E8%BF%90%E7%AE%97%E7%AC%A6"><span class="toc-text">逻辑运算符</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E7%89%B9%E6%AE%8A%E8%BF%90%E7%AE%97%E7%AC%A6"><span class="toc-text">特殊运算符</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%87%BD%E6%95%B0"><span class="toc-text">函数</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E6%8E%A7%E5%88%B6%E8%AF%AD%E5%8F%A5"><span class="toc-text">控制语句</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E6%B5%81%E7%A8%8B%E6%8E%A7%E5%88%B6%E8%AF%AD%E5%8F%A5"><span class="toc-text">流程控制语句</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#if"><span class="toc-text">if</span></a></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%BE%AA%E7%8E%AF%E6%8E%A7%E5%88%B6%E8%AF%AD%E5%8F%A5"><span class="toc-text">循环控制语句</span></a></li></ol></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#%E8%AF%AD%E6%B3%95%E8%BF%9B%E9%98%B6"><span class="toc-text">语法进阶</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#table"><span class="toc-text">table</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E6%95%B0%E7%BB%84"><span class="toc-text">数组</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#map"><span class="toc-text">map</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E6%B7%B7%E5%90%88%E7%BB%93%E6%9E%84"><span class="toc-text">混合结构</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#table-%E6%93%8D%E4%BD%9C%E5%87%BD%E6%95%B0"><span class="toc-text">table 操作函数</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E8%BF%AD%E4%BB%A3%E5%99%A8"><span class="toc-text">迭代器</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E6%A8%A1%E5%9D%97"><span class="toc-text">模块</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%85%83%E8%A1%A8%E4%B8%8E%E5%85%83%E6%96%B9%E6%B3%95"><span class="toc-text">元表与元方法</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#%E5%85%83%E6%96%B9%E6%B3%95"><span class="toc-text">元方法</span></a></li></ol></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E9%9D%A2%E5%90%91%E5%AF%B9%E8%B1%A1"><span class="toc-text">面向对象</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%8D%8F%E5%90%8C%E7%BA%BF%E7%A8%8B%E4%B8%8E%E5%8D%8F%E5%90%8C%E5%87%BD%E6%95%B0"><span class="toc-text">协同线程与协同函数</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#%E5%8D%8F%E5%90%8C%E7%BA%BF%E7%A8%8B"><span class="toc-text">协同线程</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%E5%8D%8F%E5%90%8C%E5%87%BD%E6%95%B0"><span class="toc-text">协同函数</span></a></li></ol></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E6%96%87%E4%BB%B6IO"><span class="toc-text">文件IO</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%B8%B8%E7%94%A8%E9%9D%99%E6%80%81%E5%87%BD%E6%95%B0"><span class="toc-text">常用静态函数</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%B8%B8%E7%94%A8%E5%AE%9E%E4%BE%8B%E5%87%BD%E6%95%B0"><span class="toc-text">常用实例函数</span></a></li></ol></li></ol></li></ol> -->
         <div class="toc"></div>
       </div>
     </div>
@@ -991,9 +1430,30 @@ Zookeeper 是一个开源的分布式的，为分布式框架提供协调服务�
             
 
             <div class="post-img-box">
-              <a href="/2023/12/18/%E4%B8%AD%E9%97%B4%E4%BB%B6/3.Zookeeper/" class="post-img " style="background-size: cover; 
+              <a href="/2023/12/25/%E4%B8%AD%E9%97%B4%E4%BB%B6/3.Zookeeper/" class="post-img " style="background-size: cover; 
                 background-position: center center;">
                 <img class="lazyload lazyload placeholder" style="width:100%;height:100%;object-fit:cover;" data-src="https://images.wallpaperscraft.com/image/single/bouquet_flowers_composition_137663_1920x1080.jpg" class="lazyload placeholder" data-srcset="https://images.wallpaperscraft.com/image/single/bouquet_flowers_composition_137663_1920x1080.jpg" srcset="https://pic1.zhimg.com/v2-cd38920285d125be80b3eb504052c550_b.webp" alt="">
+              </a>
+            </div>
+            <div class="post-date-title">
+              <div>
+                
+                  <span class="post-date">12-25</span>
+                
+              </div>
+              <a class="post-title" href="/2023/12/25/%E4%B8%AD%E9%97%B4%E4%BB%B6/3.Zookeeper/">Zookeeper</a>
+            </div>
+          </div>
+        
+          <div class="aside-list-item">
+            
+            
+            
+
+            <div class="post-img-box">
+              <a href="/2023/12/18/Redis/7.%E5%88%86%E5%B8%83%E5%BC%8F%E9%94%81/" class="post-img " style="background-size: cover; 
+                background-position: center center;">
+                <img class="lazyload lazyload placeholder" style="width:100%;height:100%;object-fit:cover;" data-src="https://images.wallpaperscraft.com/image/single/fern_plant_leaves_108470_1920x1080.jpg" class="lazyload placeholder" data-srcset="https://images.wallpaperscraft.com/image/single/fern_plant_leaves_108470_1920x1080.jpg" srcset="https://pic1.zhimg.com/v2-cd38920285d125be80b3eb504052c550_b.webp" alt="">
               </a>
             </div>
             <div class="post-date-title">
@@ -1002,7 +1462,7 @@ Zookeeper 是一个开源的分布式的，为分布式框架提供协调服务�
                   <span class="post-date">12-18</span>
                 
               </div>
-              <a class="post-title" href="/2023/12/18/%E4%B8%AD%E9%97%B4%E4%BB%B6/3.Zookeeper/">Zookeeper</a>
+              <a class="post-title" href="/2023/12/18/Redis/7.%E5%88%86%E5%B8%83%E5%BC%8F%E9%94%81/">Redis系列第七章</a>
             </div>
           </div>
         
@@ -1012,7 +1472,7 @@ Zookeeper 是一个开源的分布式的，为分布式框架提供协调服务�
             
 
             <div class="post-img-box">
-              <a href="/2023/12/17/Redis/7.%E5%88%86%E5%B8%83%E5%BC%8F%E9%94%81/" class="post-img " style="background-size: cover; 
+              <a href="/2023/12/18/Redis/6.Lua%20%E8%84%9A%E6%9C%AC/" class="post-img " style="background-size: cover; 
                 background-position: center center;">
                 <img class="lazyload lazyload placeholder" style="width:100%;height:100%;object-fit:cover;" data-src="https://images.wallpaperscraft.com/image/single/fern_plant_leaves_108470_1920x1080.jpg" class="lazyload placeholder" data-srcset="https://images.wallpaperscraft.com/image/single/fern_plant_leaves_108470_1920x1080.jpg" srcset="https://pic1.zhimg.com/v2-cd38920285d125be80b3eb504052c550_b.webp" alt="">
               </a>
@@ -1020,10 +1480,10 @@ Zookeeper 是一个开源的分布式的，为分布式框架提供协调服务�
             <div class="post-date-title">
               <div>
                 
-                  <span class="post-date">12-17</span>
+                  <span class="post-date">12-18</span>
                 
               </div>
-              <a class="post-title" href="/2023/12/17/Redis/7.%E5%88%86%E5%B8%83%E5%BC%8F%E9%94%81/">Redis系列第七章</a>
+              <a class="post-title" href="/2023/12/18/Redis/6.Lua%20%E8%84%9A%E6%9C%AC/">Redis系列第六章</a>
             </div>
           </div>
         
@@ -1033,7 +1493,7 @@ Zookeeper 是一个开源的分布式的，为分布式框架提供协调服务�
             
 
             <div class="post-img-box">
-              <a href="/2023/12/17/Redis/6.Lua%20%E8%84%9A%E6%9C%AC/" class="post-img " style="background-size: cover; 
+              <a href="/2023/12/18/Redis/5.%E5%88%86%E5%B8%83%E5%BC%8F%E7%B3%BB%E7%BB%9F%E4%B8%8E%E7%BC%93%E5%AD%98/" class="post-img " style="background-size: cover; 
                 background-position: center center;">
                 <img class="lazyload lazyload placeholder" style="width:100%;height:100%;object-fit:cover;" data-src="https://images.wallpaperscraft.com/image/single/fern_plant_leaves_108470_1920x1080.jpg" class="lazyload placeholder" data-srcset="https://images.wallpaperscraft.com/image/single/fern_plant_leaves_108470_1920x1080.jpg" srcset="https://pic1.zhimg.com/v2-cd38920285d125be80b3eb504052c550_b.webp" alt="">
               </a>
@@ -1041,31 +1501,10 @@ Zookeeper 是一个开源的分布式的，为分布式框架提供协调服务�
             <div class="post-date-title">
               <div>
                 
-                  <span class="post-date">12-17</span>
+                  <span class="post-date">12-18</span>
                 
               </div>
-              <a class="post-title" href="/2023/12/17/Redis/6.Lua%20%E8%84%9A%E6%9C%AC/">Redis系列第六章</a>
-            </div>
-          </div>
-        
-          <div class="aside-list-item">
-            
-            
-            
-
-            <div class="post-img-box">
-              <a href="/2023/12/17/Redis/5.%E5%88%86%E5%B8%83%E5%BC%8F%E7%B3%BB%E7%BB%9F%E4%B8%8E%E7%BC%93%E5%AD%98/" class="post-img " style="background-size: cover; 
-                background-position: center center;">
-                <img class="lazyload lazyload placeholder" style="width:100%;height:100%;object-fit:cover;" data-src="https://images.wallpaperscraft.com/image/single/fern_plant_leaves_108470_1920x1080.jpg" class="lazyload placeholder" data-srcset="https://images.wallpaperscraft.com/image/single/fern_plant_leaves_108470_1920x1080.jpg" srcset="https://pic1.zhimg.com/v2-cd38920285d125be80b3eb504052c550_b.webp" alt="">
-              </a>
-            </div>
-            <div class="post-date-title">
-              <div>
-                
-                  <span class="post-date">12-17</span>
-                
-              </div>
-              <a class="post-title" href="/2023/12/17/Redis/5.%E5%88%86%E5%B8%83%E5%BC%8F%E7%B3%BB%E7%BB%9F%E4%B8%8E%E7%BC%93%E5%AD%98/">Redis系列第五章</a>
+              <a class="post-title" href="/2023/12/18/Redis/5.%E5%88%86%E5%B8%83%E5%BC%8F%E7%B3%BB%E7%BB%9F%E4%B8%8E%E7%BC%93%E5%AD%98/">Redis系列第五章</a>
             </div>
           </div>
         
