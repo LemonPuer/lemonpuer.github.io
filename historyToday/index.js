@@ -34,14 +34,15 @@ new Vue({
     },
     // ����Դapi, ��ȡ��ʷ�ϵĽ�������
     getHistoryList() {
-      fetch("https://tenapi.cn/lishi/?format=json", {
+      fetch("https://api.vvhan.com/api/hotlist?type=history", {
         method: "GET", // *GET, POST, PUT, DELETE, etc.
       })
         .then((res) => {
           return res.json();
         })
         .then((data) => {
-          this.content = data.content;
+          // ��ȡÿ��data��list������title
+		  this.content = data.data.map(item => item.title);
         })
         .catch((err) => {
           console.log("err", err);
