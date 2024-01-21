@@ -3,7 +3,8 @@ var htmer_time_time = null;
 
 function setTime() {
   var create_time = Math.round(
-    new Date(Date.UTC(2024, 01, 20, 18, 18, 18)).getTime() / 1000
+	// js中0代表1月
+    new Date(Date.UTC(2024, 0, 20, 18, 18, 18)).getTime() / 1000
   );
   var timestamp = Math.round(
     (new Date().getTime() + 8 * 60 * 60 * 1000) / 1000
