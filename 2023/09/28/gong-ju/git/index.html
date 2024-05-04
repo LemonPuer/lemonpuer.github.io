@@ -1,0 +1,2512 @@
+<!DOCTYPE html>
+<html>
+  <!-- meta/link... -->
+  
+
+
+
+<head>
+  <meta http-equiv="content-type" content="text/html; charset=utf-8">
+  <meta content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0" name="viewport">
+  <!-- Global site tag (gtag.js) - Google Analytics -->
+
+
+  <title>Git | Lemon</title>
+
+  <link rel="icon" type="image/x-icon, image/vnd.microsoft.icon" href="/bitbug_favicon.ico">
+  <link rel="stylesheet" href="https://at.alicdn.com/t/font_1911880_c1nvbyezg17.css">
+  <link href="https://unpkg.com/@fortawesome/fontawesome-free/css/all.min.css" rel="stylesheet">
+  <link href="/js/swiper/swiper@5.4.1.min.css" rel="stylesheet">
+  
+  
+    <script>
+        var themeModelId = '5';
+        if (themeModelId) {
+            localStorage.setItem('modelId', themeModelId);
+        }
+    </script>
+    
+    <script defer src="https://fastly.jsdelivr.net/gh/lemonpuer/live2d-widget@latest/autoload.js"></script>
+    <script>
+        var live2dOpen = eval('true') || false;
+        if (!live2dOpen) {
+            localStorage.setItem('waifu-display', 1609323474481);
+        }
+    </script>
+  
+  
+  
+<link rel="stylesheet" href="/css/animate.min.css">
+
+  
+<link rel="stylesheet" href="/css/style.css">
+
+  
+  
+    <link href="https://fastly.jsdelivr.net/npm/@fancyapps/ui@5.0/dist/fancybox/fancybox.css" rel="stylesheet">
+  
+  
+    
+<link rel="stylesheet" href="/js/shareJs/share.min.css">
+
+  
+  <style>
+        @media (max-width: 992px) {
+            #waifu {
+                display: none;
+            }
+        }
+    </style>
+    <script defer src="//cdn.bootcss.com/pace/1.0.2/pace.min.js"></script>
+    <link href="//cdn.bootcss.com/pace/1.0.2/themes/pink/pace-theme-flash.css" rel="stylesheet">
+
+    
+    
+    <!-- 依赖于jquery和vue -->
+    
+        <script src="https://unpkg.com/jquery@3.5.1/dist/jquery.min.js"></script>
+    
+
+    
+        <script src="https://unpkg.com/vue@2.6.11/dist/vue.min.js"></script>
+    
+
+    <!-- import link -->
+    
+        
+            <link rel="stylesheet" type="text/css" href="https://at.alicdn.com/t/c/font_4157890_fix3f9jhjk.css">
+        
+            
+        
+    
+    <!-- import script -->
+    
+        
+            
+        
+            
+        
+    
+
+<meta name="generator" content="Hexo 6.3.0"></head>
+
+  
+  <!-- 预加载动画 -->
+  <!-- 页面预加载动画 -->
+
+  
+    <div class="preloader-1" id="loader">
+  <div  aria-label="Orange and tan hamster running in a metal wheel" role="img" class="wheel-and-hamster">
+    <div class="wheel"></div>
+    <div class="hamster">
+      <div class="hamster__body">
+        <div class="hamster__head">
+          <div class="hamster__ear"></div>
+          <div class="hamster__eye"></div>
+          <div class="hamster__nose"></div>
+        </div>
+        <div class="hamster__limb hamster__limb--fr"></div>
+        <div class="hamster__limb hamster__limb--fl"></div>
+        <div class="hamster__limb hamster__limb--br"></div>
+        <div class="hamster__limb hamster__limb--bl"></div>
+        <div class="hamster__tail"></div>
+      </div>
+    </div>
+    <div class="spoke"></div>
+  </div>
+</div>
+  
+<script>
+  var endLoading = function () {
+    document.body.style.overflow = 'auto';
+    document.getElementById('loader').classList.add("loading");
+  }
+  window.addEventListener('DOMContentLoaded',endLoading);
+</script>
+
+  <body>
+    <!-- 判断是否为暗黑风格 -->
+    <!-- 判断是否为黑夜模式 -->
+<script>
+  let isDark = JSON.parse(localStorage.getItem('dark')) || JSON.parse('false');
+
+  if (isDark) {
+    $(document.body).addClass('darkModel');
+  }
+</script>
+
+    <!-- 需要在上面加载的js -->
+    <script>
+  function loadScript(src, cb) {
+    return new Promise(resolve => {
+      setTimeout(function () {
+        var HEAD = document.getElementsByTagName("head")[0] || document.documentElement;
+        var script = document.createElement("script");
+        script.setAttribute("type", "text/javascript");
+        if (cb) {
+          if (JSON.stringify(cb)) {
+            for (let p in cb) {
+              if (p == "onload") {
+                script[p] = () => {
+                  cb[p]()
+                  resolve()
+                }
+              } else {
+                script[p] = cb[p]
+                script.onload = resolve
+              }
+            }
+          } else {
+            script.onload = () => {
+              cb()
+              resolve()
+            };
+          }
+        } else {
+          script.onload = resolve
+        }
+        script.setAttribute("src", src);
+        HEAD.appendChild(script);
+      });
+    });
+  }
+
+  //https://github.com/filamentgroup/loadCSS
+  var loadCSS = function (src) {
+    return new Promise(resolve => {
+      setTimeout(function () {
+        var link = document.createElement('link');
+        link.rel = "stylesheet";
+        link.href = src;
+        link.onload = resolve;
+        document.getElementsByTagName("head")[0].appendChild(link);
+      });
+    });
+  };
+
+</script> 
+
+<!-- 轮播图所需要的js -->
+<script src="/js/swiper/swiper.min.js"></script>
+<script src="/js/swiper/vue-awesome-swiper.js"></script>
+<script src="/js/swiper/swiper.animate1.0.3.min.js"></script>
+
+<script type="text/javascript">
+  Vue.use(window.VueAwesomeSwiper)
+</script>
+
+
+  <script src="/js/vue-typed-js/index.js"></script>
+
+
+<!-- 首页的公告滚动插件的js需要重新加载 -->
+<script src="/js/vue-seamless-scroll/index.js"></script>
+
+<!-- 打字机效果js -->
+<script src="https://unpkg.com/typed.js@2.0.11"></script>
+
+
+    <div id="safearea">
+      <main class="main" id="pjax-container">
+        <!-- 头部导航 -->
+        
+<header class="header  " 
+  id="navHeader"
+  style="position: fixed;
+  left: 0; top: 0; z-index: 10;width: 100%;"
+>
+  <div class="header-content">
+    <div class="bars">
+      <div id="appDrawer" class="sidebar-image">
+  <div class="drawer-box-icon">
+    <i class="fas fa-bars" aria-hidden="true" @click="showDialogDrawer"></i>
+  </div>
+  
+  <transition name="fade">
+    <div class="drawer-box_mask" v-cloak style="display: none;" v-show="visible" @click.self="cancelDialogDrawer">
+    </div>
+  </transition>
+  <div class="drawer-box" :class="{'active': visible}">
+    <div class="drawer-box-head bg-color">
+      <img class="drawer-box-head_logo lazyload placeholder" src="https://i.postimg.cc/yNJTSNTj/image.jpg" class="lazyload placeholder" data-srcset="https://i.postimg.cc/yNJTSNTj/image.jpg" srcset="https://pic1.zhimg.com/v2-cd38920285d125be80b3eb504052c550_b.webp" alt="logo">
+      <h3 class="drawer-box-head_title">Lemon</h3>
+      <h5 class="drawer-box-head_desc">个人博客</h5>
+    </div>
+    
+    <div class="drawer-box-content">
+      <ul class="drawer-box-content_menu">
+        
+          
+            <li class="drawer-box-content_item" style="position: relative;">
+              
+                <a href="/" class="drawer-menu-item-link">
+                  
+                    <i class="fas fa-home" aria-hidden="true"></i>
+                  
+                  <span class="name">首页</span>
+                </a>
+              
+            </li>
+          
+            <li class="drawer-box-content_item" style="position: relative;">
+              
+                <a href="/archives" class="drawer-menu-item-link">
+                  
+                    <i class="fas fa-archive" aria-hidden="true"></i>
+                  
+                  <span class="name">归档</span>
+                </a>
+              
+            </li>
+          
+            <li class="drawer-box-content_item" style="position: relative;">
+              
+                <a href="/tags" class="drawer-menu-item-link">
+                  
+                    <i class="fas fa-tags" aria-hidden="true"></i>
+                  
+                  <span class="name">标签</span>
+                </a>
+              
+            </li>
+          
+            <li class="drawer-box-content_item" style="position: relative;">
+              
+                <a href="/categories" class="drawer-menu-item-link">
+                  
+                    <i class="fas fa-bookmark" aria-hidden="true"></i>
+                  
+                  <span class="name">分类</span>
+                </a>
+              
+            </li>
+          
+            <li class="drawer-box-content_item" style="position: relative;">
+              
+                <a href="/friends" class="drawer-menu-item-link">
+                  
+                    <i class="fas fa-link" aria-hidden="true"></i>
+                  
+                  <span class="name">友情链接</span>
+                </a>
+              
+            </li>
+          
+            <li class="drawer-box-content_item" style="position: relative;">
+              
+                <a href="javascript:;" class="drawer-menu-item-link has-children" @click="openOrCloseMenu(5)">
+                  <span>
+                    
+                    <span class="name">更多</span>
+                  </span>
+                  <i class="fas fa-chevron-left arrow " :class="{'icon-rotate': isOpen(5)}" aria-hidden="true"></i>
+                </a>
+                <ul class="drawer-sub-menu" v-if="isOpen(5)">
+                  
+                  <li>
+                    <a href="/about">
+                      
+                      <i class="fa fa-id-card" style="margin-top: -20px;"></i>
+                      
+                      <span>关于</span>
+                    </a>
+                  </li>
+                  
+                  <li>
+                    <a target="_blank" rel="noopener" href="https://bing.com/">
+                      
+                      <i class="fa fa-search" style="margin-top: -20px;"></i>
+                      
+                      <span>必应</span>
+                    </a>
+                  </li>
+                  
+                </ul>
+              
+            </li>
+          
+        
+        
+      </ul>
+    </div>
+  </div>
+</div>
+
+<script>
+  var body = document.body || document.documentElement || window;
+  var vm = new Vue({
+    el: '#appDrawer',
+    data: {
+      visible: false,
+      top: 0,
+      openArr: [],
+    },
+    computed: {
+    },
+    mounted() {
+    },
+    methods: {
+      isOpen(index) {
+        if (this.openArr.includes(index)) {
+          return true;
+        } else {
+          return false;
+        }
+      },
+      openOrCloseMenu(curIndex) {
+        const index = this.openArr.indexOf(curIndex);
+        if (index !== -1) {
+          this.openArr.splice(index, 1);
+        } else {
+          this.openArr.push(curIndex);
+        }
+      },
+      showDialogDrawer() {
+        this.visible = true;
+        // 防止页面滚动，只能让弹框滚动
+        this.top = $(document).scrollTop()
+        body.style.cssText = 'width: 100%; height: 100%;overflow: hidden;';
+      },
+      cancelDialogDrawer() {
+        this.visible = false;
+        body.removeAttribute('style');
+        $(document).scrollTop(this.top)
+      }
+    },
+    created() {}
+  })
+</script>
+
+    </div>
+    <div class="blog-title" id="author-avatar">
+      
+        <div class="avatar">
+          <img src="https://i.postimg.cc/yNJTSNTj/image.jpg" class="lazyload placeholder" data-srcset="https://i.postimg.cc/yNJTSNTj/image.jpg" srcset="https://pic1.zhimg.com/v2-cd38920285d125be80b3eb504052c550_b.webp" alt="logo">
+        </div>
+      
+      <a href="/" class="logo">Lemon</a>
+    </div>
+    <nav class="navbar">
+      <ul class="menu">
+        
+          
+            <li class="menu-item" style="position: relative;">
+              
+                <a href="/" class="menu-item-link" title="首页">
+                  
+                    <i class="fas fa-home" aria-hidden="true"></i>
+                  
+                  <span class="name">首页</span>
+                </a>
+              
+            </li>
+          
+            <li class="menu-item" style="position: relative;">
+              
+                <a href="/archives" class="menu-item-link" title="归档">
+                  
+                    <i class="fas fa-archive" aria-hidden="true"></i>
+                  
+                  <span class="name">归档</span>
+                </a>
+              
+            </li>
+          
+            <li class="menu-item" style="position: relative;">
+              
+                <a href="/tags" class="menu-item-link" title="标签">
+                  
+                    <i class="fas fa-tags" aria-hidden="true"></i>
+                  
+                  <span class="name">标签</span>
+                </a>
+              
+            </li>
+          
+            <li class="menu-item" style="position: relative;">
+              
+                <a href="/categories" class="menu-item-link" title="分类">
+                  
+                    <i class="fas fa-bookmark" aria-hidden="true"></i>
+                  
+                  <span class="name">分类</span>
+                </a>
+              
+            </li>
+          
+            <li class="menu-item" style="position: relative;">
+              
+                <a href="/friends" class="menu-item-link" title="友情链接">
+                  
+                    <i class="fas fa-link" aria-hidden="true"></i>
+                  
+                  <span class="name">友情链接</span>
+                </a>
+              
+            </li>
+          
+            <li class="menu-item" style="position: relative;">
+              
+                <a href="javascript:;" class="menu-item-link" title="更多">
+                  
+                  <span class="name">更多</span>
+                  <i class="fas fa-chevron-down arrow" aria-hidden="true"></i>
+                </a>
+                <ul class="sub-menu">
+                  
+                  <li>
+                    <a href="/about">
+                      
+                      <i class="fa fa-id-card" style="margin-top: -20px;"></i>
+                      
+                      <span>关于</span>
+                    </a>
+                  </li>
+                  
+                  <li>
+                    <a target="_blank" rel="noopener" href="https://bing.com/">
+                      
+                      <i class="fa fa-search" style="margin-top: -20px;"></i>
+                      
+                      <span>必应</span>
+                    </a>
+                  </li>
+                  
+                </ul>
+              
+            </li>
+          
+        
+      </ul>
+      
+      
+        <div id="appSearch">
+  <div class="search"  @click="showDialog()"><i class="fas fa-search" aria-hidden="true"></i></div>
+  <transition name="fade">
+    <div class="message-box_wrapper" style="display: none;" v-cloak v-show="dialogVisible" @click.self="cancelDialogVisible()">
+      <div class="message-box animated bounceInDown">
+        <h2>
+          <span>
+            <i class="fas fa-search" aria-hidden="true"></i>
+            <span class="title">本地搜索</span>
+          </span>
+          <i class="fas fa-times close" pointer style="float:right;" aria-hidden="true" @click.self="cancelDialogVisible()"></i>
+        </h2>
+        <form class="site-search-form">
+          <input type="text"
+            placeholder="请输入关键字"
+            id="local-search-input" 
+            @click="getSearchFile()"
+            class="st-search-input"
+            v-model="searchInput"
+          />
+        </form>
+        <div class="result-wrapper">
+          <div id="local-search-result" class="local-search-result-cls"></div>
+        </div>
+      </div>
+    </div>
+  </transition>
+</div>
+<script src="/js/local_search.js"></script>
+<script>
+  var body = document.body || document.documentElement || window;
+  var vm = new Vue({
+    el: '#appSearch',
+    data: {
+      dialogVisible: false,
+      searchInput: '',
+      top: 0,
+    },
+    computed: {
+    },
+    mounted() {
+      window.addEventListener('pjax:complete', () => {
+        this.cancelDialogVisible();
+      })
+    },
+    methods: {
+      showDialog() {
+        this.dialogVisible = true;
+        // 防止页面滚动，只能让弹框滚动
+        this.top = $(document).scrollTop()
+        body.style.cssText = 'overflow: hidden;';
+      },
+      getSearchFile() {
+        if (!this.searchInput) {
+          getSearchFile("/search.xml");
+        }
+      },
+      cancelDialogVisible() {
+        this.dialogVisible = false;
+        body.removeAttribute('style');
+        $(document).scrollTop(this.top)
+      },
+    },
+    created() {}
+  })
+</script>
+<!-- 解决刷新页面闪烁问题，可以在元素上添加display: none, 或者用vue.extend方法，详情：https://blog.csdn.net/qq_31393401/article/details/81017912 -->
+<!-- 下面是搜索基本写法 -->
+<!-- <script type="text/javascript" id="local.search.active">
+  var inputArea = document.querySelector("#local-search-input");
+  inputArea.onclick   = function(){ getSearchFile(); this.onclick = null }
+  inputArea.onkeydown = function(){ if(event.keyCode == 13) return false }
+</script> -->
+
+      
+
+    </nav>
+  </div>
+  
+  
+    <div id="he-plugin-simple"></div>
+    <script>
+      WIDGET = {
+        CONFIG: {
+          "modules": "012",
+          "background": 5,
+          "tmpColor": "4A4A4A",
+          "tmpSize": 16,
+          "cityColor": "4A4A4A",
+          "citySize": 16,
+          "aqiSize": 16,
+          "weatherIconSize": 24,
+          "alertIconSize": 18,
+          "padding": "10px 10px 10px 10px",
+          "shadow": "1",
+          "language": "auto",
+          "borderRadius": 5,
+          "fixed": "false",
+          "vertical": "middle",
+          "horizontal": "center",
+          "key": "2784dd3fcb1e4f0f9a9b579bf69641f2"
+        }
+      }
+    </script>
+    <script defer src="https://widget.qweather.net/simple/static/js/he-simple-common.js?v=2.0"></script> 
+    
+</header>
+        <!-- 内容区域 -->
+        
+ <!-- prismjs 代码高亮 -->
+ 
+
+
+<div class="bg-dark-floor" style="position: fixed;left: 0;top: 0;width: 100%;height: 100%;z-index: -1;"></div>
+
+
+  <!-- 文章详情页顶部图片和标题 -->
+
+
+
+
+<div class="post-detail-header" id="thumbnail_canvas" style="background-repeat: no-repeat; background-size: cover; 
+  background-position: center center;position: relative;background-image:url('https://images.wallpaperscraft.com/image/single/landscape_mountains_sun_140434_1920x1080.jpg')">
+  <div class="post-detail-header-mask"></div>
+  <canvas id="header_canvas"style="position:absolute;bottom:0;pointer-events:none;"></canvas>
+  
+  <div class="post-detail-header_info-box">
+    <div class="title-box">
+      <span class="title">
+        Git
+      </span>
+    </div>
+    
+    
+      
+        <span class="post-detail-header_date">
+          <i class="fas fa-calendar"></i> 发表于：2023-09-28 |
+        </span>
+      
+
+      
+        <span class="post-detail-header_categories">
+          <i class="iconfont iconbookmark1"></i> 分类：
+          
+            <a href="/categories/%E5%B7%A5%E5%85%B7/" class="post-detail-header_category">
+              工具
+            </a>
+          
+        </span>
+      
+
+      
+        <div class="post-detail-header_wordcount">
+          <span class="totalcount">
+            <i class="fas fa-file-text-o"></i> 字数统计: 4.8k |
+          </span>
+  
+          <span class="min2read">
+            <i class="fas fa-clock"></i> 阅读时长: 18分钟 |
+          </span>
+  
+          
+            <span class="reading">
+              <i class="fas fa-eye"></i> 阅读量：<span id="busuanzi_value_page_pv"></span>
+            </span>
+          
+        </div>
+      
+    
+  </div>
+  
+  
+    <script src="/js/bubble/bubble.js"></script>
+  
+</div>
+
+
+
+
+
+<div class="post-detail-content post-row" 
+  style="padding-top: 0px;">
+  <div class="main-content">
+    <article class="post post-detail">
+      <div class="post-content">
+        <h1 id="1-Git-概述"><a href="#1-Git-概述" class="headerlink" title="1. Git 概述"></a>1. Git 概述</h1><p>Git 是一个免费的、开源的分布式版本控制系统，可以快速高效地处理从小型到大型的各种项目。</p>
+<p>Git 易于学习，占地面积小，性能极快。 它具有廉价的本地库，方便的暂存区域和多个工作流分支等特性。其性能优于 Subversion、CVS、Perforce 和 ClearCase 等版本控制工具。</p>
+<h2 id="版本控制工具"><a href="#版本控制工具" class="headerlink" title="版本控制工具"></a>版本控制工具</h2><h3 id="集中式版本控制工具"><a href="#集中式版本控制工具" class="headerlink" title="集中式版本控制工具"></a>集中式版本控制工具</h3><p>CVS、SVN(Subversion)、VSS……</p>
+<p>集中化的版本控制系统都有一个单一的集中管理的服务器，保存所有文件的修订版本，而协同工作的人们都通过客户端连到这台服务器，取出最新的文件或者提交更新。多年以来，这已成为版本控制系统的标准做法。</p>
+<p>好处：每个人都可以在一定程度上看到项目中的其他人正在做些什么。而管理员也可以轻松掌控每个开发者的权限，并且管理一个集中化的版本控制系统，要远比在各个客户端上维护本地数据库来得轻松容易。</p>
+<p>缺点：中央服务器的单点故障。如果服务器宕机一小时，那么在这一小时内，谁都无法提交更新，也就无法协同工作。</p>
+<h3 id="分布式版本控制工具"><a href="#分布式版本控制工具" class="headerlink" title="分布式版本控制工具"></a>分布式版本控制工具</h3><p>Git、Mercurial、Bazaar、Darcs……</p>
+<p>分布式版本控制工具，客户端提取的不是最新版本的文件快照，而是把代码仓库完整地镜像下来（本地库）。这样任何一处协同工作用的文件发生故障，事后都可以用其他客户端的本地仓库进行恢复。因为每个客户端的每一次文件提取操作，实际上都是一次对整个文件仓库的完整备份。</p>
+<p>解决了集中式版本控制系统的缺陷：</p>
+<ol>
+<li>服务器断网的情况下也可以进行开发（因为版本控制是在本地进行的）</li>
+<li>每个客户端保存的也都是整个完整的项目（包含历史记录，更加安全）</li>
+</ol>
+<h3 id="Git-和代码托管中心"><a href="#Git-和代码托管中心" class="headerlink" title="Git 和代码托管中心"></a>Git 和代码托管中心</h3><p>代码托管中心是基于网络服务器的远程代码仓库，一般我们简单称为远程库。</p>
+<p>局域网：GitLab</p>
+<p>互联网 ：GitHub（外网）；Gitee 码云（国内网站）</p>
+<h3 id="Git-的安装"><a href="#Git-的安装" class="headerlink" title="Git 的安装"></a>Git 的安装</h3><p>官网：<a target="_blank" rel="noopener" href="https://git-scm.com/">Git (git-scm.com)</a></p>
+<p>由于官网下载过慢且需要授权，我们可以使用淘宝npm的镜像地址：</p>
+<p><a target="_blank" rel="noopener" href="https://registry.npmmirror.com/binary.html?path=git-for-windows/">CNPM Binaries Mirror (npmmirror.com)</a></p>
+<p>Git 的安装只需要改一下安装路径，再如下图改一下环境配置信息，其它直接默认下一步即可。</p>
+<p><img src="https://cdn.jsdelivr.net/gh/lemonpuer/figure@latest/blog-images/20231006221808.png" class="lazyload placeholder" data-srcset="https://cdn.jsdelivr.net/gh/lemonpuer/figure@latest/blog-images/20231006221808.png" srcset="https://pic1.zhimg.com/v2-cd38920285d125be80b3eb504052c550_b.webp" alt="bf7f1a21ba58b5314fc3abbe91efea26.png"></p>
+<p>桌面右键，选择 Git Bash Here 即可打开 Git Bash 命令行终端，在 Git Bash 终端里输入 git –version 查看 git 版本，说明 Git 安装成功。</p>
+<h1 id="2-常用命令"><a href="#2-常用命令" class="headerlink" title="2. 常用命令"></a>2. 常用命令</h1><table>
+<thead>
+<tr>
+<th align="center">命令名称</th>
+<th>作用</th>
+</tr>
+</thead>
+<tbody><tr>
+<td align="center">git config –global user.name 用户名</td>
+<td>设置用户签名</td>
+</tr>
+<tr>
+<td align="center">git config –global user.email 邮箱</td>
+<td>设置用户签名</td>
+</tr>
+<tr>
+<td align="center"><span style="color:Crimson">git init</span></td>
+<td>初始化本地库</td>
+</tr>
+<tr>
+<td align="center"><span style="color:Crimson">git status</span></td>
+<td>查看本地库状态</td>
+</tr>
+<tr>
+<td align="center"><span style="color:Crimson">git add 文件名</span></td>
+<td>添加到暂存区</td>
+</tr>
+<tr>
+<td align="center"><span style="color:Crimson">git commit -m “日志信息” 文件名</span></td>
+<td>提交到本地库</td>
+</tr>
+<tr>
+<td align="center"><span style="color:Crimson">git reflog </span></td>
+<td>查看历史记录</td>
+</tr>
+<tr>
+<td align="center"><span style="color:Crimson">git reset –hard 版本号</span></td>
+<td>版本穿梭</td>
+</tr>
+<tr>
+<td align="center">git clone -b 分支名 地址</td>
+<td>拉取指定分支代码</td>
+</tr>
+</tbody></table>
+<blockquote>
+<p>签名的作用是区分不同操作者身份。用户的签名信息在每一个版本的提交信息中能够看到，以此确认本次提交是谁做的。Git 首次安装必须设置一下用户签名，否则无法提交代码。</p>
+<p>可以在当前用户目录的 .gitconfig 文件查看用户签名</p>
+<p>这里设置用户签名和将来登录 GitHub（或其他代码托管中心）的账号没有任何关系。</p>
+</blockquote>
+<p>Git 中的命令和 Linux 中的命令是通用的</p>
+<table>
+<thead>
+<tr>
+<th>系统</th>
+<th>描述</th>
+<th>名称</th>
+<th>转义符</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>Windows</td>
+<td>回车换行</td>
+<td>CRLF</td>
+<td>\n\r</td>
+</tr>
+<tr>
+<td>Linux</td>
+<td>换行</td>
+<td>LF</td>
+<td>\n</td>
+</tr>
+</tbody></table>
+<h2 id="初始化本地库："><a href="#初始化本地库：" class="headerlink" title="初始化本地库："></a>初始化本地库：</h2><p><img src="https://cdn.jsdelivr.net/gh/lemonpuer/figure@latest/blog-images/20231006221821.png" class="lazyload placeholder" data-srcset="https://cdn.jsdelivr.net/gh/lemonpuer/figure@latest/blog-images/20231006221821.png" srcset="https://pic1.zhimg.com/v2-cd38920285d125be80b3eb504052c550_b.webp" alt="314015570847c684f63b39b49f3ef8e4.png"></p>
+<blockquote>
+<p>初始化本地库后，会在库目录创建 .git 的隐藏文件</p>
+</blockquote>
+<h2 id="查看本地库状态："><a href="#查看本地库状态：" class="headerlink" title="查看本地库状态："></a>查看本地库状态：</h2><p><img src="https://cdn.jsdelivr.net/gh/lemonpuer/figure@latest/blog-images/20231006221824.png" class="lazyload placeholder" data-srcset="https://cdn.jsdelivr.net/gh/lemonpuer/figure@latest/blog-images/20231006221824.png" srcset="https://pic1.zhimg.com/v2-cd38920285d125be80b3eb504052c550_b.webp" alt="9f49ad434e470961afabc7741b7d6f74.png"></p>
+<p>添加文件后查看会提示检测到未追踪的文件，红色标注</p>
+<h2 id="添加暂存区："><a href="#添加暂存区：" class="headerlink" title="添加暂存区："></a>添加暂存区：</h2><p><img src="https://cdn.jsdelivr.net/gh/lemonpuer/figure@latest/blog-images/20231006221829.png" class="lazyload placeholder" data-srcset="https://cdn.jsdelivr.net/gh/lemonpuer/figure@latest/blog-images/20231006221829.png" srcset="https://pic1.zhimg.com/v2-cd38920285d125be80b3eb504052c550_b.webp" alt="4ebe9f579442ac5da439a35c3cf37a34.png"></p>
+<p>添加到暂存区后会以绿色标注；提示的代码是将暂存区的文件删除，对原文件没有影响。</p>
+<blockquote>
+<p>可使用git ls-files查看暂存区的文件</p>
+</blockquote>
+<h2 id="提交到本地库："><a href="#提交到本地库：" class="headerlink" title="提交到本地库："></a>提交到本地库：</h2><p><img src="https://cdn.jsdelivr.net/gh/lemonpuer/figure@latest/blog-images/20231006222057.png" class="lazyload placeholder" data-srcset="https://cdn.jsdelivr.net/gh/lemonpuer/figure@latest/blog-images/20231006222057.png" srcset="https://pic1.zhimg.com/v2-cd38920285d125be80b3eb504052c550_b.webp" alt="7bf1ac047228ddb506523ab10c03b0a3.png"></p>
+<p>修改文件后查看状态：</p>
+<p><img src="https://cdn.jsdelivr.net/gh/lemonpuer/figure@latest/blog-images/20231006222102.png" class="lazyload placeholder" data-srcset="https://cdn.jsdelivr.net/gh/lemonpuer/figure@latest/blog-images/20231006222102.png" srcset="https://pic1.zhimg.com/v2-cd38920285d125be80b3eb504052c550_b.webp" alt="39177e211be0113323f36fe7fc224dd0.png"></p>
+<blockquote>
+<p>git restore &lt;file&gt; 是恢复文件，放弃修改</p>
+</blockquote>
+<h2 id="历史版本："><a href="#历史版本：" class="headerlink" title="历史版本："></a>历史版本：</h2><p>查看历史版本：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">git reflog 查看版本信息</span><br><span class="line">git log 查看版本详细信息</span><br></pre></td></tr></table></figure>
+
+<p><img src="https://cdn.jsdelivr.net/gh/lemonpuer/figure@latest/blog-images/20231006222108.png" class="lazyload placeholder" data-srcset="https://cdn.jsdelivr.net/gh/lemonpuer/figure@latest/blog-images/20231006222108.png" srcset="https://pic1.zhimg.com/v2-cd38920285d125be80b3eb504052c550_b.webp" alt="0743fdd21a905b95725facddd87a19e2.png"></p>
+<p>版本穿梭：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">git reset --hard 版本号</span><br></pre></td></tr></table></figure>
+
+<p><img src="https://cdn.jsdelivr.net/gh/lemonpuer/figure@latest/blog-images/20231006222114.png" class="lazyload placeholder" data-srcset="https://cdn.jsdelivr.net/gh/lemonpuer/figure@latest/blog-images/20231006222114.png" srcset="https://pic1.zhimg.com/v2-cd38920285d125be80b3eb504052c550_b.webp" alt="d24632d46aabb39f43ea7790de198368.png"></p>
+<blockquote>
+<p>Git 切换版本，底层其实是移动的 master 指针。</p>
+<p>此时本地库的文件也切换成了第一版</p>
+</blockquote>
+<h1 id="3-Git分支操作"><a href="#3-Git分支操作" class="headerlink" title="3. Git分支操作"></a>3. Git分支操作</h1><p><img src="https://cdn.jsdelivr.net/gh/lemonpuer/figure@latest/blog-images/20231006222119.png" class="lazyload placeholder" data-srcset="https://cdn.jsdelivr.net/gh/lemonpuer/figure@latest/blog-images/20231006222119.png" srcset="https://pic1.zhimg.com/v2-cd38920285d125be80b3eb504052c550_b.webp" alt="7b6fd9fab71d733f9d6149aba4b2d84e.png"></p>
+<p>分支：在版本控制过程中，同时推进多个任务，为每个任务，我们就可以创建每个任务的单独分支。使用分支意味着程序员可以把自己的工作从开发主线上分离开来，开发自己分支的时候，不会影响主线分支的运行。</p>
+<p>优点：同时并行推进多个功能开发，提高开发效率。各个分支在开发过程中，如果某一个分支开发失败，不会对其他分支有任何影响。失败的分支删除重新开始即可。</p>
+<table>
+<thead>
+<tr>
+<th align="center">命令名称</th>
+<th>作用</th>
+</tr>
+</thead>
+<tbody><tr>
+<td align="center">git branch 分支名</td>
+<td>创建分支</td>
+</tr>
+<tr>
+<td align="center">git branch -v</td>
+<td>查看分支</td>
+</tr>
+<tr>
+<td align="center">git checkout 分支名</td>
+<td>切换分支</td>
+</tr>
+<tr>
+<td align="center">git merge 分支名</td>
+<td>把指定的分支合并到当前分支上</td>
+</tr>
+<tr>
+<td align="center">git branch -d 分支名</td>
+<td>删除本地分支（不会影响远程仓库中的任何分支）</td>
+</tr>
+</tbody></table>
+<h2 id="创建分支"><a href="#创建分支" class="headerlink" title="创建分支"></a>创建分支</h2><p><img src="https://cdn.jsdelivr.net/gh/lemonpuer/figure@latest/blog-images/20231006222124.png" class="lazyload placeholder" data-srcset="https://cdn.jsdelivr.net/gh/lemonpuer/figure@latest/blog-images/20231006222124.png" srcset="https://pic1.zhimg.com/v2-cd38920285d125be80b3eb504052c550_b.webp" alt="a3a0b22a9428cf541f047edf7fd63d3b.png"></p>
+<blockquote>
+<p>创建的分支会将主分支master的内容复制一份</p>
+</blockquote>
+<h2 id="切换分支"><a href="#切换分支" class="headerlink" title="切换分支"></a>切换分支</h2><p><img src="https://cdn.jsdelivr.net/gh/lemonpuer/figure@latest/blog-images/20231006222128.png" class="lazyload placeholder" data-srcset="https://cdn.jsdelivr.net/gh/lemonpuer/figure@latest/blog-images/20231006222128.png" srcset="https://pic1.zhimg.com/v2-cd38920285d125be80b3eb504052c550_b.webp" alt="816f9c441c41ca980bcf9420e3b88571.png"></p>
+<blockquote>
+<p>在master分支中修改文件并提交不会影响hot-fix分支的内容</p>
+</blockquote>
+<h2 id="合并分支"><a href="#合并分支" class="headerlink" title="合并分支"></a>合并分支</h2><p>正常情况：</p>
+<p><img src="https://cdn.jsdelivr.net/gh/lemonpuer/figure@latest/blog-images/20231006222138.png" class="lazyload placeholder" data-srcset="https://cdn.jsdelivr.net/gh/lemonpuer/figure@latest/blog-images/20231006222138.png" srcset="https://pic1.zhimg.com/v2-cd38920285d125be80b3eb504052c550_b.webp" alt="30c6677610fa6055b9b13a7853ef6663.png"></p>
+<p>合并冲突：</p>
+<p><img src="https://cdn.jsdelivr.net/gh/lemonpuer/figure@latest/blog-images/20231006222152.png" class="lazyload placeholder" data-srcset="https://cdn.jsdelivr.net/gh/lemonpuer/figure@latest/blog-images/20231006222152.png" srcset="https://pic1.zhimg.com/v2-cd38920285d125be80b3eb504052c550_b.webp" alt="149832814173dded306c3270ee1967db.png"><br><img src="https://cdn.jsdelivr.net/gh/lemonpuer/figure@latest/blog-images/5eab95fcad7c33d2b9c8897d105bf6cd.png" class="lazyload placeholder" data-srcset="https://cdn.jsdelivr.net/gh/lemonpuer/figure@latest/blog-images/5eab95fcad7c33d2b9c8897d105bf6cd.png" srcset="https://pic1.zhimg.com/v2-cd38920285d125be80b3eb504052c550_b.webp" alt="5eab95fcad7c33d2b9c8897d105bf6cd.png"></p>
+<blockquote>
+<p>此时需要我们使用vim手动打开文件进行合并；其中 &lt;&lt;…&#x3D;&#x3D; 部分是当前分支提交保存的内容；&#x3D;&#x3D;..&gt;&gt; 是 hot-fix 分支中提交保存的内容；</p>
+</blockquote>
+<p><img src="https://cdn.jsdelivr.net/gh/lemonpuer/figure@latest/blog-images/20231006222200.png" class="lazyload placeholder" data-srcset="https://cdn.jsdelivr.net/gh/lemonpuer/figure@latest/blog-images/20231006222200.png" srcset="https://pic1.zhimg.com/v2-cd38920285d125be80b3eb504052c550_b.webp" alt="f0f01aa9365d25da1bf7ea0626d046fa.png"></p>
+<p>修改完后提交即可完成代码合并</p>
+<p>注意：<strong>解决代码冲突时提交文件不能带文件名</strong></p>
+<p>分支的底层解释：master、hot-fix 都是指向具体版本记录的指针。当前所在的分支由 HEAD 决定。所以创建分支的本质就是多创建一个指针。 HEAD 如果指向 master，那么我们现在就在 master 分支上。 切换分支的本质就是移动 HEAD 指针。</p>
+<h2 id="Git-团队协作机制"><a href="#Git-团队协作机制" class="headerlink" title="Git 团队协作机制"></a>Git 团队协作机制</h2><p>团队内协作：</p>
+<p><img src="https://cdn.jsdelivr.net/gh/lemonpuer/figure@latest/blog-images/20231006222205.png" class="lazyload placeholder" data-srcset="https://cdn.jsdelivr.net/gh/lemonpuer/figure@latest/blog-images/20231006222205.png" srcset="https://pic1.zhimg.com/v2-cd38920285d125be80b3eb504052c550_b.webp" alt="d800717a8fd6646fbe76a900ada76d3f.png"></p>
+<p>跨团队协作：</p>
+<p><img src="https://cdn.jsdelivr.net/gh/lemonpuer/figure@latest/blog-images/20231006222206.png" class="lazyload placeholder" data-srcset="https://cdn.jsdelivr.net/gh/lemonpuer/figure@latest/blog-images/20231006222206.png" srcset="https://pic1.zhimg.com/v2-cd38920285d125be80b3eb504052c550_b.webp" alt="33c8072bcaf35e336ebb12e034f28465.png"></p>
+<h1 id="4-GitHub-操作"><a href="#4-GitHub-操作" class="headerlink" title="4. GitHub 操作"></a>4. GitHub 操作</h1><p><a target="_blank" rel="noopener" href="https://github.com/">GitHub: Let’s build from here · GitHub</a></p>
+<h2 id="创建远程仓库"><a href="#创建远程仓库" class="headerlink" title="创建远程仓库"></a>创建远程仓库</h2><p><img src="https://cdn.jsdelivr.net/gh/lemonpuer/figure@latest/blog-images/19c000f352889834b8a98f40ad990ff8.png" class="lazyload placeholder" data-srcset="https://cdn.jsdelivr.net/gh/lemonpuer/figure@latest/blog-images/19c000f352889834b8a98f40ad990ff8.png" srcset="https://pic1.zhimg.com/v2-cd38920285d125be80b3eb504052c550_b.webp" alt="19c000f352889834b8a98f40ad990ff8.png"></p>
+<p>点击加号中的 New repository</p>
+<p><img src="https://cdn.jsdelivr.net/gh/lemonpuer/figure@latest/blog-images/20231006222214.png" class="lazyload placeholder" data-srcset="https://cdn.jsdelivr.net/gh/lemonpuer/figure@latest/blog-images/20231006222214.png" srcset="https://pic1.zhimg.com/v2-cd38920285d125be80b3eb504052c550_b.webp" alt="3c150df75ceb0cea184dcbac5b12fef2.png"></p>
+<p>输入仓库名后即可创建</p>
+<p><img src="https://cdn.jsdelivr.net/gh/lemonpuer/figure@latest/blog-images/20231006222220.png" class="lazyload placeholder" data-srcset="https://cdn.jsdelivr.net/gh/lemonpuer/figure@latest/blog-images/20231006222220.png" srcset="https://pic1.zhimg.com/v2-cd38920285d125be80b3eb504052c550_b.webp" alt="e7d3abff4804311ac287c486a958a62d.png"></p>
+<blockquote>
+<p>远程仓库的地址以及连接协议</p>
+</blockquote>
+<h2 id="操作命令"><a href="#操作命令" class="headerlink" title="操作命令"></a>操作命令</h2><table>
+<thead>
+<tr>
+<th align="center">命令名称</th>
+<th>作用</th>
+</tr>
+</thead>
+<tbody><tr>
+<td align="center">git remote -v</td>
+<td>查看当前所有远程地址别名</td>
+</tr>
+<tr>
+<td align="center">git remote add 别名 远程地址</td>
+<td>起别名</td>
+</tr>
+<tr>
+<td align="center">git remote rm 别名</td>
+<td>删除别名</td>
+</tr>
+<tr>
+<td align="center">git push 别名 分支</td>
+<td>推送本地分支上的内容到远程仓库</td>
+</tr>
+<tr>
+<td align="center">git clone 远程地址</td>
+<td>将远程仓库的内容克隆到本地</td>
+</tr>
+<tr>
+<td align="center">git pull 远程库地址别名 远程分支名</td>
+<td>将远程仓库对于分支最新内容拉下来后与当前本地分支直接合并</td>
+</tr>
+</tbody></table>
+<p>由于远程仓库地址不方便使用，我们可以设置别名：</p>
+<p><img src="https://cdn.jsdelivr.net/gh/lemonpuer/figure@latest/blog-images/20231006222224.png" class="lazyload placeholder" data-srcset="https://cdn.jsdelivr.net/gh/lemonpuer/figure@latest/blog-images/20231006222224.png" srcset="https://pic1.zhimg.com/v2-cd38920285d125be80b3eb504052c550_b.webp" alt="a74b4b812615213c3bd8e521228deba9.png"></p>
+<p>推送本地分支内容时遇到的问题：</p>
+<ol>
+<li>Linux系统中ctrl+v操作会给系统中输入特殊字符^?,偏偏这样的字符在git-bash中又看不到，所以克隆错误的链接就出现了这样报错信息。</li>
+</ol>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">16958@DESKTOP-0B9HUJ1 MINGW64 /h/GitSpace (master)</span><br><span class="line">$ git push GitTest master</span><br><span class="line">fatal: protocol &#x27;https&#x27; is not supported</span><br></pre></td></tr></table></figure>
+
+<blockquote>
+<p>解决方案：删除别名重新设置</p>
+</blockquote>
+<ol start="2">
+<li>由于没有配置信任的服务器HTTPS验证。默认cURL（一个网络数据传输项目，通常说 cURL 是指 curl 命令行工具）被设为不信任任何CAs，就是说，它不信任任何服务器验证。</li>
+</ol>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">16958@DESKTOP-0B9HUJ1 MINGW64 /h/GitSpace (master)</span><br><span class="line">$ git push GitTest master</span><br><span class="line">fatal: unable to access &#x27;https://github.com/LeamonPuer/GitTest.git/&#x27;: SSL certificate problem: unable to get local issuer certificate</span><br></pre></td></tr></table></figure>
+
+<p>解决方案：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">git config --global http.sslverify false </span><br></pre></td></tr></table></figure>
+
+<p>连接远程库会在计算机建立凭据，可以在win10中的凭据管理器中查看</p>
+<h2 id="克隆远程仓库到本地"><a href="#克隆远程仓库到本地" class="headerlink" title="克隆远程仓库到本地"></a>克隆远程仓库到本地</h2><p>在新文件夹中克隆仓库到本地；clone会做三个操作：</p>
+<ol>
+<li>拉取代码</li>
+<li>初始化本地仓库</li>
+<li>创建别名：origin</li>
+</ol>
+<h2 id="邀请加入团队"><a href="#邀请加入团队" class="headerlink" title="邀请加入团队"></a>邀请加入团队</h2><p>点击 Settings 进入此页面：</p>
+<p><img src="https://cdn.jsdelivr.net/gh/lemonpuer/figure@latest/blog-images/20231006222227.png" class="lazyload placeholder" data-srcset="https://cdn.jsdelivr.net/gh/lemonpuer/figure@latest/blog-images/20231006222227.png" srcset="https://pic1.zhimg.com/v2-cd38920285d125be80b3eb504052c550_b.webp" alt="983e9b633fc3a3e7c4c16a0f6ac4aa04.png"></p>
+<p>点击 Add people：</p>
+<p><img src="https://cdn.jsdelivr.net/gh/lemonpuer/figure@latest/blog-images/20231006222230.png" class="lazyload placeholder" data-srcset="https://cdn.jsdelivr.net/gh/lemonpuer/figure@latest/blog-images/20231006222230.png" srcset="https://pic1.zhimg.com/v2-cd38920285d125be80b3eb504052c550_b.webp" alt="f4c806533887874cd508dd14b1bbd0d9.png"></p>
+<p>在搜索栏搜索用户发送邀请即可（也可以通过其它社交软件发送邀请连接）</p>
+<h2 id="跨团队协作"><a href="#跨团队协作" class="headerlink" title="跨团队协作"></a>跨团队协作</h2><p>将远程仓库的地址复制发给邀请跨团队协作的人，在地址栏输入收到链接后点fork可以叉到自己的本地仓库，修改完成后可以点击 Pull requests请求发送给原团队（对方会审核你修改的代码，可以通过聊天室沟通信息）</p>
+<p><img src="https://cdn.jsdelivr.net/gh/lemonpuer/figure@latest/blog-images/20231006222239.png" class="lazyload placeholder" data-srcset="https://cdn.jsdelivr.net/gh/lemonpuer/figure@latest/blog-images/20231006222239.png" srcset="https://pic1.zhimg.com/v2-cd38920285d125be80b3eb504052c550_b.webp" alt="b2fac4eb15c81e29d7d170fe7ab3567a.png"></p>
+<p><img src="https://cdn.jsdelivr.net/gh/lemonpuer/figure@latest/blog-images/20231006222245.png" class="lazyload placeholder" data-srcset="https://cdn.jsdelivr.net/gh/lemonpuer/figure@latest/blog-images/20231006222245.png" srcset="https://pic1.zhimg.com/v2-cd38920285d125be80b3eb504052c550_b.webp" alt="fd50a3d4ee15faa9e3b89544ce95e73c.png"></p>
+<h2 id="SSH免密登录："><a href="#SSH免密登录：" class="headerlink" title="SSH免密登录："></a>SSH免密登录：</h2><p>我们可以看到远程仓库中还有一个 SSH 的地址，因此我们也可以使用 SSH 进行访问。</p>
+<p><img src="https://cdn.jsdelivr.net/gh/lemonpuer/figure@latest/blog-images/20231006222251.png" class="lazyload placeholder" data-srcset="https://cdn.jsdelivr.net/gh/lemonpuer/figure@latest/blog-images/20231006222251.png" srcset="https://pic1.zhimg.com/v2-cd38920285d125be80b3eb504052c550_b.webp" alt="83dcf22e32192a67f34a90f44326bd03.png"></p>
+<p>操作：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br></pre></td><td class="code"><pre><span class="line">--进入当前用户的家目录</span><br><span class="line">16958@DESKTOP-0B9HUJ1 MINGW64 ~</span><br><span class="line">$ pwd</span><br><span class="line">/c/Users/16958</span><br><span class="line">--删除.ssh 目录</span><br><span class="line">16958@DESKTOP-0B9HUJ1 MINGW64 ~</span><br><span class="line">$ rm -rvf .ssh/</span><br><span class="line">--运行命令生成.ssh 秘钥目录</span><br><span class="line">16958@DESKTOP-0B9HUJ1 MINGW64 ~</span><br><span class="line">$ ssh-keygen -t rsa -C 1695812011@qq.com</span><br><span class="line">Generating public/private rsa key pair.</span><br><span class="line">Enter file in which to save the key (/c/Users/16958/.ssh/id_rsa):</span><br><span class="line">Created directory &#x27;/c/Users/16958/.ssh&#x27;.</span><br><span class="line">Enter passphrase (empty for no passphrase):</span><br><span class="line">Enter same passphrase again:</span><br><span class="line">Your identification has been saved in /c/Users/16958/.ssh/id_rsa</span><br><span class="line">Your public key has been saved in /c/Users/16958/.ssh/id_rsa.pub</span><br><span class="line">The key fingerprint is:</span><br><span class="line">SHA256:TcOXbMLknWYwaeTcw9w17lsd/IiIpWlzWQDdLg7HYtk 1695812011@qq.com</span><br><span class="line">The key&#x27;s randomart image is:</span><br><span class="line">+---[RSA 3072]----+</span><br><span class="line">|        .+*o   ..|</span><br><span class="line">|         B+X.+o..|</span><br><span class="line">|         =@./ .+ |</span><br><span class="line">|        =BE@.o..+|</span><br><span class="line">|       .S==.. ..+|</span><br><span class="line">|       . o.     o|</span><br><span class="line">|               . |</span><br><span class="line">|                 |</span><br><span class="line">|                 |</span><br><span class="line">+----[SHA256]-----+</span><br><span class="line"></span><br><span class="line">16958@DESKTOP-0B9HUJ1 MINGW64 ~</span><br><span class="line">$ cd .ssh/</span><br><span class="line"></span><br><span class="line">16958@DESKTOP-0B9HUJ1 MINGW64 ~/.ssh</span><br><span class="line">$ ll -a</span><br><span class="line">total 21</span><br><span class="line">drwxr-xr-x 1 16958 197609    0 Dec  3 09:27 ./</span><br><span class="line">drwxr-xr-x 1 16958 197609    0 Dec  3 09:27 ../</span><br><span class="line">-rw-r--r-- 1 16958 197609 2602 Dec  3 09:27 id_rsa</span><br><span class="line">-rw-r--r-- 1 16958 197609  571 Dec  3 09:27 id_rsa.pub</span><br><span class="line"></span><br><span class="line">16958@DESKTOP-0B9HUJ1 MINGW64 ~/.ssh</span><br><span class="line">$ cat id_rsa.pub</span><br><span class="line">ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABgQDKMtpagypeO69I9WbYcWE/n4m7YucClMJv6uFsnBfCY5z6pzGB5F7laIGxwHbij6QE5kGA+9ApD5/2p3Rv72eKfw3xZXLL8NYqkiCyvXTQO7RfR4+Cj2G72RLUXg4WAOd+vOItjZpetL1R+0+1/X0ax3BVK86GQOsxcTAc95BUwllL63/9ttaRTjMZXlCeNdrfrUj+9Jedhnk4jFg2HOkHNljpnAvee6gqzV29hFnUgDBAM6wrf+2zIDLvzT2p3V+E+IXVLlgjNTckepSE5UUbXB5RN9woBSqv44meifwlg+GY+3XlVl8E6cFeXIJNF/IMCxCIhPzN7oCSoBf6J24FwmVT1pUxGSt2MipV8/nlD2BmueoXen9r118fYWd+R7Pt5UgzRa8gxlxmWH5o1iO1vhgLiAR9V4Cs0uuZY5BX5YiYlqop1rUc3nPRF4gmOeX2h/WVUB6dXIq5Cw6aUisbgYsgm7godTwcneazHD4EvatWTFIbhM+H5MiuVMh++PE= 1695812011@qq.com</span><br><span class="line"></span><br><span class="line">16958@DESKTOP-0B9HUJ1 MINGW64 ~/.ssh</span><br><span class="line">$</span><br></pre></td></tr></table></figure>
+
+<blockquote>
+<p>ssh-keyen 的作用是生成密匙对（公匙和密匙），-t 用来指定加密的类型，-C 后面加一段描述性字符串，网上很多人选择填邮箱，它真正的作用是让我们更好地去区分不同的密匙。</p>
+</blockquote>
+<p>复制 id_rsa.pub 文件内容，登录 GitHub，点击用户头像→Settings→SSH and GPG keys</p>
+<p><img src="https://cdn.jsdelivr.net/gh/lemonpuer/figure@latest/blog-images/20231006222301.png" class="lazyload placeholder" data-srcset="https://cdn.jsdelivr.net/gh/lemonpuer/figure@latest/blog-images/20231006222301.png" srcset="https://pic1.zhimg.com/v2-cd38920285d125be80b3eb504052c550_b.webp" alt="2b23afa652fc4428d7f9165cfe1725bb.png"></p>
+<p>接下来再往远程仓库 push 东西的时候使用 SSH 连接就不需要登录了。</p>
+<p><img src="https://cdn.jsdelivr.net/gh/lemonpuer/figure@latest/blog-images/20231006222322.png" class="lazyload placeholder" data-srcset="https://cdn.jsdelivr.net/gh/lemonpuer/figure@latest/blog-images/20231006222322.png" srcset="https://pic1.zhimg.com/v2-cd38920285d125be80b3eb504052c550_b.webp" alt="6bfec57f7e36e482a9d02c3167707292.png"></p>
+<h1 id="5-IDEA-集成-Git"><a href="#5-IDEA-集成-Git" class="headerlink" title="5. IDEA 集成 Git"></a>5. IDEA 集成 Git</h1><h2 id="配置-Git-忽略文件"><a href="#配置-Git-忽略文件" class="headerlink" title="配置 Git 忽略文件"></a>配置 Git 忽略文件</h2><p>像 idea 中会随工程创建的 .idea 文件以及一些 .iml 文件，与项目的实际功能无关，不参与服务器上部署运行。把它们忽略掉能够屏蔽 IDE 工具之间的差异。</p>
+<p>创建忽略规则文件 xxxx.ignore（前缀名随便起，建议是 git.ignore）</p>
+<p>这个文件的存放位置原则上在哪里都可以，为了便于让~&#x2F;.gitconfig 文件引用，建议也放在用 户家目录下</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br></pre></td><td class="code"><pre><span class="line"># Compiled class file</span><br><span class="line">*.class</span><br><span class="line"></span><br><span class="line"># Log file</span><br><span class="line">*.log</span><br><span class="line"></span><br><span class="line"># BlueJ files</span><br><span class="line">*.ctxt</span><br><span class="line"></span><br><span class="line"># Mobile Tools for Java (J2ME)</span><br><span class="line">.mtj.tmp/</span><br><span class="line"></span><br><span class="line"># Package Files #</span><br><span class="line">*.jar</span><br><span class="line">*.war</span><br><span class="line">*.nar</span><br><span class="line">*.ear</span><br><span class="line">*.zip</span><br><span class="line">*.tar.gz</span><br><span class="line">*.rar</span><br><span class="line"></span><br><span class="line"># virtual machine crash logs, see http://www.java.com/en/download/help/error_hotspot.xml</span><br><span class="line">hs_err_pid*</span><br><span class="line">.classpath</span><br><span class="line">.project</span><br><span class="line">.settings</span><br><span class="line">target</span><br><span class="line">.idea</span><br><span class="line">*.iml</span><br></pre></td></tr></table></figure>
+
+<p>在 .gitconfig 文件中引用忽略配置文件（此文件在 Windows 的家目录中）</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">[user]</span><br><span class="line">        name = Leamon</span><br><span class="line">        email = 1695812011@qq.com</span><br><span class="line">[http]</span><br><span class="line">        sslverify = false</span><br><span class="line">[core]</span><br><span class="line">        excludesfile = C:/Users/16958/git.ignore</span><br><span class="line">#注意：这里要使用“正斜线（/）”，不要使用“反斜线（\）</span><br></pre></td></tr></table></figure>
+
+<ol>
+<li>定位Git程序</li>
+</ol>
+<p><img src="https://cdn.jsdelivr.net/gh/lemonpuer/figure@latest/blog-images/20231006222328.png" class="lazyload placeholder" data-srcset="https://cdn.jsdelivr.net/gh/lemonpuer/figure@latest/blog-images/20231006222328.png" srcset="https://pic1.zhimg.com/v2-cd38920285d125be80b3eb504052c550_b.webp" alt="9168465921c2de450819b7f0400b9581.png"></p>
+<ol start="2">
+<li>初始化本地库</li>
+</ol>
+<p><img src="https://cdn.jsdelivr.net/gh/lemonpuer/figure@latest/blog-images/a27a56778b1f7eb689139897a3050b36.png" class="lazyload placeholder" data-srcset="https://cdn.jsdelivr.net/gh/lemonpuer/figure@latest/blog-images/a27a56778b1f7eb689139897a3050b36.png" srcset="https://pic1.zhimg.com/v2-cd38920285d125be80b3eb504052c550_b.webp" alt="a27a56778b1f7eb689139897a3050b36.png"></p>
+<ol start="3">
+<li>添加到暂存区</li>
+</ol>
+<p>初始化本地库后，所有的文件名称都变成了红色，需要我们添加到暂存区</p>
+<p><img src="https://cdn.jsdelivr.net/gh/lemonpuer/figure@latest/blog-images/20231006222337.png" class="lazyload placeholder" data-srcset="https://cdn.jsdelivr.net/gh/lemonpuer/figure@latest/blog-images/20231006222337.png" srcset="https://pic1.zhimg.com/v2-cd38920285d125be80b3eb504052c550_b.webp" alt="c9b80dd9481e887ec9de0c57f67d2f8a.png"></p>
+<ol start="4">
+<li>提交到本地库</li>
+</ol>
+<p>添加到暂存区后所有的文件名称会变为绿色，提交本地库的操作也如上图；或使用更方便的窗口</p>
+<p><img src="https://cdn.jsdelivr.net/gh/lemonpuer/figure@latest/blog-images/bce0d8f510e2f22c2ec67800a6d764d9.png" class="lazyload placeholder" data-srcset="https://cdn.jsdelivr.net/gh/lemonpuer/figure@latest/blog-images/bce0d8f510e2f22c2ec67800a6d764d9.png" srcset="https://pic1.zhimg.com/v2-cd38920285d125be80b3eb504052c550_b.webp" alt="bce0d8f510e2f22c2ec67800a6d764d9.png"></p>
+<p><img src="https://cdn.jsdelivr.net/gh/lemonpuer/figure@latest/blog-images/1ae5e5dd7f28089ae662b0ea9a426cd0.png" class="lazyload placeholder" data-srcset="https://cdn.jsdelivr.net/gh/lemonpuer/figure@latest/blog-images/1ae5e5dd7f28089ae662b0ea9a426cd0.png" srcset="https://pic1.zhimg.com/v2-cd38920285d125be80b3eb504052c550_b.webp" alt="1ae5e5dd7f28089ae662b0ea9a426cd0.png"></p>
+<p>可以填写提交版本的描述信息，提交后可能会报警告信息，提交失败</p>
+<p><img src="https://cdn.jsdelivr.net/gh/lemonpuer/figure@latest/blog-images/bf11dcb22f32ecaa2f6cdd0f0bfac11a.png" class="lazyload placeholder" data-srcset="https://cdn.jsdelivr.net/gh/lemonpuer/figure@latest/blog-images/bf11dcb22f32ecaa2f6cdd0f0bfac11a.png" srcset="https://pic1.zhimg.com/v2-cd38920285d125be80b3eb504052c550_b.webp" alt="bf11dcb22f32ecaa2f6cdd0f0bfac11a.png"></p>
+<p>我们可以设置不检查代码：</p>
+<p><img src="https://cdn.jsdelivr.net/gh/lemonpuer/figure@latest/blog-images/20231006222359.png" class="lazyload placeholder" data-srcset="https://cdn.jsdelivr.net/gh/lemonpuer/figure@latest/blog-images/20231006222359.png" srcset="https://pic1.zhimg.com/v2-cd38920285d125be80b3eb504052c550_b.webp" alt="24cb77427bcaa1df2bb14d6aa68eedf9.png"></p>
+<p>提交完成后，所有文件名都恢复正常颜色</p>
+<p>可以在左下角打开 Git 窗口，切换或查看版本信息</p>
+<ol start="5">
+<li>创建分支</li>
+</ol>
+<p>可以在窗口栏的 Git 中选择 Branches 或点击右下角的分支名称的 New Branch</p>
+<ol start="6">
+<li>切换分支</li>
+</ol>
+<p>点击右下角的分支名称选择要切换的分支 Checkout，切换完成后右下角的分支名会改变</p>
+<ol start="7">
+<li>合并分支</li>
+</ol>
+<p>点击右下角的分支名称选择要合并的分支 Merge into Current，合并到当前分支；代码冲突也都是图形化的界面，比较简单，不再演示</p>
+<h2 id="IDEA-集成-GitHub"><a href="#IDEA-集成-GitHub" class="headerlink" title="IDEA 集成 GitHub"></a>IDEA 集成 GitHub</h2><h3 id="设置-GitHub-账号"><a href="#设置-GitHub-账号" class="headerlink" title="设置 GitHub 账号"></a>设置 GitHub 账号</h3><p><img src="https://cdn.jsdelivr.net/gh/lemonpuer/figure@latest/blog-images/20231006222407.png" class="lazyload placeholder" data-srcset="https://cdn.jsdelivr.net/gh/lemonpuer/figure@latest/blog-images/20231006222407.png" srcset="https://pic1.zhimg.com/v2-cd38920285d125be80b3eb504052c550_b.webp" alt="dd04ebed0935f89e6495f1969ead4d88.png"></p>
+<blockquote>
+<p>由于网络原因，我们一般不直接使用账号密码登录（在idea上很难登录成功），使用 Token 令牌</p>
+</blockquote>
+<p>进入 GitHub 点击头像的 setting 进入设置界面，点击左方选项栏的最后一个选项：</p>
+<p><img src="https://cdn.jsdelivr.net/gh/lemonpuer/figure@latest/blog-images/88a9592a5ec755f413f89941c0b1e038.png" class="lazyload placeholder" data-srcset="https://cdn.jsdelivr.net/gh/lemonpuer/figure@latest/blog-images/88a9592a5ec755f413f89941c0b1e038.png" srcset="https://pic1.zhimg.com/v2-cd38920285d125be80b3eb504052c550_b.webp" alt="88a9592a5ec755f413f89941c0b1e038.png"></p>
+<p>进入新的界面后又两种个人令牌：beta表示还在测试的功能，我们还是使用经典的个人令牌</p>
+<p><img src="https://cdn.jsdelivr.net/gh/lemonpuer/figure@latest/blog-images/20231006222415.png" class="lazyload placeholder" data-srcset="https://cdn.jsdelivr.net/gh/lemonpuer/figure@latest/blog-images/20231006222415.png" srcset="https://pic1.zhimg.com/v2-cd38920285d125be80b3eb504052c550_b.webp" alt="53686259fd9dcea04d87086cca7948a6.png"></p>
+<p>创建个人令牌，是我自己的电脑，就直接设置令牌没有过期时间，权限全开</p>
+<p><img src="https://cdn.jsdelivr.net/gh/lemonpuer/figure@latest/blog-images/20231006222417.png" class="lazyload placeholder" data-srcset="https://cdn.jsdelivr.net/gh/lemonpuer/figure@latest/blog-images/20231006222417.png" srcset="https://pic1.zhimg.com/v2-cd38920285d125be80b3eb504052c550_b.webp" alt="bf8a78c666e1ed2bda6847a45ba892b5.png"></p>
+<p>完成后会仅显示一次令牌，提前保存好</p>
+<p><img src="https://cdn.jsdelivr.net/gh/lemonpuer/figure@latest/blog-images/20231006222436.png" class="lazyload placeholder" data-srcset="https://cdn.jsdelivr.net/gh/lemonpuer/figure@latest/blog-images/20231006222436.png" srcset="https://pic1.zhimg.com/v2-cd38920285d125be80b3eb504052c550_b.webp" alt="7a4db8b4f1dabe4df0fb3d4b19886b1a.png"></p>
+<blockquote>
+<p>在输入令牌连接时有个小插曲,弹出的证书直接 recept 即可</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">invalid authentication data ,software caused connetion abort;socket write error</span><br><span class="line">验证数据无效，软件导致连接中断；套接字写入错误</span><br></pre></td></tr></table></figure>
+</blockquote>
+<ol>
+<li>分享工程到 GitHub：</li>
+</ol>
+<p><img src="https://cdn.jsdelivr.net/gh/lemonpuer/figure@latest/blog-images/20231006222433.png" class="lazyload placeholder" data-srcset="https://cdn.jsdelivr.net/gh/lemonpuer/figure@latest/blog-images/20231006222433.png" srcset="https://pic1.zhimg.com/v2-cd38920285d125be80b3eb504052c550_b.webp" alt="8d4d161547bee7c816f555e1835e5b67.png"></p>
+<p>设置别名后直接提交即可，idea会帮我们创建远程库</p>
+<ol start="2">
+<li>推送本地库到远程库</li>
+</ol>
+<p>由于https协议需要网络条件，我们在使用 push 时使用之前设置的 SSH 连接</p>
+<p><img src="https://cdn.jsdelivr.net/gh/lemonpuer/figure@latest/blog-images/20231006222426.png" class="lazyload placeholder" data-srcset="https://cdn.jsdelivr.net/gh/lemonpuer/figure@latest/blog-images/20231006222426.png" srcset="https://pic1.zhimg.com/v2-cd38920285d125be80b3eb504052c550_b.webp" alt="bca8a3e44e6e644118d669089d67b779.png"></p>
+<p>注意：push 是将本地库代码推送到远程库，如果本地库代码跟远程库代码版本不一致，push 的操作是会被拒绝的。也就是说，要想 push 成功，一定要保证本地库的版本要比远程库的版本高！因此在动手改本地代码之前，一定要先检查下远程库跟本地代码的区别！如果本地的代码版本已经落后，<strong>切记要先 pull 拉取一下远程库的代码，将本地代码更新到最新以后，然后再修改，提交，推送！</strong></p>
+<ol start="3">
+<li>拉取远程库到本地库</li>
+</ol>
+<p><img src="https://cdn.jsdelivr.net/gh/lemonpuer/figure@latest/blog-images/20231006222423.png" class="lazyload placeholder" data-srcset="https://cdn.jsdelivr.net/gh/lemonpuer/figure@latest/blog-images/20231006222423.png" srcset="https://pic1.zhimg.com/v2-cd38920285d125be80b3eb504052c550_b.webp" alt="e1f8de0997149bf1393702404b8a25a0.png"></p>
+<blockquote>
+<p>翻译：将传入的更改合并到当前分支；根据传入的更改重新设置当前分支的基础</p>
+<p>pull 和update project区别：</p>
+<p>git pull 是 git fetch + git merge FETCH_HEAD 的缩写。</p>
+<p>git pull就是先fetch，然后执行merge 操作，如果加<em>—rebase</em>参数，就是使用git rebase 代替git merge。</p>
+<p>Idea update project 就是你可以选择到底是merge 还是 rebase 的git pull</p>
+</blockquote>
+<p>注意：pull 是拉取远端仓库代码到本地，如果远程库代码和本地库代码不一致，会自动合并，如果自动合并失败，还会涉及到手动解决冲突的问题。</p>
+<ol start="4">
+<li>克隆远程库到本地</li>
+</ol>
+<p><img src="https://cdn.jsdelivr.net/gh/lemonpuer/figure@latest/blog-images/20231006222447.png" class="lazyload placeholder" data-srcset="https://cdn.jsdelivr.net/gh/lemonpuer/figure@latest/blog-images/20231006222447.png" srcset="https://pic1.zhimg.com/v2-cd38920285d125be80b3eb504052c550_b.webp" alt="5cf9b0f7e95f37a8ff644c193b540eb7.png"></p>
+<h1 id="6-码云"><a href="#6-码云" class="headerlink" title="6. 码云"></a>6. 码云</h1><p>众所周知，GitHub 服务器在国外，使用不是特别方便。</p>
+<p>码云是开源中国推出的基于 Git 的代码托管服务中心，使用 方式跟 GitHub 一样，而且还是一个中文网站，如果你英文不是很好它是最好的选择。</p>
+<p><a target="_blank" rel="noopener" href="https://gitee.com/">Gitee - 基于 Git 的代码托管和研发协作平台</a></p>
+<p>Gitee 支持绑定 GitHub、QQ等，由于是中文界面，就不多做介绍了</p>
+<h2 id="idea-集成码云"><a href="#idea-集成码云" class="headerlink" title="idea 集成码云"></a>idea 集成码云</h2><p>idea 默认不带码云插件，我们第一步要安装 Gitee 插件。</p>
+<p><img src="https://cdn.jsdelivr.net/gh/lemonpuer/figure@latest/blog-images/20231006222452.png" class="lazyload placeholder" data-srcset="https://cdn.jsdelivr.net/gh/lemonpuer/figure@latest/blog-images/20231006222452.png" srcset="https://pic1.zhimg.com/v2-cd38920285d125be80b3eb504052c550_b.webp" alt="ec87aac1b4f8a7792a64cb1ef3e89708.png"></p>
+<blockquote>
+<p>云服务器在国内，用 HTTPS 链接即可，没必要用 SSH 免密链接。</p>
+<p>码云提供了直接复制 GitHub 项目的功能，方便我们做项目的迁移和下载。</p>
+</blockquote>
+<p>具体上传下载等操作没有太大区别，不再赘述</p>
+<h1 id="7-GitLab"><a href="#7-GitLab" class="headerlink" title="7. GitLab"></a>7. GitLab</h1><p>GitLab 是一个使用 MIT 许可证的基于网络的 Git 仓库管理工具，具有 wiki 和 issue 跟踪功能，使用 Git 作为代码管理工具，并在此基础上搭建起来的 web 服务。</p>
+<p><a target="_blank" rel="noopener" href="https://about.gitlab.com/">The One DevOps Platform | GitLab</a></p>
+<p>官网进不去，这里直接使用<a target="_blank" rel="noopener" href="https://mirrors.tuna.tsinghua.edu.cn/">清华大学开源软件镜像站 | Tsinghua Open Source Mirror</a></p>
+<ol>
+<li>安装脚本：</li>
+</ol>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line">sudo rpm -ivh /mnt/hgfs/EdgeDown/git/资料/gitlab-ce-15.6.1-ce.0.el7.x86_64.rpm</span><br><span class="line"></span><br><span class="line">sudo yum install -y curl policycoreutils-python openssh-server cronie</span><br><span class="line"></span><br><span class="line">sudo lokkit -s http -s ssh</span><br><span class="line"></span><br><span class="line">sudo yum install -y postfix</span><br><span class="line"></span><br><span class="line">sudo service postfix start</span><br><span class="line"></span><br><span class="line">sudo chkconfig postfix on</span><br><span class="line"></span><br><span class="line">curl https://packages.gitlab.com/install/repositories/gitlab/gitlab-ce/script.rpm.sh | sudo bash</span><br><span class="line"></span><br><span class="line">sudo EXTERNAL_URL=&quot;http://gitlab.example.com&quot; yum -y install gitlab-ce</span><br></pre></td></tr></table></figure>
+
+<blockquote>
+<p>这里我没有远程传输文件，使用了共享文件夹，这里有个坑，Windows下文件夹命名有个空格，路径容易错，改回来</p>
+<p>yum 安装时会检测更新，最好在镜像网站中下载最新版，否则下载巨慢，或许可以修改网络 YUM 源</p>
+<p>如果脚本安装有问题可以先更新一下sudo工具并安装以下lokkit：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">yum install sudo</span><br><span class="line">yum install lokkit</span><br></pre></td></tr></table></figure>
+
+<p>安装过程中可能还有一些小问题：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">Another app is currently holding the yum lock; waiting for it to exit...</span><br><span class="line">另一个应用程序是：PackageKit</span><br><span class="line">    内存： 31 M RSS （451 MB VSZ）</span><br><span class="line">    已启动： Wed Aug 17 09:08:40 2022 - 00:59之前</span><br><span class="line">    状态：睡眠中，进程ID：2833</span><br><span class="line"> (可能是系统自动升级正在运行，yum在锁定状态中，要等待那个进程结束退出)</span><br><span class="line">解决办法：</span><br><span class="line">1.ps aux | grep yum (查询有关yum的进程进行关闭)</span><br><span class="line">	命令：kill -s 9 2833 pid</span><br><span class="line">2.rm -f /var/run/yum.pid (强制关掉yum进程，并重新运行yum)</span><br></pre></td></tr></table></figure>
+</blockquote>
+<ol start="2">
+<li>初始化 GitLab 服务：</li>
+</ol>
+<p>安装完成后（脚本执行完毕），可以执行以下命令：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">gitlab-ctl reconfigure</span><br></pre></td></tr></table></figure>
+
+<blockquote>
+<p>显示 gitlab Reconfigured! 表示初始化成功<br>（2g运行内存，4个核心，20g空间）</p>
+</blockquote>
+<ol start="3">
+<li>启动 GitLab 服务</li>
+</ol>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">gitlab-ctl start</span><br></pre></td></tr></table></figure>
+
+<ol start="4">
+<li>访问 GitLab</li>
+</ol>
+<p>直接在浏览器的地址栏中输入IP地址即可访问（虚拟机必须要关闭防火墙）</p>
+<p>第一次访问需要输入账号密码，账号默认 root，密码需要在 &#x2F;etc&#x2F;gitlab&#x2F;initial_root_password 中查看（该文件24小时后自动删除！）</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">[root@hadoop100 ~]# cat /etc/gitlab/initial_root_password</span><br><span class="line"># WARNING: This value is valid only in the following conditions</span><br><span class="line">#          1. If provided manually (either via `GITLAB_ROOT_PASSWORD` environmen, it was provided before database was seeded for the first time (usually, the fi#          2. Password hasn&#x27;t been changed manually, either via UI or via command line.</span><br><span class="line">#</span><br><span class="line">sword following https://docs.gitlab.com/ee/security/reset_user_password.html#reset-your-root-password.</span><br><span class="line"></span><br><span class="line">Password: kQHoxSzX4lmhfyGB9QhABvOIMjHUUJo/jtgj0HFnUAQ=</span><br><span class="line"># NOTE: This file will be automatically deleted in the first </span><br></pre></td></tr></table></figure>
+
+<blockquote>
+<p>根据该文件提供的密码可以实现第一次登录，当然这个密码太长</p>
+</blockquote>
+<p>修改密码：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">gitlab-rails console -e production</span><br></pre></td></tr></table></figure>
+
+<p><img src="https://cdn.jsdelivr.net/gh/lemonpuer/figure@latest/blog-images/20231006222500.png" class="lazyload placeholder" data-srcset="https://cdn.jsdelivr.net/gh/lemonpuer/figure@latest/blog-images/20231006222500.png" srcset="https://pic1.zhimg.com/v2-cd38920285d125be80b3eb504052c550_b.webp" alt="a5dae567906092f8954119d5dc2d3380.png"></p>
+<blockquote>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">&gt;user = User.where(id: 1).first #查看id为1的账号</span><br><span class="line">&gt;或者 user = User.where(name:&quot;root&quot;).first</span><br><span class="line"></span><br><span class="line">&gt;user.password=&#x27;123456789&#x27; #修改密码为12345678</span><br><span class="line">&gt;user.password_confirmation=&#x27;123456789&#x27; #确认密码</span><br><span class="line">&gt;user.save! #保存</span><br><span class="line">&gt;quit #退出‘’</span><br></pre></td></tr></table></figure>
+</blockquote>
+<p>IDEA 集成 GitLab 需要安装 GitLab 插件</p>
+<p><img src="https://cdn.jsdelivr.net/gh/lemonpuer/figure@latest/blog-images/20231006222503.png" class="lazyload placeholder" data-srcset="https://cdn.jsdelivr.net/gh/lemonpuer/figure@latest/blog-images/20231006222503.png" srcset="https://pic1.zhimg.com/v2-cd38920285d125be80b3eb504052c550_b.webp" alt="e3647150143b97be953df3d9fae6cf18.png"></p>
+
+      </div>
+      <div class="post-tags-categories">
+        
+        <div class="tags">
+          
+            <a href="/tags/Git/" class="">
+              Git
+            </a>
+          
+        </div>
+        
+      </div>
+      
+    </article>
+    <!-- 上一篇文章和下一篇文章 -->
+    
+      <!-- 文章详情页的上一页和下一页 -->
+<div class="post-nav">
+
+
+
+  
+  <div class="post-nav-prev post-nav-item">
+    <div class="post-nav-img" style="background-size: cover; 
+      background-position: center center;">
+      <img class="lazyload lazyload placeholder" src="https://images.wallpaperscraft.com/image/single/air_balloon_sky_clouds_86980_1920x1080.jpg" class="lazyload placeholder" data-srcset="https://images.wallpaperscraft.com/image/single/air_balloon_sky_clouds_86980_1920x1080.jpg" srcset="https://pic1.zhimg.com/v2-cd38920285d125be80b3eb504052c550_b.webp" alt="">
+    </div>
+    <a href="/2023/10/03/kuang-jia/8.ding-shi-ren-wu/" class="post-nav-link">
+      <div class="title">
+        <i class="fas fa-angle-left"></i> 上一篇:
+        <div class="title-text">定时任务</div>
+      </div>
+      
+      <!-- <div class="content">
+        JDK定时器理论基础小顶堆像下面的Timer和定时任务线程池，底层都是小顶堆的结构。
+堆是特殊的树，满足下面两个条件就是
+      </div> -->
+    </a>
+  </div>
+
+
+
+  
+  <div class="post-nav-next post-nav-item">
+    <div class="post-nav-img" style="background-size: cover; 
+      background-position: center center;">
+      <img class="lazyload lazyload placeholder" src="https://images.wallpaperscraft.com/image/single/echeveria_succulent_pot_120694_1920x1080.jpg" class="lazyload placeholder" data-srcset="https://images.wallpaperscraft.com/image/single/echeveria_succulent_pot_120694_1920x1080.jpg" srcset="https://pic1.zhimg.com/v2-cd38920285d125be80b3eb504052c550_b.webp" src="" alt="">
+    </div>
+    <a href="/2023/09/17/gong-ju/maven/" class="post-nav-link">
+      <div class="title">
+        下一篇: <i class="fas fa-angle-right"></i>
+        <div class="title-text">Maven</div>
+      </div>
+      <!-- <div class="content">
+        1. Maven 简介Maven 是 Apache 软件基金会组织维护的一款专门为 Java 项目提供构建和依赖管理支持
+      </div> -->
+    </a>
+  </div>
+
+</div>
+
+    
+    
+
+    <!-- 打赏 -->
+    
+
+    <!-- 分享 -->
+    
+      <!-- https://github.com/overtrue/share.js -->
+<!-- 文章详情页的分享 -->
+<div class="social-share" data-sites="twitter,facebook,google,qq,qzone,wechat,weibo,douban,linkedin" data-wechat-qrcode-helper="<p>微信扫一扫即可分享！</p>"></div>
+
+<script src="/js/shareJs/social-share.min.js"></script>
+</script>
+
+<style>
+  .social-share {
+    margin: 20px 0;
+  }
+</style>
+
+
+    
+    
+    <!-- 评论 -->
+    <!-- 评论 -->
+
+  <div id="myComment">
+    
+      <div id="gitment-container"></div>
+
+    
+  </div>
+
+<!-- comment script in themes\hexo-theme-bamboo\layout\_partial\scripts\index.ejs -->
+
+
+  </div>
+
+  <!-- 目录 -->
+  <aside id='l_side'>
+  
+    
+      <section class="widget side_blogger">
+  <div class='content'>
+    
+      
+        <a class='avatar flat-box rectangle' href='/about/'>
+          <img src='https://i.postimg.cc/yNJTSNTj/image.jpg'/>
+        </a>
+      
+    
+    
+      <div class='text'>
+        
+          <h2>LemonPuer</h2>
+        
+        
+          <p>个人博客</p>
+
+        
+        
+          <p><span id="jinrishici-sentence">Lemon</span></p>
+          <script src="https://sdk.jinrishici.com/v2/browser/jinrishici.js" charset="utf-8"></script>
+        
+      </div>
+    
+    
+      <div class="social-wrapper">
+        
+          
+            <a href="https://api.dzzui.com/api/ip"
+              class="social fa fa-wifi flat-btn"
+              target="_blank"
+              rel="external nofollow noopener noreferrer">
+              
+            </a>
+          
+        
+          
+            <a href="mailto:1695812011@qq.com"
+              class="social fas fa-envelope flat-btn"
+              target="_blank"
+              rel="external nofollow noopener noreferrer">
+              
+            </a>
+          
+        
+          
+            <a href="https://github.com/LemonPuer"
+              class="social fab fa-github flat-btn"
+              target="_blank"
+              rel="external nofollow noopener noreferrer">
+              
+            </a>
+          
+        
+          
+            <a href="tencent://AddContact/?fromId=50&amp;fromSubId=1&amp;subcmd=all&amp;uin=1695812011"
+              class="social fab fa-qq flat-btn"
+              target="_blank"
+              rel="external nofollow noopener noreferrer">
+              
+            </a>
+          
+        
+      </div>
+    
+  </div>
+</section>
+
+    
+  
+  
+  
+    
+  
+
+  <div class="layout_sticky">    
+    
+      
+<section class="widget side_toc">
+  
+  <header>
+    
+      <i style="color: " class="fas fa-list fa-fw" aria-hidden="true"></i><span class='name' style="color: ">本文目录</span>
+    
+  </header>
+
+
+  <div class='content'>
+    <div class="toc-main">
+      <div class="toc-content">
+        <!-- <ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#1-Git-%E6%A6%82%E8%BF%B0"><span class="toc-text">1. Git 概述</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E7%89%88%E6%9C%AC%E6%8E%A7%E5%88%B6%E5%B7%A5%E5%85%B7"><span class="toc-text">版本控制工具</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E9%9B%86%E4%B8%AD%E5%BC%8F%E7%89%88%E6%9C%AC%E6%8E%A7%E5%88%B6%E5%B7%A5%E5%85%B7"><span class="toc-text">集中式版本控制工具</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%88%86%E5%B8%83%E5%BC%8F%E7%89%88%E6%9C%AC%E6%8E%A7%E5%88%B6%E5%B7%A5%E5%85%B7"><span class="toc-text">分布式版本控制工具</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Git-%E5%92%8C%E4%BB%A3%E7%A0%81%E6%89%98%E7%AE%A1%E4%B8%AD%E5%BF%83"><span class="toc-text">Git 和代码托管中心</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Git-%E7%9A%84%E5%AE%89%E8%A3%85"><span class="toc-text">Git 的安装</span></a></li></ol></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#2-%E5%B8%B8%E7%94%A8%E5%91%BD%E4%BB%A4"><span class="toc-text">2. 常用命令</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%88%9D%E5%A7%8B%E5%8C%96%E6%9C%AC%E5%9C%B0%E5%BA%93%EF%BC%9A"><span class="toc-text">初始化本地库：</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E6%9F%A5%E7%9C%8B%E6%9C%AC%E5%9C%B0%E5%BA%93%E7%8A%B6%E6%80%81%EF%BC%9A"><span class="toc-text">查看本地库状态：</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E6%B7%BB%E5%8A%A0%E6%9A%82%E5%AD%98%E5%8C%BA%EF%BC%9A"><span class="toc-text">添加暂存区：</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E6%8F%90%E4%BA%A4%E5%88%B0%E6%9C%AC%E5%9C%B0%E5%BA%93%EF%BC%9A"><span class="toc-text">提交到本地库：</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%8E%86%E5%8F%B2%E7%89%88%E6%9C%AC%EF%BC%9A"><span class="toc-text">历史版本：</span></a></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#3-Git%E5%88%86%E6%94%AF%E6%93%8D%E4%BD%9C"><span class="toc-text">3. Git分支操作</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%88%9B%E5%BB%BA%E5%88%86%E6%94%AF"><span class="toc-text">创建分支</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%88%87%E6%8D%A2%E5%88%86%E6%94%AF"><span class="toc-text">切换分支</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%90%88%E5%B9%B6%E5%88%86%E6%94%AF"><span class="toc-text">合并分支</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Git-%E5%9B%A2%E9%98%9F%E5%8D%8F%E4%BD%9C%E6%9C%BA%E5%88%B6"><span class="toc-text">Git 团队协作机制</span></a></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#4-GitHub-%E6%93%8D%E4%BD%9C"><span class="toc-text">4. GitHub 操作</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%88%9B%E5%BB%BA%E8%BF%9C%E7%A8%8B%E4%BB%93%E5%BA%93"><span class="toc-text">创建远程仓库</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E6%93%8D%E4%BD%9C%E5%91%BD%E4%BB%A4"><span class="toc-text">操作命令</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%85%8B%E9%9A%86%E8%BF%9C%E7%A8%8B%E4%BB%93%E5%BA%93%E5%88%B0%E6%9C%AC%E5%9C%B0"><span class="toc-text">克隆远程仓库到本地</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E9%82%80%E8%AF%B7%E5%8A%A0%E5%85%A5%E5%9B%A2%E9%98%9F"><span class="toc-text">邀请加入团队</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E8%B7%A8%E5%9B%A2%E9%98%9F%E5%8D%8F%E4%BD%9C"><span class="toc-text">跨团队协作</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#SSH%E5%85%8D%E5%AF%86%E7%99%BB%E5%BD%95%EF%BC%9A"><span class="toc-text">SSH免密登录：</span></a></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#5-IDEA-%E9%9B%86%E6%88%90-Git"><span class="toc-text">5. IDEA 集成 Git</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E9%85%8D%E7%BD%AE-Git-%E5%BF%BD%E7%95%A5%E6%96%87%E4%BB%B6"><span class="toc-text">配置 Git 忽略文件</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#IDEA-%E9%9B%86%E6%88%90-GitHub"><span class="toc-text">IDEA 集成 GitHub</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E8%AE%BE%E7%BD%AE-GitHub-%E8%B4%A6%E5%8F%B7"><span class="toc-text">设置 GitHub 账号</span></a></li></ol></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#6-%E7%A0%81%E4%BA%91"><span class="toc-text">6. 码云</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#idea-%E9%9B%86%E6%88%90%E7%A0%81%E4%BA%91"><span class="toc-text">idea 集成码云</span></a></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#7-GitLab"><span class="toc-text">7. GitLab</span></a></li></ol> -->
+        <div class="toc"></div>
+      </div>
+    </div>
+  </div>
+</section>
+<!-- 手机端目录按钮 -->
+<div id="toc-mobile-btn">
+  <i class="fas fa-list-ul" aria-hidden="true"></i>
+</div>
+
+      
+  <section class="widget side_recent_post">
+    
+  <header>
+    
+      <a style="color: " href='/tags/'><i class="fas fa-book fa-fw" aria-hidden="true"></i><span class='name'>最新文章</span></a>
+    
+  </header>
+
+
+    <div class='content'>
+      
+      <!-- hash算法 -->
+      
+      <div class="aside-list">
+        
+          <div class="aside-list-item">
+            
+            
+            
+
+            <div class="post-img-box">
+              <a href="/2024/04/04/kuang-jia/5.springboot-2/" class="post-img " style="background-size: cover; 
+                background-position: center center;">
+                <img class="lazyload lazyload placeholder" style="width:100%;height:100%;object-fit:cover;" data-src="https://images.wallpaperscraft.com/image/single/child_river_dreams_127495_1920x1080.jpg" class="lazyload placeholder" data-srcset="https://images.wallpaperscraft.com/image/single/child_river_dreams_127495_1920x1080.jpg" srcset="https://pic1.zhimg.com/v2-cd38920285d125be80b3eb504052c550_b.webp" alt="">
+              </a>
+            </div>
+            <div class="post-date-title">
+              <div>
+                
+                  <span class="post-date">04-04</span>
+                
+              </div>
+              <a class="post-title" href="/2024/04/04/kuang-jia/5.springboot-2/">SpringBoot-2</a>
+            </div>
+          </div>
+        
+          <div class="aside-list-item">
+            
+            
+            
+
+            <div class="post-img-box">
+              <a href="/2024/04/04/kuang-jia/5.springboot-1/" class="post-img " style="background-size: cover; 
+                background-position: center center;">
+                <img class="lazyload lazyload placeholder" style="width:100%;height:100%;object-fit:cover;" data-src="https://images.wallpaperscraft.com/image/single/child_river_dreams_127495_1920x1080.jpg" class="lazyload placeholder" data-srcset="https://images.wallpaperscraft.com/image/single/child_river_dreams_127495_1920x1080.jpg" srcset="https://pic1.zhimg.com/v2-cd38920285d125be80b3eb504052c550_b.webp" alt="">
+              </a>
+            </div>
+            <div class="post-date-title">
+              <div>
+                
+                  <span class="post-date">04-04</span>
+                
+              </div>
+              <a class="post-title" href="/2024/04/04/kuang-jia/5.springboot-1/">SpringBoot-1</a>
+            </div>
+          </div>
+        
+          <div class="aside-list-item">
+            
+            
+            
+
+            <div class="post-img-box">
+              <a href="/2024/03/03/kuang-jia/10.cloud-alibaba/" class="post-img " style="background-size: cover; 
+                background-position: center center;">
+                <img class="lazyload lazyload placeholder" style="width:100%;height:100%;object-fit:cover;" data-src="https://images.wallpaperscraft.com/image/single/landscape_art_road_127350_1920x1080.jpg" class="lazyload placeholder" data-srcset="https://images.wallpaperscraft.com/image/single/landscape_art_road_127350_1920x1080.jpg" srcset="https://pic1.zhimg.com/v2-cd38920285d125be80b3eb504052c550_b.webp" alt="">
+              </a>
+            </div>
+            <div class="post-date-title">
+              <div>
+                
+                  <span class="post-date">03-03</span>
+                
+              </div>
+              <a class="post-title" href="/2024/03/03/kuang-jia/10.cloud-alibaba/">Spring Cloud Alibaba</a>
+            </div>
+          </div>
+        
+          <div class="aside-list-item">
+            
+            
+            
+
+            <div class="post-img-box">
+              <a href="/2024/01/13/zhong-jian-jian/5.docker/" class="post-img " style="background-size: cover; 
+                background-position: center center;">
+                <img class="lazyload lazyload placeholder" style="width:100%;height:100%;object-fit:cover;" data-src="https://images.wallpaperscraft.com/image/single/deer_winter_night_129602_1920x1080.jpg" class="lazyload placeholder" data-srcset="https://images.wallpaperscraft.com/image/single/deer_winter_night_129602_1920x1080.jpg" srcset="https://pic1.zhimg.com/v2-cd38920285d125be80b3eb504052c550_b.webp" alt="">
+              </a>
+            </div>
+            <div class="post-date-title">
+              <div>
+                
+                  <span class="post-date">01-13</span>
+                
+              </div>
+              <a class="post-title" href="/2024/01/13/zhong-jian-jian/5.docker/">Docker</a>
+            </div>
+          </div>
+        
+          <div class="aside-list-item">
+            
+            
+            
+
+            <div class="post-img-box">
+              <a href="/2024/01/01/zhong-jian-jian/4.kafka/" class="post-img " style="background-size: cover; 
+                background-position: center center;">
+                <img class="lazyload lazyload placeholder" style="width:100%;height:100%;object-fit:cover;" data-src="https://images.wallpaperscraft.com/image/single/plane_sky_art_129149_1920x1080.jpg" class="lazyload placeholder" data-srcset="https://images.wallpaperscraft.com/image/single/plane_sky_art_129149_1920x1080.jpg" srcset="https://pic1.zhimg.com/v2-cd38920285d125be80b3eb504052c550_b.webp" alt="">
+              </a>
+            </div>
+            <div class="post-date-title">
+              <div>
+                
+                  <span class="post-date">01-01</span>
+                
+              </div>
+              <a class="post-title" href="/2024/01/01/zhong-jian-jian/4.kafka/">Kafka</a>
+            </div>
+          </div>
+        
+      </div>
+    </div>
+  </section>
+
+    
+  </div>
+</aside>
+
+  <!-- 图片放大 Wrap images with fancybox support -->
+  <script src="/js/wrapImage.js"></script>
+</div>
+
+<!-- 文章详情页背景图 -->
+<div id="appBgSwiper" style="position: fixed;left: 0;top: 0;width: 100%;height: 100%;z-index: -2;"
+	:style="{'background-color': bgColor ? bgColor : 'transparent'}">
+	<transition-group tag="ul" :name="names">
+		<li v-for='(image,index) in img' :key='index' v-show="index === mark" class="bg-swiper-box">
+			<img :src="image" class="bg-swiper-img no-lazy">
+		</li>
+	</transition-group>
+</div>
+<script>
+	var vm = new Vue({
+		el: '#appBgSwiper',
+		data: {
+			names: '' || 'fade' || 'fade', // translate-fade fade
+			mark: 0,
+			img: [],
+			bgColor: '',
+			time: null
+		},
+		methods: {   //添加方法
+			change(i, m) {
+				if (i > m) {
+					// this.names = 'fade';
+				} else if (i < m) {
+					// this.names = 'fade';
+				} else {
+					return;
+				}
+				this.mark = i;
+			},
+			prev() {
+				// this.names = 'fade';
+				this.mark--;
+				if (this.mark === -1) {
+					this.mark = 3;
+					return
+				}
+			},
+			next() {
+				// this.names = 'fade';
+				this.mark++;
+				if (this.mark === this.img.length) {
+					this.mark = 0;
+					return
+				}
+			},
+			autoPlay() {
+				// this.names = 'fade';
+				this.mark++;
+				if (this.mark === this.img.length) {
+					this.mark = 0;
+					return
+				}
+			},
+			play() {
+				let bgImgDelay = '' || '180000'
+				let delay = parseInt(bgImgDelay) || 180000;
+				this.time = setInterval(this.autoPlay, delay);
+			},
+			enter() {
+				clearInterval(this.time);
+			},
+			leave() {
+				this.play();
+			}
+		},
+		created() {
+			this.play()
+		},
+		beforeDestroy() {
+			clearInterval(this.time);
+		},
+		mounted() {
+			let prop = '' || 'rgba(160,238,225,0.3)';
+			let isImg = prop.includes('.bmp') || prop.includes('.jpg') || prop.includes('.png') || prop.includes('.tif') || prop.includes('.gif') || prop.includes('.pcx') || prop.includes('.tga') || prop.includes('.exif') || prop.includes('.fpx') || prop.includes('.psd') || prop.includes('.cdr') || prop.includes('.pcd') || prop.includes('.dxf') || prop.includes('.ufo') || prop.includes('.eps') || prop.includes('.ai') || prop.includes('.raw') || prop.includes('.WMF') || prop.includes('.webp') || prop.includes('.jpeg') || prop.includes('http://') || prop.includes('https://')
+			if (isImg) {
+				let img = prop.split(',');
+				let configRoot = '/'
+				let arrImg = [];
+				img.forEach(el => {
+					var Expression = /http(s)?:\/\/([\w-]+\.)+[\w-]+(\/[\w- .\/?%&=]*)?/;
+					var objExp = new RegExp(Expression);
+
+					if (objExp.test(el)) {
+						// http or https
+						arrImg.push(el);
+					} else {
+						// 非http or https开头
+						// 本地文件
+						let firstStr = el.charAt(0);
+						if (firstStr == '/') {
+							el = el.substr(1); // 删除第一个字符 '/',因为 configRoot最后一个字符为 /
+						}
+						el = configRoot + el;
+						arrImg.push(el);
+					}
+				})
+				this.img = arrImg;
+			} else {
+				this.bgColor = prop;
+			}
+		}
+	})
+</script>
+
+<style>
+	.bg-swiper-box {
+		position: absolute;
+		display: block;
+		width: 100%;
+		height: 100%;
+	}
+
+	.bg-swiper-img {
+		object-fit: cover;
+		width: 100%;
+		height: 100%;
+	}
+</style>
+
+
+
+
+  <script>
+  function loadMermaid() {
+    if (document.getElementsByClassName('mermaid').length) {
+      if (window.mermaidJsLoad) mermaid.init()
+      else {
+        loadScript('https://unpkg.com/mermaid/dist/mermaid.min.js').then(() => {
+          window.mermaidJsLoad = true
+          mermaid.initialize({
+            theme: 'default',
+          })
+          if ('true') {
+            mermaid.init();
+          }
+        })
+      }
+    }
+  };
+  document.addEventListener("DOMContentLoaded", function () {
+    loadMermaid();
+  })
+
+  document.addEventListener('pjax:complete', function () {
+    loadMermaid();
+  })
+  
+</script>
+
+
+      </main>
+    </div>
+
+    <!-- 页脚 -->
+    
+  
+  
+    <!-- 底部鱼儿跳动效果，依赖于jquery-->
+<div id="j-fish-skip" style=" position: relative;height: 153px;width: auto;"></div>
+<script>
+  var RENDERER = {
+    POINT_INTERVAL: 5,
+    FISH_COUNT: 3,
+    MAX_INTERVAL_COUNT: 50,
+    INIT_HEIGHT_RATE: .5,
+    THRESHOLD: 50,
+    FISH_COLOR: '',
+    init: function () {
+      this.setFishColor(); this.setParameters(), this.reconstructMethods(), this.setup(), this.bindEvent(), this.render()
+    },
+    setFishColor: function () {
+      let isDark = JSON.parse(localStorage.getItem('dark')) || JSON.parse('false');
+      if (isDark) {
+        this.FISH_COLOR = '#222'; // 暗黑色，有时间把这整成一个变量
+      } else {
+        this.FISH_COLOR = '' || 'rgba(160,238,225,0.8)';
+      }
+    },
+    setParameters: function () {
+      this.$window = $(window), this.$container = $("#j-fish-skip"), this.$canvas = $("<canvas />"), this.context = this.$canvas.appendTo(this.$container).get(0).getContext("2d"), this.points = [], this.fishes = [], this.watchIds = []
+    },
+    createSurfacePoints: function () {
+      var t = Math.round(this.width / this.POINT_INTERVAL);
+      this.pointInterval = this.width / (t - 1), this.points.push(new SURFACE_POINT(this, 0));
+      for (var i = 1; i < t; i++) {
+        var e = new SURFACE_POINT(this, i * this.pointInterval),
+          h = this.points[i - 1];
+        e.setPreviousPoint(h), h.setNextPoint(e), this.points.push(e)
+      }
+    },
+    reconstructMethods: function () {
+      this.watchWindowSize = this.watchWindowSize.bind(this), this.jdugeToStopResize = this.jdugeToStopResize.bind(this), this.startEpicenter = this.startEpicenter.bind(this), this.moveEpicenter = this.moveEpicenter.bind(this), this.reverseVertical = this.reverseVertical.bind(this), this.render = this.render.bind(this)
+    },
+    setup: function () {
+      this.points.length = 0, this.fishes.length = 0, this.watchIds.length = 0, this.intervalCount = this.MAX_INTERVAL_COUNT, this.width = this.$container.width(), this.height = this.$container.height(), this.fishCount = this.FISH_COUNT * this.width / 500 * this.height / 500, this.$canvas.attr({
+        width: this.width,
+        height: this.height
+      }), this.reverse = !1, this.fishes.push(new FISH(this)), this.createSurfacePoints()
+    },
+    watchWindowSize: function () {
+      this.clearTimer(), this.tmpWidth = this.$window.width(), this.tmpHeight = this.$window.height(), this.watchIds.push(setTimeout(this.jdugeToStopResize, this.WATCH_INTERVAL))
+    },
+    clearTimer: function () {
+      for (; this.watchIds.length > 0;) clearTimeout(this.watchIds.pop())
+    },
+    jdugeToStopResize: function () {
+      var t = this.$window.width(),
+        i = this.$window.height(),
+        e = t == this.tmpWidth && i == this.tmpHeight;
+      this.tmpWidth = t, this.tmpHeight = i, e && this.setup()
+    },
+    bindEvent: function () {
+      this.$window.on("resize", this.watchWindowSize), this.$container.on("mouseenter", this.startEpicenter), this.$container.on("mousemove", this.moveEpicenter)
+    },
+    getAxis: function (t) {
+      var i = this.$container.offset();
+      return {
+        x: t.clientX - i.left + this.$window.scrollLeft(),
+        y: t.clientY - i.top + this.$window.scrollTop()
+      }
+    },
+    startEpicenter: function (t) {
+      this.axis = this.getAxis(t)
+    },
+    moveEpicenter: function (t) {
+      var i = this.getAxis(t);
+      this.axis || (this.axis = i), this.generateEpicenter(i.x, i.y, i.y - this.axis.y), this.axis = i
+    },
+    generateEpicenter: function (t, i, e) {
+      if (!(i < this.height / 2 - this.THRESHOLD || i > this.height / 2 + this.THRESHOLD)) {
+        var h = Math.round(t / this.pointInterval);
+        h < 0 || h >= this.points.length || this.points[h].interfere(i, e)
+      }
+    },
+    reverseVertical: function () {
+      this.reverse = !this.reverse;
+      for (var t = 0, i = this.fishes.length; t < i; t++) this.fishes[t].reverseVertical()
+    },
+    controlStatus: function () {
+      for (var t = 0, i = this.points.length; t < i; t++) this.points[t].updateSelf();
+      for (t = 0, i = this.points.length; t < i; t++) this.points[t].updateNeighbors();
+      this.fishes.length < this.fishCount && 0 == --this.intervalCount && (this.intervalCount = this.MAX_INTERVAL_COUNT, this.fishes.push(new FISH(this)))
+    },
+    render: function () {
+      requestAnimationFrame(this.render), this.controlStatus(), this.context.clearRect(0, 0, this.width, this.height), this.context.fillStyle = this.FISH_COLOR;
+      for (var t = 0, i = this.fishes.length; t < i; t++) this.fishes[t].render(this.context);
+      this.context.save(), this.context.globalCompositeOperation = "xor", this.context.beginPath(), this.context.moveTo(0, this.reverse ? 0 : this.height);
+      for (t = 0, i = this.points.length; t < i; t++) this.points[t].render(this.context);
+      this.context.lineTo(this.width, this.reverse ? 0 : this.height), this.context.closePath(), this.context.fill(), this.context.restore()
+    }
+  },
+  SURFACE_POINT = function (t, i) {
+    this.renderer = t, this.x = i, this.init()
+  };
+  SURFACE_POINT.prototype = {
+    SPRING_CONSTANT: .03,
+    SPRING_FRICTION: .9,
+    WAVE_SPREAD: .3,
+    ACCELARATION_RATE: .01,
+    init: function () {
+      this.initHeight = this.renderer.height * this.renderer.INIT_HEIGHT_RATE, this.height = this.initHeight, this.fy = 0, this.force = {
+        previous: 0,
+        next: 0
+      }
+    },
+    setPreviousPoint: function (t) {
+      this.previous = t
+    },
+    setNextPoint: function (t) {
+      this.next = t
+    },
+    interfere: function (t, i) {
+      this.fy = this.renderer.height * this.ACCELARATION_RATE * (this.renderer.height - this.height - t >= 0 ? -1 : 1) * Math.abs(i)
+    },
+    updateSelf: function () {
+      this.fy += this.SPRING_CONSTANT * (this.initHeight - this.height), this.fy *= this.SPRING_FRICTION, this.height += this.fy
+    },
+    updateNeighbors: function () {
+      this.previous && (this.force.previous = this.WAVE_SPREAD * (this.height - this.previous.height)), this.next && (this.force.next = this.WAVE_SPREAD * (this.height - this.next.height))
+    },
+    render: function (t) {
+      this.previous && (this.previous.height += this.force.previous, this.previous.fy += this.force.previous), this.next && (this.next.height += this.force.next, this.next.fy += this.force.next), t.lineTo(this.x, this.renderer.height - this.height)
+    }
+  };
+  var FISH = function (t) {
+    this.renderer = t, this.init()
+  };
+  FISH.prototype = {
+    GRAVITY: .4,
+    init: function () {
+      this.direction = Math.random() < .5, this.x = this.direction ? this.renderer.width + this.renderer.THRESHOLD : -this.renderer.THRESHOLD, this.previousY = this.y, this.vx = this.getRandomValue(4, 10) * (this.direction ? -1 : 1), this.renderer.reverse ? (this.y = this.getRandomValue(1 * this.renderer.height / 10, 4 * this.renderer.height / 10), this.vy = this.getRandomValue(2, 5), this.ay = this.getRandomValue(.05, .2)) : (this.y = this.getRandomValue(6 * this.renderer.height / 10, 9 * this.renderer.height / 10), this.vy = this.getRandomValue(-5, -2), this.ay = this.getRandomValue(-.2, -.05)), this.isOut = !1, this.theta = 0, this.phi = 0
+    },
+    getRandomValue: function (t, i) {
+      return t + (i - t) * Math.random()
+    },
+    reverseVertical: function () {
+      this.isOut = !this.isOut, this.ay *= -1
+    },
+    controlStatus: function (t) {
+      this.previousY = this.y, this.x += this.vx, this.y += this.vy, this.vy += this.ay, this.renderer.reverse ? this.y > this.renderer.height * this.renderer.INIT_HEIGHT_RATE ? (this.vy -= this.GRAVITY, this.isOut = !0) : (this.isOut && (this.ay = this.getRandomValue(.05, .2)), this.isOut = !1) : this.y < this.renderer.height * this.renderer.INIT_HEIGHT_RATE ? (this.vy += this.GRAVITY, this.isOut = !0) : (this.isOut && (this.ay = this.getRandomValue(-.2, -.05)), this.isOut = !1), this.isOut || (this.theta += Math.PI / 20, this.theta %= 2 * Math.PI, this.phi += Math.PI / 30, this.phi %= 2 * Math.PI), this.renderer.generateEpicenter(this.x + (this.direction ? -1 : 1) * this.renderer.THRESHOLD, this.y, this.y - this.previousY), (this.vx > 0 && this.x > this.renderer.width + this.renderer.THRESHOLD || this.vx < 0 && this.x < -this.renderer.THRESHOLD) && this.init()
+    },
+    render: function (t) {
+      t.save(), t.translate(this.x, this.y), t.rotate(Math.PI + Math.atan2(this.vy, this.vx)), t.scale(1, this.direction ? 1 : -1), t.beginPath(), t.moveTo(-30, 0), t.bezierCurveTo(-20, 15, 15, 10, 40, 0), t.bezierCurveTo(15, -10, -20, -15, -30, 0), t.fill(), t.save(), t.translate(40, 0), t.scale(.9 + .2 * Math.sin(this.theta), 1), t.beginPath(), t.moveTo(0, 0), t.quadraticCurveTo(5, 10, 20, 8), t.quadraticCurveTo(12, 5, 10, 0), t.quadraticCurveTo(12, -5, 20, -8), t.quadraticCurveTo(5, -10, 0, 0), t.fill(), t.restore(), t.save(), t.translate(-3, 0), t.rotate((Math.PI / 3 + Math.PI / 10 * Math.sin(this.phi)) * (this.renderer.reverse ? -1 : 1)), t.beginPath(), this.renderer.reverse ? (t.moveTo(5, 0), t.bezierCurveTo(10, 10, 10, 30, 0, 40), t.bezierCurveTo(-12, 25, -8, 10, 0, 0)) : (t.moveTo(-5, 0), t.bezierCurveTo(-10, -10, -10, -30, 0, -40), t.bezierCurveTo(12, -25, 8, -10, 0, 0)), t.closePath(), t.fill(), t.restore(), t.restore(), this.controlStatus(t)
+    }
+  }, $(function () {
+    RENDERER.init()
+    $('.dark').click(function () {
+      setTimeout(() => {
+        RENDERER.setFishColor();
+        RENDERER.context.fill();
+      });
+    })
+  });
+</script>
+  
+  <div class="footer bg-color">
+    <div class="footer-main">
+      
+        
+          <div class="link">
+            
+              
+                <a target="_blank" rel="noopener" href="https://space.bilibili.com/409809855" class="social">
+                  
+                    <i class="iconfont icon-bilibili" aria-hidden="true"></i>
+                  
+                </a>
+              
+            
+              
+                <a target="_blank" rel="noopener" href="https://github.com/LemonPuer" class="social">
+                  
+                    <i class="fab fa-github" aria-hidden="true"></i>
+                  
+                </a>
+              
+            
+          </div>
+        
+      
+        
+          <div class="footer-copyright">
+            <p>欢迎访问本小站</p>
+
+          </div>
+        
+      
+    </div>
+  </div>
+
+
+
+    <!-- 渲染暗黑按钮 -->
+    
+      <div class="dark">
+  <div class="dark-content">
+    <i class="fas fa-moon" aria-hidden="true"></i>
+    <!-- <span>关灯</span> -->
+  </div>
+  
+</div>
+
+<script>
+  $(function() {
+    let isDark = JSON.parse(localStorage.getItem('dark'))  || JSON.parse('false');
+    if (isDark) {
+      $(".dark-content").replaceWith(
+          `
+          <div class='dark-content'>
+            <i class="fas fa-lightbulb" aria-hidden="true"></i>
+          </div>
+          `
+        );
+    }
+    $('.dark').click(function() {
+      if ($(document.body).is('.darkModel')) {
+        $(document.body).removeClass('darkModel');
+        localStorage.setItem('dark', false);
+        $(".dark-content").replaceWith(
+          `
+          <div class='dark-content'>
+            <i class="fas fa-moon" aria-hidden="true"></i>
+          </div>
+          `
+        );
+      } else {
+        $(document.body).addClass('darkModel');
+        localStorage.setItem('dark', true);
+        $(".dark-content").replaceWith(
+          `
+          <div class='dark-content'>
+            <i class="fas fa-lightbulb" aria-hidden="true"></i>
+          </div>
+          `
+        );
+      }
+    })
+  })
+</script>
+    
+    <!-- 渲染回到顶部按钮 -->
+    
+      <div class="goTop top-btn-color" pointer>
+  <i class="fas fa-arrow-up" aria-hidden="true"></i>
+</div>
+<script src="/js/goTop.js"></script>
+
+    
+    <!-- 渲染左下角音乐播放器 -->
+    
+      <link rel="stylesheet" href="/js/aplayer/APlayer@1.10.1.min.css">
+<style>
+.aplayer .aplayer-lrc p {
+  
+  font-size: 12px;
+  font-weight: 700;
+  line-height: 16px !important;
+}
+
+.aplayer .aplayer-lrc p.aplayer-lrc-current {
+  
+  font-size: 15px;
+  color: #42b983;
+}
+
+
+.aplayer.aplayer-fixed.aplayer-narrow .aplayer-body {
+  left: -66px !important;
+}
+
+.aplayer.aplayer-fixed.aplayer-narrow .aplayer-body:hover {
+  left: 0px !important;
+}
+
+
+</style>
+<meting-js  
+  class=""
+  server="netease"
+  type="playlist"
+  id="8517155639"
+  fixed='true'
+  autoplay='true'
+  theme='#42b983'
+  loop='all'
+  order='random'
+  preload='auto'
+  volume='0.7'
+  list-folded='true'
+>
+</meting-js>
+
+<!-- <style>
+  #aplayer {
+    position: fixed;
+    left: 0;
+    bottom: 300px;
+  }
+</style> -->
+<script src="https://unpkg.com/aplayer@1.10.1/dist/APlayer.min.js"></script>
+<script src="https://unpkg.com/meting@2/dist/Meting.min.js"></script>
+    
+
+    <!-- 图片放大 -->
+    
+      <script src="https://fastly.jsdelivr.net/npm/@fancyapps/ui@5.0/dist/fancybox/fancybox.umd.js"></script>
+    
+
+    <!-- 百度解析 -->
+    <!-- Baidu Analytics -->
+
+<script>
+    var _hmt = _hmt || [];
+    (function () {
+        var hm = document.createElement("script");
+        hm.src = "https://hm.baidu.com/hm.js?1dd9810333ef61187ef351132128d6dc";
+        var s = document.getElementsByTagName("script")[0];
+        s.parentNode.insertBefore(hm, s);
+    })();
+</script>
+
+    <!-- Baidu Push -->
+
+<script>
+    (function () {
+        var bp = document.createElement('script');
+        var curProtocol = window.location.protocol.split(':')[0];
+        if (curProtocol === 'https') {
+            bp.src = 'https://zz.bdstatic.com/linksubmit/push.js';
+        } else {
+            bp.src = 'http://push.zhanzhang.baidu.com/push.js';
+        }
+        var s = document.getElementsByTagName("script")[0];
+        s.parentNode.insertBefore(bp, s);
+    })();
+</script>
+
+    
+    <!-- 背景彩带 -->
+    
+      <script type="text/javascript" size="100" alpha='0.4' zIndex="-1" src="/js/ribbon.min.js"></script>
+    
+
+    <script src="/js/utils/index.js"></script>
+    <script src="/js/app.js"></script>
+    
+    <!-- 文章目录所需js -->
+<!-- <link href="/js/tocbot/tocbot.css" rel="stylesheet">
+<script src="/js/tocbot/tocbot.min.js"></script> -->
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/tocbot/4.18.2/tocbot.min.js"></script>
+
+
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/tocbot/4.18.2/tocbot.css">
+
+<script>
+  var headerEl = 'h2, h3, h4',  //headers 
+    content = '.post-detail',//文章容器
+    idArr = {};  //标题数组以确定是否增加索引id
+  //add #id
+  var option = {
+    // Where to render the table of contents.
+    tocSelector: '.toc',
+    // Where to grab the headings to build the table of contents.
+    contentSelector: content,
+    // Which headings to grab inside of the contentSelector element.
+    headingSelector: headerEl,
+    scrollSmooth: true,
+    scrollSmoothOffset: -70,
+    // headingsOffset: -($(window).height() * 0.4 - 45),
+    headingsOffset: -($(window).height() * 0.4 - 70),
+    // positionFixedSelector: '.toc-main',
+    // positionFixedClass: 'is-position-fixed',
+    fixedSidebarOffset: 'auto',
+    activeLinkClass: 'is-active-link',
+    orderedList: true,
+    collapseDepth: 20,
+    // onClick: function (e) {},
+  }
+  if ($('.toc').length > 0) {
+
+    $(content).children(headerEl).each(function () {
+      //去除空格以及多余标点
+      var headerId = $(this).text().replace(/[\s|\~|`|\!|\@|\#|\$|\%|\^|\&|\*|\(|\)|\_|\+|\=|\||\|\[|\]|\{|\}|\;|\:|\"|\'|\,|\<|\.|\>|\/|\?|\：|\，|\。]/g, '');
+
+      headerId = headerId.toLowerCase();
+      if (idArr[headerId]) {
+        //id已经存在
+        $(this).attr('id', headerId + '-' + idArr[headerId]);
+        idArr[headerId]++;
+      }
+      else {
+        //id未存在
+        idArr[headerId] = 1;
+        $(this).attr('id', headerId);
+      }
+    });
+
+    document.addEventListener("DOMContentLoaded", function () {
+      tocbot.init(option);
+      mobileTocClick();
+    });
+
+  }
+
+  window.tocScrollFn = function () {
+    return bamboo.throttle(function () {
+      findHeadPosition();
+    }, 100)()
+  }
+  window.addEventListener('scroll', tocScrollFn);
+
+  const findHeadPosition = function (top) {
+    if ($('.toc-list').length <= 0) {
+      return false;
+    }
+    setTimeout(() => {  // or DOMContentLoaded 
+      autoScrollToc();
+    }, 0);
+  }
+
+  const autoScrollToc = function () {
+    const $activeItem = document.querySelector('.is-active-link');
+    const $cardToc = document.querySelector('.toc-content');
+    const activePosition = $activeItem.getBoundingClientRect().top
+    const sidebarScrollTop = $cardToc.scrollTop
+    if (activePosition > (document.documentElement.clientHeight - 100)) {
+      $cardToc.scrollTop = sidebarScrollTop + 150
+    }
+    if (activePosition < 150) {
+      $cardToc.scrollTop = sidebarScrollTop - 150
+    }
+  }
+
+  document.addEventListener('pjax:send', function () {
+    if ($('.toc').length) {
+      tocbot.destroy();
+    }
+  });
+
+  document.addEventListener('pjax:complete', function () {
+    if ($('.toc').length) {
+      tocbot.init(option);
+      mobileTocClick();
+    }
+  });
+  
+  // 手机端toc按钮点击出现目录
+  const mobileTocClick = function () {
+    const $cardTocLayout = document.getElementsByClassName('side_toc')[0];
+    const $cardToc = $cardTocLayout.getElementsByClassName('toc-content')[0];
+    let right = '45px';
+    if (window.innerWidth >= 551 && window.innerWidth <= 992) {
+      right = '100px'
+    }
+    const mobileToc = {
+      open: () => {
+        $cardTocLayout.style.cssText = 'animation: toc-open .3s; opacity: 1; right: ' + right
+      },
+
+      close: () => {
+        $cardTocLayout.style.animation = 'toc-close .2s'
+        setTimeout(() => {
+          $cardTocLayout.style.cssText = "opacity:''; animation: ''; right: ''"
+        }, 100)
+      }
+    }
+    document.getElementById('toc-mobile-btn').addEventListener('click', () => {
+      if (window.getComputedStyle($cardTocLayout).getPropertyValue('opacity') === '0') mobileToc.open()
+      else mobileToc.close()
+    })
+
+    $cardToc.addEventListener('click', (e) => {
+      if (window.innerWidth < 992) { // 小于992px的时候
+        mobileToc.close()
+      }
+    })
+  }
+</script>
+
+<style>
+  /* .is-position-fixed {
+    position: sticky !important;
+    top: 74px;
+  }
+
+  .toc-main ul {
+    counter-reset: show-list;
+  }
+
+  .toc-main ul li::before {
+    content: counter(item)".";
+    display: block;
+    position: absolute;
+    left: 12px;
+    top: 0;
+  } */
+</style>
+ 
+
+<!-- 设置导航背景 -->
+<script>
+  let setHeaderClass = () => {
+    const nav = $('#navHeader');
+    const navTop = nav.outerHeight();
+    const winTop = $(window).scrollTop();
+    if(winTop > navTop) {
+      nav.addClass('header-bg-color');
+    }
+    else {
+      nav.removeClass('header-bg-color');
+    }
+  };
+
+  let scrollCollect = () => {
+    return bamboo.throttle(function (e) {
+      setHeaderClass();
+    }, 200)()
+  }
+
+  let initHeaderBg = () => {
+    setHeaderClass();
+  }
+
+  setHeaderClass();
+  window.addEventListener('scroll', scrollCollect);
+
+  document.addEventListener('pjax:send', function () {
+    window.removeEventListener('scroll', scrollCollect)
+  })
+  document.addEventListener('pjax:complete', function () {
+    window.addEventListener('scroll', scrollCollect);
+    setHeaderClass();
+  })
+</script> 
+
+<!-- 渲染issues标签里的内容 -->
+<script>
+  function loadIssuesJS() {
+    if ($(".post-detail").find(".issues-api").length == 0) {
+      return;
+    } 
+    loadScript('/js/issues/index.js');
+  };
+  $(function () {
+    loadIssuesJS();
+  });
+  document.addEventListener('pjax:complete', function () {
+    if (typeof IssuesAPI == "undefined") {
+      loadIssuesJS();
+    }
+  })
+</script>
+
+<!-- 渲染远程json加载的图片标签(getPhotoOnline)里的内容 -->
+<script>
+  function loadPhotoOnlineJS() {
+    if ($(".post-detail").find(".getJsonPhoto-api").length == 0) {
+      return;
+    } 
+    loadScript('/js/getPhotoOnline/index.js');
+  };
+  $(function () {
+    loadPhotoOnlineJS();
+  });
+  document.addEventListener('pjax:complete', function () {
+    if (typeof getPhotoJson == "undefined") {
+      loadPhotoOnlineJS();
+    }
+  })
+</script>
+
+<!-- 渲染远程json加载的talk标签(getTalkOnline)里的内容 -->
+<script>
+  function loadTalkOnlineJS() {
+    if ($(".post-detail").find(".getJsonTalk-api").length == 0) {
+      return;
+    } 
+    loadScript('https://cdnjs.cloudflare.com/ajax/libs/waterfall.js/1.0.2/waterfall.min.js'); // 瀑布流插件，https://raphamorim.io/waterfall.js/
+    loadScript('/js/getTalkOnline/index.js');
+  };
+  $(function () {
+    loadTalkOnlineJS();
+  });
+  document.addEventListener('pjax:complete', function () {
+    if (typeof getTalkJson == "undefined") {
+      loadTalkOnlineJS();
+    }
+  })
+</script>
+
+<!-- 渲染远程json加载的site-card标签(getSiteOnline)里的内容 -->
+<script>
+  function loadSiteOnlineJS() {
+    if ($(".post-detail").find(".getJsonSite-api").length == 0) {
+      return;
+    } 
+    loadScript('/js/getSiteOnline/index.js');
+  };
+  $(function () {
+    loadSiteOnlineJS();
+  });
+  document.addEventListener('pjax:complete', function () {
+    if (typeof getSiteJson == "undefined") {
+      loadSiteOnlineJS();
+    }
+  })
+</script>
+
+<!-- 输入框打字特效 -->
+<!-- 输入框打字特效 -->
+
+  <script src="/js/activate-power-mode.js"></script>
+  <script>
+    POWERMODE.colorful = true;  // 打开随机颜色特效
+    POWERMODE.shake = false;    // 关闭输入框抖动
+    document.body.addEventListener('input', POWERMODE);//监听打字事件
+  </script>
+
+
+<!-- markdown代码一键复制功能 -->
+
+  <link rel="stylesheet" href="https://unpkg.com/v-plugs-ayu/lib/ayu.css">
+  <script src="https://unpkg.com/v-plugs-ayu/lib/ayu.umd.min.js"></script>
+  <script src="/js/clipboard/clipboard.min.js"></script>
+  <div id="appCopy">
+  </div>
+  <script data-pjax>
+    var vm = new Vue({
+      el: '#appCopy',
+      data: {
+      },
+      computed: {
+      },
+      mounted() {
+        const that = this;
+        var copy = '复制';
+        /* code */
+        var initCopyCode = function () {
+          var copyHtml = '';
+          copyHtml += '<button class="btn-copy" data-clipboard-snippet="" style="position:absolute;top:0;right:0;z-index:1;">';
+          copyHtml += '<i class="fas fa-copy"></i><span>' + copy + '</span>';
+          copyHtml += '</button>';
+          $(".post-detail pre").not('.gutter pre').wrap("<div class='codeBox' style='position:relative;width:100%;'></div>")
+          $(".post-detail pre").not('.gutter pre').before(copyHtml);
+          new ClipboardJS('.btn-copy', {
+            target: function (trigger) {
+              return trigger.nextElementSibling;
+            }
+          });
+        }
+        initCopyCode();
+        $('.btn-copy').unbind('click').bind('click', function () {
+          doSomething();
+        })
+        $(document).unbind('keypress').bind('keypress', function (e) {
+          if (e.ctrlKey && e.keyCode == 67) {
+            doSomething();
+          }
+        })
+
+        function doSomething() {
+          that.$notify({
+            title: "成功",
+            content: "代码已复制",
+            type: 'success'
+          })
+        }
+      },
+      methods: {
+      },
+      created() { }
+    })
+  </script>
+  
+
+<!-- 图片懒加载 -->
+<script defer src="https://unpkg.com/vanilla-lazyload@17.1.0/dist/lazyload.min.js"></script>
+<script>
+  // https://www.npmjs.com/package/vanilla-lazyload
+  // Set the options globally
+  // to make LazyLoad self-initialize
+  window.lazyLoadOptions = {
+    elements_selector: ".lazyload",
+    threshold: 0
+  };
+  // Listen to the initialization event
+  // and get the instance of LazyLoad
+  window.addEventListener(
+    "LazyLoad::Initialized",
+    function (event) {
+      window.lazyLoadInstance = event.detail.instance;
+    },
+    false
+  );
+  document.addEventListener('DOMContentLoaded', function () {
+    lazyLoadInstance.update();
+  });
+  document.addEventListener('pjax:complete', function () {
+    lazyLoadInstance.update();
+  });
+</script>
+
+
+<!-- 卡片滚动动画 -->
+   
+
+<!-- 评论所需js -->
+
+  
+    <script type="text/javascript">
+  var utteranceCommon = {};
+
+  function check_utterance() {
+    let isDark = JSON.parse(localStorage.getItem('dark')) || JSON.parse('false');
+    if (isDark) {
+      utteranceCommon.Theme = 'github-dark';
+    } else {
+      utteranceCommon.Theme = 'github-light';
+    }
+
+    return document.getElementById("gitment-container");
+  }
+  comment_el = '#gitment-container';
+  load_utterance = function () {
+    if ($(comment_el).length) {
+      // 匿名函数，防止污染全局变量
+      const HEAD = check_utterance();
+
+      var utterances = document.createElement('script');
+      utterances.type = 'text/javascript';
+      utterances.async = true;
+      utterances.setAttribute('issue-term', 'pathname')
+      utterances.setAttribute('theme', utteranceCommon.Theme)
+      utterances.setAttribute('repo', 'LemonPuer/lemonpuer.github.io')
+      utterances.crossorigin = 'anonymous';
+      utterances.src = 'https://utteranc.es/client.js';
+      // content 是要插入评论的地方
+      document.getElementById('gitment-container').appendChild(utterances);
+
+    }
+  }
+
+  function dark_utterance() {
+    const HEAD = check_utterance();
+    if (!HEAD) return;
+    const message = {
+      type: 'set-theme',
+      theme: utteranceCommon.Theme
+    };
+    const utteranceIframe = document.querySelector('iframe');
+    utteranceIframe.contentWindow.postMessage(message, 'https://utteranc.es');
+  }
+
+  $(document).ready(load_utterance);
+  document.addEventListener('pjax:complete', function () {
+    load_utterance();
+  });
+
+  $('.dark').click(function () {
+    setTimeout(() => {
+      dark_utterance();
+    });
+  })
+
+</script>
+
+<style>
+  .utterances {
+    max-width: inherit !important;
+  }
+</style>
+  
+
+
+<!-- 鼠标点击特效 -->
+<!-- 爱心点击 -->
+
+  
+    <canvas class="fireworks" style="position: fixed;left: 0;top: 0;z-index: 999; pointer-events: none;" ></canvas>
+    <script src="//cdn.bootcss.com/animejs/2.2.0/anime.min.js"></script>
+    <script src="/js/cursor/explosion.min.js"></script>
+  
+
+
+
+
+  <script async src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js" data-pjax></script>
+
+
+<!-- 轮播图标签 -->
+<script>
+  var bambooSwiperTag = {};
+  function load_swiper() {
+    if (!document.querySelectorAll(".post-swiper-container")[0]) return;
+    loadCSS("https://unpkg.com/swiper@6/swiper-bundle.min.css")
+    loadScript("https://unpkg.com/swiper@6/swiper-bundle.min.js").then(() => {
+      pjax_swiper();
+    });
+  }
+
+  load_swiper();
+
+  function pjax_swiper() {
+    bambooSwiperTag.swiper = new Swiper('.post-swiper-container', {
+      slidesPerView: 'auto',
+      spaceBetween: 8,
+      centeredSlides: true,
+      loop: true,
+      autoplay: true ? {
+        delay: 3000,
+        stopOnLastSlide: false,
+        disableOnInteraction: false,
+      } : false,
+      pagination: {
+        el: '.swiper-pagination',
+        clickable: true,
+      },
+      navigation: {
+        nextEl: '.swiper-button-next',
+        prevEl: '.swiper-button-prev',
+      },
+      on:{
+        init: function(){
+          swiperAnimateCache(this); //隐藏动画元素 
+          swiperAnimate(this); //初始化完成开始动画
+        }, 
+        slideChangeTransitionEnd: function(){ 
+          swiperAnimate(this); //每个slide切换结束时也运行当前slide动画
+          //this.slides.eq(this.activeIndex).find('.ani').removeClass('ani'); 动画只展现一次，去除ani类名
+        } 
+      }
+    });
+  }
+
+  document.addEventListener('pjax:complete', function () {
+    if (!document.querySelectorAll(".post-swiper-container")[0]) return;
+    if (typeof bambooSwiperTag.swiper === "undefined") {
+      load_swiper();
+    } else {
+      pjax_swiper();
+    }
+  });
+</script>
+    <!-- pjax -->
+    
+
+<!-- pjax -->
+
+
+  <script src="/js/pjax@0.2.8/index.js"></script>
+  
+    <!-- 样式位于：source/css/_third-party/pjaxanimate.styl -->
+
+<div class="pjax-animate">
+  
+    <div class="loading-circle"><div id="loader-circle"></div></div>
+    <script>
+      window.ShowLoading = function() {
+        $(".loading-circle").css("display", "block");
+      };
+      window.HideLoading = function() {
+        $(".loading-circle").css("display", "none");
+      }
+    </script>
+  
+	<script>
+    document.addEventListener('pjax:complete', function () {
+      window.HideLoading();
+    })
+    document.addEventListener('pjax:send', function () {
+      window.ShowLoading();
+    })
+    document.addEventListener('pjax:error', function () {
+      window.HideLoading();
+    })
+	</script>
+</div>
+
+  
+
+  <script>
+    var pjax = new Pjax({
+      elements: 'a[href]:not([href^="#"]):not([href="javascript:void(0)"]):not([no-pjax])',   // 拦截正常带链接的 a 标签
+      selectors: ["#pjax-container","title"],                                   // 根据实际需要确认重载区域
+      cacheBust: false,   // url 地址追加时间戳，用以避免浏览器缓存
+      timeout: 5000
+    });
+
+    document.addEventListener('pjax:send', function (e) {
+
+      try {
+        var currentUrl = window.location.pathname;
+        var targetUrl = e.triggerElement.href;
+        var banUrl = [""];
+        if (banUrl[0] != "") {
+          banUrl.forEach(item => {
+            if(currentUrl.indexOf(item) != -1 || targetUrl.indexOf(item) != -1) {
+              window.location.href = targetUrl;
+            }
+          });
+        }
+      } catch (error) {}
+
+      $(window).unbind('resize');
+      $(window).unbind('scroll');
+      $(document).unbind('scroll');
+      $(document).unbind('click');
+      $('body').unbind('click');
+
+    })
+    
+    document.addEventListener('pjax:complete', function () {
+      $('script[data-pjax], .pjax-reload script').each(function () {
+        $(this).parent().append($(this).remove());
+      });
+    });
+
+    document.addEventListener('pjax:error', function (e) {
+      window.location.href = e.triggerElement.href;
+    })
+    
+    // 刷新不从顶部开始
+    document.addEventListener("DOMContentLoaded", function () {
+      history.scrollRestoration = 'auto';
+    })
+  </script>
+
+
+
+  </body>
+</html>

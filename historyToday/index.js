@@ -34,7 +34,7 @@ new Vue({
     },
     // ����Դapi, ��ȡ��ʷ�ϵĽ�������
     getHistoryList() {
-      fetch("https://api.vvhan.com/api/hotlist?type=history", {
+      fetch("https://tenapi.cn/v2/history", {
         method: "GET", // *GET, POST, PUT, DELETE, etc.
       })
         .then((res) => {
@@ -42,7 +42,7 @@ new Vue({
         })
         .then((data) => {
           // ��ȡÿ��data��list������title
-		  this.content = data.data.map(item => item.title);
+		  this.content = data.data.list.map(item => item.title);
         })
         .catch((err) => {
           console.log("err", err);

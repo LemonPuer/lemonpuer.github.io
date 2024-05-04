@@ -1,0 +1,2521 @@
+<!DOCTYPE html>
+<html>
+  <!-- meta/link... -->
+  
+
+
+
+<head>
+  <meta http-equiv="content-type" content="text/html; charset=utf-8">
+  <meta content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0" name="viewport">
+  <!-- Global site tag (gtag.js) - Google Analytics -->
+
+
+  <title>Docker | Lemon</title>
+
+  <link rel="icon" type="image/x-icon, image/vnd.microsoft.icon" href="/bitbug_favicon.ico">
+  <link rel="stylesheet" href="https://at.alicdn.com/t/font_1911880_c1nvbyezg17.css">
+  <link href="https://unpkg.com/@fortawesome/fontawesome-free/css/all.min.css" rel="stylesheet">
+  <link href="/js/swiper/swiper@5.4.1.min.css" rel="stylesheet">
+  
+  
+    <script>
+        var themeModelId = '5';
+        if (themeModelId) {
+            localStorage.setItem('modelId', themeModelId);
+        }
+    </script>
+    
+    <script defer src="https://fastly.jsdelivr.net/gh/lemonpuer/live2d-widget@latest/autoload.js"></script>
+    <script>
+        var live2dOpen = eval('true') || false;
+        if (!live2dOpen) {
+            localStorage.setItem('waifu-display', 1609323474481);
+        }
+    </script>
+  
+  
+  
+<link rel="stylesheet" href="/css/animate.min.css">
+
+  
+<link rel="stylesheet" href="/css/style.css">
+
+  
+  
+    <link href="https://fastly.jsdelivr.net/npm/@fancyapps/ui@5.0/dist/fancybox/fancybox.css" rel="stylesheet">
+  
+  
+    
+<link rel="stylesheet" href="/js/shareJs/share.min.css">
+
+  
+  <style>
+        @media (max-width: 992px) {
+            #waifu {
+                display: none;
+            }
+        }
+    </style>
+    <script defer src="//cdn.bootcss.com/pace/1.0.2/pace.min.js"></script>
+    <link href="//cdn.bootcss.com/pace/1.0.2/themes/pink/pace-theme-flash.css" rel="stylesheet">
+
+    
+    
+    <!-- 依赖于jquery和vue -->
+    
+        <script src="https://unpkg.com/jquery@3.5.1/dist/jquery.min.js"></script>
+    
+
+    
+        <script src="https://unpkg.com/vue@2.6.11/dist/vue.min.js"></script>
+    
+
+    <!-- import link -->
+    
+        
+            <link rel="stylesheet" type="text/css" href="https://at.alicdn.com/t/c/font_4157890_fix3f9jhjk.css">
+        
+            
+        
+    
+    <!-- import script -->
+    
+        
+            
+        
+            
+        
+    
+
+<meta name="generator" content="Hexo 6.3.0"></head>
+
+  
+  <!-- 预加载动画 -->
+  <!-- 页面预加载动画 -->
+
+  
+    <div class="preloader-1" id="loader">
+  <div  aria-label="Orange and tan hamster running in a metal wheel" role="img" class="wheel-and-hamster">
+    <div class="wheel"></div>
+    <div class="hamster">
+      <div class="hamster__body">
+        <div class="hamster__head">
+          <div class="hamster__ear"></div>
+          <div class="hamster__eye"></div>
+          <div class="hamster__nose"></div>
+        </div>
+        <div class="hamster__limb hamster__limb--fr"></div>
+        <div class="hamster__limb hamster__limb--fl"></div>
+        <div class="hamster__limb hamster__limb--br"></div>
+        <div class="hamster__limb hamster__limb--bl"></div>
+        <div class="hamster__tail"></div>
+      </div>
+    </div>
+    <div class="spoke"></div>
+  </div>
+</div>
+  
+<script>
+  var endLoading = function () {
+    document.body.style.overflow = 'auto';
+    document.getElementById('loader').classList.add("loading");
+  }
+  window.addEventListener('DOMContentLoaded',endLoading);
+</script>
+
+  <body>
+    <!-- 判断是否为暗黑风格 -->
+    <!-- 判断是否为黑夜模式 -->
+<script>
+  let isDark = JSON.parse(localStorage.getItem('dark')) || JSON.parse('false');
+
+  if (isDark) {
+    $(document.body).addClass('darkModel');
+  }
+</script>
+
+    <!-- 需要在上面加载的js -->
+    <script>
+  function loadScript(src, cb) {
+    return new Promise(resolve => {
+      setTimeout(function () {
+        var HEAD = document.getElementsByTagName("head")[0] || document.documentElement;
+        var script = document.createElement("script");
+        script.setAttribute("type", "text/javascript");
+        if (cb) {
+          if (JSON.stringify(cb)) {
+            for (let p in cb) {
+              if (p == "onload") {
+                script[p] = () => {
+                  cb[p]()
+                  resolve()
+                }
+              } else {
+                script[p] = cb[p]
+                script.onload = resolve
+              }
+            }
+          } else {
+            script.onload = () => {
+              cb()
+              resolve()
+            };
+          }
+        } else {
+          script.onload = resolve
+        }
+        script.setAttribute("src", src);
+        HEAD.appendChild(script);
+      });
+    });
+  }
+
+  //https://github.com/filamentgroup/loadCSS
+  var loadCSS = function (src) {
+    return new Promise(resolve => {
+      setTimeout(function () {
+        var link = document.createElement('link');
+        link.rel = "stylesheet";
+        link.href = src;
+        link.onload = resolve;
+        document.getElementsByTagName("head")[0].appendChild(link);
+      });
+    });
+  };
+
+</script> 
+
+<!-- 轮播图所需要的js -->
+<script src="/js/swiper/swiper.min.js"></script>
+<script src="/js/swiper/vue-awesome-swiper.js"></script>
+<script src="/js/swiper/swiper.animate1.0.3.min.js"></script>
+
+<script type="text/javascript">
+  Vue.use(window.VueAwesomeSwiper)
+</script>
+
+
+  <script src="/js/vue-typed-js/index.js"></script>
+
+
+<!-- 首页的公告滚动插件的js需要重新加载 -->
+<script src="/js/vue-seamless-scroll/index.js"></script>
+
+<!-- 打字机效果js -->
+<script src="https://unpkg.com/typed.js@2.0.11"></script>
+
+
+    <div id="safearea">
+      <main class="main" id="pjax-container">
+        <!-- 头部导航 -->
+        
+<header class="header  " 
+  id="navHeader"
+  style="position: fixed;
+  left: 0; top: 0; z-index: 10;width: 100%;"
+>
+  <div class="header-content">
+    <div class="bars">
+      <div id="appDrawer" class="sidebar-image">
+  <div class="drawer-box-icon">
+    <i class="fas fa-bars" aria-hidden="true" @click="showDialogDrawer"></i>
+  </div>
+  
+  <transition name="fade">
+    <div class="drawer-box_mask" v-cloak style="display: none;" v-show="visible" @click.self="cancelDialogDrawer">
+    </div>
+  </transition>
+  <div class="drawer-box" :class="{'active': visible}">
+    <div class="drawer-box-head bg-color">
+      <img class="drawer-box-head_logo lazyload placeholder" src="https://i.postimg.cc/yNJTSNTj/image.jpg" class="lazyload placeholder" data-srcset="https://i.postimg.cc/yNJTSNTj/image.jpg" srcset="https://pic1.zhimg.com/v2-cd38920285d125be80b3eb504052c550_b.webp" alt="logo">
+      <h3 class="drawer-box-head_title">Lemon</h3>
+      <h5 class="drawer-box-head_desc">个人博客</h5>
+    </div>
+    
+    <div class="drawer-box-content">
+      <ul class="drawer-box-content_menu">
+        
+          
+            <li class="drawer-box-content_item" style="position: relative;">
+              
+                <a href="/" class="drawer-menu-item-link">
+                  
+                    <i class="fas fa-home" aria-hidden="true"></i>
+                  
+                  <span class="name">首页</span>
+                </a>
+              
+            </li>
+          
+            <li class="drawer-box-content_item" style="position: relative;">
+              
+                <a href="/archives" class="drawer-menu-item-link">
+                  
+                    <i class="fas fa-archive" aria-hidden="true"></i>
+                  
+                  <span class="name">归档</span>
+                </a>
+              
+            </li>
+          
+            <li class="drawer-box-content_item" style="position: relative;">
+              
+                <a href="/tags" class="drawer-menu-item-link">
+                  
+                    <i class="fas fa-tags" aria-hidden="true"></i>
+                  
+                  <span class="name">标签</span>
+                </a>
+              
+            </li>
+          
+            <li class="drawer-box-content_item" style="position: relative;">
+              
+                <a href="/categories" class="drawer-menu-item-link">
+                  
+                    <i class="fas fa-bookmark" aria-hidden="true"></i>
+                  
+                  <span class="name">分类</span>
+                </a>
+              
+            </li>
+          
+            <li class="drawer-box-content_item" style="position: relative;">
+              
+                <a href="/friends" class="drawer-menu-item-link">
+                  
+                    <i class="fas fa-link" aria-hidden="true"></i>
+                  
+                  <span class="name">友情链接</span>
+                </a>
+              
+            </li>
+          
+            <li class="drawer-box-content_item" style="position: relative;">
+              
+                <a href="javascript:;" class="drawer-menu-item-link has-children" @click="openOrCloseMenu(5)">
+                  <span>
+                    
+                    <span class="name">更多</span>
+                  </span>
+                  <i class="fas fa-chevron-left arrow " :class="{'icon-rotate': isOpen(5)}" aria-hidden="true"></i>
+                </a>
+                <ul class="drawer-sub-menu" v-if="isOpen(5)">
+                  
+                  <li>
+                    <a href="/about">
+                      
+                      <i class="fa fa-id-card" style="margin-top: -20px;"></i>
+                      
+                      <span>关于</span>
+                    </a>
+                  </li>
+                  
+                  <li>
+                    <a target="_blank" rel="noopener" href="https://bing.com/">
+                      
+                      <i class="fa fa-search" style="margin-top: -20px;"></i>
+                      
+                      <span>必应</span>
+                    </a>
+                  </li>
+                  
+                </ul>
+              
+            </li>
+          
+        
+        
+      </ul>
+    </div>
+  </div>
+</div>
+
+<script>
+  var body = document.body || document.documentElement || window;
+  var vm = new Vue({
+    el: '#appDrawer',
+    data: {
+      visible: false,
+      top: 0,
+      openArr: [],
+    },
+    computed: {
+    },
+    mounted() {
+    },
+    methods: {
+      isOpen(index) {
+        if (this.openArr.includes(index)) {
+          return true;
+        } else {
+          return false;
+        }
+      },
+      openOrCloseMenu(curIndex) {
+        const index = this.openArr.indexOf(curIndex);
+        if (index !== -1) {
+          this.openArr.splice(index, 1);
+        } else {
+          this.openArr.push(curIndex);
+        }
+      },
+      showDialogDrawer() {
+        this.visible = true;
+        // 防止页面滚动，只能让弹框滚动
+        this.top = $(document).scrollTop()
+        body.style.cssText = 'width: 100%; height: 100%;overflow: hidden;';
+      },
+      cancelDialogDrawer() {
+        this.visible = false;
+        body.removeAttribute('style');
+        $(document).scrollTop(this.top)
+      }
+    },
+    created() {}
+  })
+</script>
+
+    </div>
+    <div class="blog-title" id="author-avatar">
+      
+        <div class="avatar">
+          <img src="https://i.postimg.cc/yNJTSNTj/image.jpg" class="lazyload placeholder" data-srcset="https://i.postimg.cc/yNJTSNTj/image.jpg" srcset="https://pic1.zhimg.com/v2-cd38920285d125be80b3eb504052c550_b.webp" alt="logo">
+        </div>
+      
+      <a href="/" class="logo">Lemon</a>
+    </div>
+    <nav class="navbar">
+      <ul class="menu">
+        
+          
+            <li class="menu-item" style="position: relative;">
+              
+                <a href="/" class="menu-item-link" title="首页">
+                  
+                    <i class="fas fa-home" aria-hidden="true"></i>
+                  
+                  <span class="name">首页</span>
+                </a>
+              
+            </li>
+          
+            <li class="menu-item" style="position: relative;">
+              
+                <a href="/archives" class="menu-item-link" title="归档">
+                  
+                    <i class="fas fa-archive" aria-hidden="true"></i>
+                  
+                  <span class="name">归档</span>
+                </a>
+              
+            </li>
+          
+            <li class="menu-item" style="position: relative;">
+              
+                <a href="/tags" class="menu-item-link" title="标签">
+                  
+                    <i class="fas fa-tags" aria-hidden="true"></i>
+                  
+                  <span class="name">标签</span>
+                </a>
+              
+            </li>
+          
+            <li class="menu-item" style="position: relative;">
+              
+                <a href="/categories" class="menu-item-link" title="分类">
+                  
+                    <i class="fas fa-bookmark" aria-hidden="true"></i>
+                  
+                  <span class="name">分类</span>
+                </a>
+              
+            </li>
+          
+            <li class="menu-item" style="position: relative;">
+              
+                <a href="/friends" class="menu-item-link" title="友情链接">
+                  
+                    <i class="fas fa-link" aria-hidden="true"></i>
+                  
+                  <span class="name">友情链接</span>
+                </a>
+              
+            </li>
+          
+            <li class="menu-item" style="position: relative;">
+              
+                <a href="javascript:;" class="menu-item-link" title="更多">
+                  
+                  <span class="name">更多</span>
+                  <i class="fas fa-chevron-down arrow" aria-hidden="true"></i>
+                </a>
+                <ul class="sub-menu">
+                  
+                  <li>
+                    <a href="/about">
+                      
+                      <i class="fa fa-id-card" style="margin-top: -20px;"></i>
+                      
+                      <span>关于</span>
+                    </a>
+                  </li>
+                  
+                  <li>
+                    <a target="_blank" rel="noopener" href="https://bing.com/">
+                      
+                      <i class="fa fa-search" style="margin-top: -20px;"></i>
+                      
+                      <span>必应</span>
+                    </a>
+                  </li>
+                  
+                </ul>
+              
+            </li>
+          
+        
+      </ul>
+      
+      
+        <div id="appSearch">
+  <div class="search"  @click="showDialog()"><i class="fas fa-search" aria-hidden="true"></i></div>
+  <transition name="fade">
+    <div class="message-box_wrapper" style="display: none;" v-cloak v-show="dialogVisible" @click.self="cancelDialogVisible()">
+      <div class="message-box animated bounceInDown">
+        <h2>
+          <span>
+            <i class="fas fa-search" aria-hidden="true"></i>
+            <span class="title">本地搜索</span>
+          </span>
+          <i class="fas fa-times close" pointer style="float:right;" aria-hidden="true" @click.self="cancelDialogVisible()"></i>
+        </h2>
+        <form class="site-search-form">
+          <input type="text"
+            placeholder="请输入关键字"
+            id="local-search-input" 
+            @click="getSearchFile()"
+            class="st-search-input"
+            v-model="searchInput"
+          />
+        </form>
+        <div class="result-wrapper">
+          <div id="local-search-result" class="local-search-result-cls"></div>
+        </div>
+      </div>
+    </div>
+  </transition>
+</div>
+<script src="/js/local_search.js"></script>
+<script>
+  var body = document.body || document.documentElement || window;
+  var vm = new Vue({
+    el: '#appSearch',
+    data: {
+      dialogVisible: false,
+      searchInput: '',
+      top: 0,
+    },
+    computed: {
+    },
+    mounted() {
+      window.addEventListener('pjax:complete', () => {
+        this.cancelDialogVisible();
+      })
+    },
+    methods: {
+      showDialog() {
+        this.dialogVisible = true;
+        // 防止页面滚动，只能让弹框滚动
+        this.top = $(document).scrollTop()
+        body.style.cssText = 'overflow: hidden;';
+      },
+      getSearchFile() {
+        if (!this.searchInput) {
+          getSearchFile("/search.xml");
+        }
+      },
+      cancelDialogVisible() {
+        this.dialogVisible = false;
+        body.removeAttribute('style');
+        $(document).scrollTop(this.top)
+      },
+    },
+    created() {}
+  })
+</script>
+<!-- 解决刷新页面闪烁问题，可以在元素上添加display: none, 或者用vue.extend方法，详情：https://blog.csdn.net/qq_31393401/article/details/81017912 -->
+<!-- 下面是搜索基本写法 -->
+<!-- <script type="text/javascript" id="local.search.active">
+  var inputArea = document.querySelector("#local-search-input");
+  inputArea.onclick   = function(){ getSearchFile(); this.onclick = null }
+  inputArea.onkeydown = function(){ if(event.keyCode == 13) return false }
+</script> -->
+
+      
+
+    </nav>
+  </div>
+  
+  
+    <div id="he-plugin-simple"></div>
+    <script>
+      WIDGET = {
+        CONFIG: {
+          "modules": "012",
+          "background": 5,
+          "tmpColor": "4A4A4A",
+          "tmpSize": 16,
+          "cityColor": "4A4A4A",
+          "citySize": 16,
+          "aqiSize": 16,
+          "weatherIconSize": 24,
+          "alertIconSize": 18,
+          "padding": "10px 10px 10px 10px",
+          "shadow": "1",
+          "language": "auto",
+          "borderRadius": 5,
+          "fixed": "false",
+          "vertical": "middle",
+          "horizontal": "center",
+          "key": "2784dd3fcb1e4f0f9a9b579bf69641f2"
+        }
+      }
+    </script>
+    <script defer src="https://widget.qweather.net/simple/static/js/he-simple-common.js?v=2.0"></script> 
+    
+</header>
+        <!-- 内容区域 -->
+        
+ <!-- prismjs 代码高亮 -->
+ 
+
+
+<div class="bg-dark-floor" style="position: fixed;left: 0;top: 0;width: 100%;height: 100%;z-index: -1;"></div>
+
+
+  <!-- 文章详情页顶部图片和标题 -->
+
+
+
+
+<div class="post-detail-header" id="thumbnail_canvas" style="background-repeat: no-repeat; background-size: cover; 
+  background-position: center center;position: relative;background-image:url('https://images.wallpaperscraft.com/image/single/deer_winter_night_129602_1920x1080.jpg')">
+  <div class="post-detail-header-mask"></div>
+  <canvas id="header_canvas"style="position:absolute;bottom:0;pointer-events:none;"></canvas>
+  
+  <div class="post-detail-header_info-box">
+    <div class="title-box">
+      <span class="title">
+        Docker
+      </span>
+    </div>
+    
+    
+      
+        <span class="post-detail-header_date">
+          <i class="fas fa-calendar"></i> 发表于：2024-01-13 |
+        </span>
+      
+
+      
+        <span class="post-detail-header_categories">
+          <i class="iconfont iconbookmark1"></i> 分类：
+          
+            <a href="/categories/%E4%B8%AD%E9%97%B4%E4%BB%B6/" class="post-detail-header_category">
+              中间件
+            </a>
+          
+        </span>
+      
+
+      
+        <div class="post-detail-header_wordcount">
+          <span class="totalcount">
+            <i class="fas fa-file-text-o"></i> 字数统计: 6k |
+          </span>
+  
+          <span class="min2read">
+            <i class="fas fa-clock"></i> 阅读时长: 25分钟 |
+          </span>
+  
+          
+            <span class="reading">
+              <i class="fas fa-eye"></i> 阅读量：<span id="busuanzi_value_page_pv"></span>
+            </span>
+          
+        </div>
+      
+    
+  </div>
+  
+  
+    <script src="/js/bubble/bubble.js"></script>
+  
+</div>
+
+
+
+
+
+<div class="post-detail-content post-row" 
+  style="padding-top: 0px;">
+  <div class="main-content">
+    <article class="post post-detail">
+      <div class="post-content">
+        <h1 id="基础部分"><a href="#基础部分" class="headerlink" title="基础部分"></a>基础部分</h1><h2 id="简介"><a href="#简介" class="headerlink" title="简介"></a>简介</h2><p><strong>背景：</strong></p>
+<p>一个项目从开发到上线，从操作环境，到运行环境，再到应用配置，需要关心很多东西，特别是各种版本的迭代之后，不同版本环境的兼容问题，对于开发和运维都是不小的考验。</p>
+<p>Docker对此给出了一个标准化的解决方案：安装的时候，把原始环境一模一样地复制过来，极大地减少了不同机器不能运行的问题。</p>
+<p>Docker镜像的设计，打破了过去「程序即应用」的观念。透过镜像(images)可以将作业系统核心除外，运作应用程式所需要的系统环境，由下而上打包，达到应用程式跨平台间的无缝接轨运作。</p>
+<p><strong>理念：</strong></p>
+<p>Docker是基于Go语言实现的云开源项目，目标是“Build，Ship and Run Any App,Anywhere”，也就是通过对应用组件的封装、分发、部署、运行等生命周期的管理，使用户的APP（可以是一个WEB应用或数据库应用等等）及其运行环境能够做到“一次封装，到处运行”。</p>
+<p>过往技术：虚拟机（virtual machine），是带环境安装的一种解决方案。</p>
+<p>缺点：资源占用多；冗余步骤多；启动慢</p>
+<p>为了解决弥补以往的缺点，Linux 发展出了另一种虚拟化技术：Linux 容器（Linux Containers，缩写为 LXC）。</p>
+<blockquote>
+<p>Linux 容器不是模拟一个完整的操作系统，而是对进程进行隔离。</p>
+</blockquote>
+<p>Docker 和传统虚拟化方式的差别：</p>
+<ol>
+<li>容器内的应用进程直接运行于宿主的内核，容器内没有自己的内核，而且也没有进行硬件虚拟，更加轻便。</li>
+<li>每个容器之间互相隔离，每个容器有自己的文件系统 ，容器之间进程不会相互影响，能区分计算资源。</li>
+</ol>
+<p><strong>官网：</strong><a target="_blank" rel="noopener" href="https://www.docker.com/">Docker</a></p>
+<p><strong>仓库：</strong><a target="_blank" rel="noopener" href="https://hub.docker.com/">Docker Hub</a></p>
+<blockquote>
+<p>因为 Red Hat 即将停止CentOS系列的维护，所以官网不再推荐。未来可尝试 Debian</p>
+</blockquote>
+<h2 id="安装"><a href="#安装" class="headerlink" title="安装"></a>安装</h2><p>使用CentOS 7，要求系统为64位、系统内核版本为 3.10 以上。</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta prompt_">#</span><span class="language-bash">打印当前系统相关信息</span></span><br><span class="line">uname -r</span><br><span class="line"><span class="meta prompt_">#</span><span class="language-bash">查看内核版本</span></span><br><span class="line">cat /etc/redhat-release</span><br></pre></td></tr></table></figure>
+
+<ol>
+<li>安装gcc环境（为了意外）</li>
+</ol>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">yum -y install gcc</span><br><span class="line">yum -y install gcc-c++</span><br></pre></td></tr></table></figure>
+
+<ol start="2">
+<li>卸载旧版本</li>
+</ol>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line">systemctl stop docker</span><br><span class="line"><span class="meta prompt_">#</span><span class="language-bash">卸载</span></span><br><span class="line">sudo yum remove docker-ce docker-ce-cli containerd.io docker-buildx-plugin docker-compose-plugin docker-ce-rootless-extras</span><br><span class="line"><span class="meta prompt_">#</span><span class="language-bash">删除所有映像、容器和卷</span></span><br><span class="line">sudo rm -rf /var/lib/docker</span><br><span class="line">sudo rm -rf /var/lib/containerd</span><br><span class="line"><span class="meta prompt_">#</span><span class="language-bash">卸载旧版本以及相关的依赖项</span></span><br><span class="line">sudo yum remove docker \</span><br><span class="line">                  docker-client \</span><br><span class="line">                  docker-client-latest \</span><br><span class="line">                  docker-common \</span><br><span class="line">                  docker-latest \</span><br><span class="line">                  docker-latest-logrotate \</span><br><span class="line">                  docker-logrotate \</span><br><span class="line">                  docker-engine</span><br></pre></td></tr></table></figure>
+
+<ol start="3">
+<li>安装软件包（提供实用程序）并设置存储库</li>
+</ol>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">sudo yum install -y yum-utils</span><br><span class="line"><span class="meta prompt_">#</span><span class="language-bash">官网</span></span><br><span class="line">sudo yum-config-manager --add-repo https://download.docker.com/linux/centos/docker-ce.repo</span><br><span class="line"><span class="meta prompt_">#</span><span class="language-bash">推荐</span></span><br><span class="line">sudo yum-config-manager --add-repo http://mirrors.aliyun.com/docker-ce/linux/centos/docker-ce.repo</span><br></pre></td></tr></table></figure>
+
+<ol start="4">
+<li>安装</li>
+</ol>
+<ul>
+<li>最新版</li>
+</ul>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta prompt_">#</span><span class="language-bash">安装当前系统支持的最新版本</span></span><br><span class="line">sudo yum install docker-ce docker-ce-cli containerd.io docker-buildx-plugin docker-compose-plugin</span><br></pre></td></tr></table></figure>
+
+<ul>
+<li>指定版本</li>
+</ul>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta prompt_">#</span><span class="language-bash">查看当前系统支持版本</span></span><br><span class="line">yum list docker-ce --showduplicates | sort -r</span><br><span class="line"><span class="meta prompt_">#</span><span class="language-bash">安装指定版本</span></span><br><span class="line">sudo yum install docker-ce-&lt;VERSION_STRING&gt; docker-ce-cli-&lt;VERSION_STRING&gt; containerd.io docker-buildx-plugin docker-compose-plugin</span><br></pre></td></tr></table></figure>
+
+<ol start="5">
+<li>校验</li>
+</ol>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta prompt_">#</span><span class="language-bash">启动</span></span><br><span class="line">sudo systemctl start docker</span><br><span class="line"><span class="meta prompt_">#</span><span class="language-bash">验证</span></span><br><span class="line">sudo docker run hello-world</span><br></pre></td></tr></table></figure>
+
+<ol start="6">
+<li>配置加速镜像</li>
+</ol>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta prompt_">#</span><span class="language-bash">没有就创建</span></span><br><span class="line">mkdir -p /etc/docker</span><br><span class="line"><span class="meta prompt_">#</span><span class="language-bash">添加配置</span></span><br><span class="line">vim /etc/docker/daemon.json</span><br><span class="line"><span class="meta prompt_">#</span><span class="language-bash">加载配置</span></span><br><span class="line">systemctl daemon-reload</span><br><span class="line"><span class="meta prompt_">#</span><span class="language-bash">重启服务</span></span><br><span class="line">systemctl restart docker</span><br></pre></td></tr></table></figure>
+
+<figure class="highlight json"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="punctuation">&#123;</span></span><br><span class="line">  <span class="attr">&quot;registry-mirrors&quot;</span><span class="punctuation">:</span> <span class="punctuation">[</span></span><br><span class="line">        <span class="string">&quot;https://dockerhub.azk8s.cn&quot;</span><span class="punctuation">,</span></span><br><span class="line">        <span class="string">&quot;https://hub-mirror.c.163.com&quot;</span></span><br><span class="line">    <span class="punctuation">]</span></span><br><span class="line"><span class="punctuation">&#125;</span></span><br></pre></td></tr></table></figure>
+
+<blockquote>
+<p>配置开机启动：<code>systemctl enable docker</code></p>
+</blockquote>
+<h3 id="底层原理"><a href="#底层原理" class="headerlink" title="底层原理"></a>底层原理</h3><p>run 命令的流程：</p>
+<p><img src="https://cdn.jsdelivr.net/gh/lemonpuer/figure@latest/blog-images/20240113211513.png" class="lazyload placeholder" data-srcset="https://cdn.jsdelivr.net/gh/lemonpuer/figure@latest/blog-images/20240113211513.png" srcset="https://pic1.zhimg.com/v2-cd38920285d125be80b3eb504052c550_b.webp" alt="e27d6910ca291baf9f382e063766cbc0.png"></p>
+<p>Docker是一个Client-Server结构的系统，Docker守护进程运行在主机上，然后通过Socket连接从客户端访问，守护进程从客户端接受命令并管理运行在主机上的容器。</p>
+<p>容器，是一个运行时环境，也就是Logo上的集装箱。</p>
+<p><img src="https://cdn.jsdelivr.net/gh/lemonpuer/figure@latest/blog-images/20240113211518.png" class="lazyload placeholder" data-srcset="https://cdn.jsdelivr.net/gh/lemonpuer/figure@latest/blog-images/20240113211518.png" srcset="https://pic1.zhimg.com/v2-cd38920285d125be80b3eb504052c550_b.webp" alt="be989fd0ab3c05b2f35e5b5caa24eef7.png"></p>
+<h2 id="常用命令"><a href="#常用命令" class="headerlink" title="常用命令"></a>常用命令</h2><h3 id="帮助命令"><a href="#帮助命令" class="headerlink" title="帮助命令"></a>帮助命令</h3><figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta prompt_">#</span><span class="language-bash">查看版本</span></span><br><span class="line">docker version</span><br><span class="line"><span class="meta prompt_">#</span><span class="language-bash">查看信息</span></span><br><span class="line">docker info</span><br><span class="line"><span class="meta prompt_">#</span><span class="language-bash">查看指令手册</span></span><br><span class="line">docker --help</span><br></pre></td></tr></table></figure>
+
+<h3 id="镜像命令"><a href="#镜像命令" class="headerlink" title="镜像命令"></a>镜像命令</h3><figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta prompt_">#</span><span class="language-bash">查看本机镜像</span></span><br><span class="line">docker images [OPTIONS]</span><br></pre></td></tr></table></figure>
+
+<p>常用参数：</p>
+<ul>
+<li>-a：列出本地所有的镜像（含中间映像层）</li>
+<li>-q：只显示镜像ID</li>
+<li>–digests：显示镜像的摘要信息</li>
+<li>–no-trunc：显示完整的镜像信息</li>
+</ul>
+<p>数据说明：</p>
+<ol>
+<li>REPOSITORY：表示镜像的仓库源</li>
+<li>TAG：镜像的标签</li>
+<li>IMAGE ID：镜像ID</li>
+<li>CREATED：镜像创建时间</li>
+<li>SIZE：镜像大小</li>
+</ol>
+<blockquote>
+<p>同一仓库源可以有多个 TAG，代表这个仓库源的不同个版本，我们使用 REPOSITORY:TAG 来定义不同的镜像。</p>
+<p>如果不指定版本标签，默认使用latest，示例：ubuntu:latest</p>
+</blockquote>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta prompt_">#</span><span class="language-bash">查找远程镜像</span></span><br><span class="line">docker search [OPTIONS] 镜像名字</span><br></pre></td></tr></table></figure>
+
+<p>参数说明：</p>
+<ul>
+<li>–no-trunc：显示完整的镜像描述</li>
+<li>-s：列出收藏数不小于指定值的镜像</li>
+<li>–automated：只列出 automated build类型的镜像</li>
+</ul>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta prompt_">#</span><span class="language-bash">下载镜像</span></span><br><span class="line">docker pull 镜像名字[:TAG]</span><br><span class="line"><span class="meta prompt_">#</span><span class="language-bash">删除镜像</span></span><br><span class="line">docker rmi 镜像名字[:TAG]/ID</span><br></pre></td></tr></table></figure>
+
+<ul>
+<li>-f：强制删除</li>
+</ul>
+<blockquote>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta prompt_">#</span><span class="language-bash">删除多个</span></span><br><span class="line">docker rmi -f 镜像名1:TAG 镜像名2:TAG </span><br><span class="line"><span class="meta prompt_">#</span><span class="language-bash">删除全部</span></span><br><span class="line">docker rmi -f $(docker images -qa)</span><br></pre></td></tr></table></figure>
+</blockquote>
+<h3 id="容器命令"><a href="#容器命令" class="headerlink" title="容器命令"></a>容器命令</h3><figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta prompt_">#</span><span class="language-bash">新建并启动容器</span></span><br><span class="line">docker run [OPTIONS] IMAGE [COMMAND] [ARG...]</span><br><span class="line"><span class="meta prompt_"></span></span><br><span class="line"><span class="meta prompt_">#</span><span class="language-bash">启动交互式容器,在容器内执行/bin/bash命令</span></span><br><span class="line">docker run -it centos /bin/bash</span><br></pre></td></tr></table></figure>
+
+<p>参数说明：</p>
+<ul>
+<li>–name&#x3D;”容器新名字”: 为容器指定一个名称；</li>
+<li>-d: 后台运行容器，并返回容器ID，也即启动守护式容器；</li>
+<li>-i：以交互模式运行容器，通常与 -t 同时使用；</li>
+<li>-t：为容器重新分配一个伪输入终端，通常与 -i 同时使用；</li>
+<li>-P: 随机端口映射；</li>
+<li>-p: 指定端口映射，有以下四种格式：<ul>
+<li>ip:hostPort:containerPort</li>
+<li>ip::containerPort</li>
+<li>hostPort:containerPort</li>
+<li>containerPort</li>
+</ul>
+</li>
+</ul>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta prompt_">#</span><span class="language-bash">列出当前所有正在运行的容器</span></span><br><span class="line">docker ps [OPTIONS]</span><br></pre></td></tr></table></figure>
+
+<p>参数说明：</p>
+<ul>
+<li>-a :列出当前所有正在运行的容器+历史上运行过的</li>
+<li>-l :显示最近创建的容器</li>
+<li>-n：显示最近n个创建的容器</li>
+<li>-q :静默模式，只显示容器编号</li>
+<li>–no-trunc :不截断输出</li>
+</ul>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta prompt_">#</span><span class="language-bash">退出并关闭容器</span></span><br><span class="line">exit</span><br><span class="line"><span class="meta prompt_">#</span><span class="language-bash">容器不停止退出(快捷键)</span></span><br><span class="line">ctrl+P+Q</span><br><span class="line"><span class="meta prompt_"></span></span><br><span class="line"><span class="meta prompt_">#</span><span class="language-bash">启动/重启/停止/强制停止容器</span></span><br><span class="line">docker start/restart/stop/kill 容器ID或者容器名</span><br><span class="line"><span class="meta prompt_"></span></span><br><span class="line"><span class="meta prompt_">#</span><span class="language-bash">删除已停止的容器</span></span><br><span class="line">docker rm 容器ID</span><br><span class="line"><span class="meta prompt_">#</span><span class="language-bash">删除多个容器</span></span><br><span class="line">docker rm -f $(docker ps -a -q)</span><br><span class="line">docker ps -a -q | xargs docker rm</span><br></pre></td></tr></table></figure>
+
+<h4 id="后台启动"><a href="#后台启动" class="headerlink" title="后台启动"></a>后台启动</h4><p>后台启动需要守护进程，不是所有的服务都可以后台启动的。</p>
+<p>示例：</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta prompt_">#</span><span class="language-bash">后台启动</span></span><br><span class="line">docker run -d centos</span><br><span class="line"><span class="meta prompt_">#</span><span class="language-bash">查看运行容器</span></span><br><span class="line">docker ps -a</span><br></pre></td></tr></table></figure>
+
+<p>会发现容器已经退出，因为没有前台服务，导致服务启动后会因为无事可做而被杀掉，而像redis、mysql等服务，由于存在守护进程，所以可以后台启动。</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta prompt_">#</span><span class="language-bash">查看容器日志</span></span><br><span class="line"><span class="meta prompt_">#</span><span class="language-bash">-t 是加入时间戳；-f 跟随最新的日志打印；--<span class="built_in">tail</span> 数字，显示最后多少条</span></span><br><span class="line">docker logs -f -t --tail 条数 容器ID</span><br><span class="line"><span class="meta prompt_"></span></span><br><span class="line"><span class="meta prompt_"></span></span><br><span class="line"><span class="meta prompt_">#</span><span class="language-bash">查看容器内运行的进程</span></span><br><span class="line">docker top 容器ID</span><br><span class="line"><span class="meta prompt_">#</span><span class="language-bash">查看容器内部细节</span></span><br><span class="line">docker inspect 容器ID</span><br></pre></td></tr></table></figure>
+
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta prompt_">#</span><span class="language-bash">重新进入后台容器</span></span><br><span class="line">docker exec -it 容器ID</span><br><span class="line">docker attach 容器ID</span><br></pre></td></tr></table></figure>
+
+<blockquote>
+<p>attach 直接进入容器启动命令的终端，不会启动新的进程</p>
+<p>exec 是在容器中打开新的终端，并且可以启动新的进程</p>
+<p>即使用attach命令时输入exit容易导致容器关闭。</p>
+</blockquote>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta prompt_">#</span><span class="language-bash">从容器内拷贝文件到主机上</span></span><br><span class="line">docker cp  容器ID:容器内路径 目的主机路径</span><br><span class="line"><span class="meta prompt_">#</span><span class="language-bash">导出容器内容（备份）</span></span><br><span class="line">docker export 容器ID &gt; 文件名.tar</span><br><span class="line"><span class="meta prompt_">#</span><span class="language-bash">导入tar包中的内容为一个镜像并创建新的文件系统</span></span><br><span class="line">docker import 文件名.tar - 镜像名:TAG</span><br></pre></td></tr></table></figure>
+
+<h2 id="数据卷"><a href="#数据卷" class="headerlink" title="数据卷"></a>数据卷</h2><figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">docker run -d -p 80:8080 -v 主机目录:容器目录 --privileged=true 容器名</span><br></pre></td></tr></table></figure>
+
+<p><code>-v</code>：目录挂载，将容器中的目录挂载到主机目录中（共享文件夹）；可以实现将容器内的数据保存进主机中</p>
+<blockquote>
+<p>默认容器具有读写权限</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">docker run -d -p 80:8080 -v 主机目录:容器目录:ro --privileged=true 容器名</span><br></pre></td></tr></table></figure>
+
+<p>其中ro表示readonly</p>
+</blockquote>
+<p><code>--privileged=true</code>：在centos7中目录挂载被视为不安全行为，所以需要使用此命令来解决权限问题</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta prompt_">#</span><span class="language-bash">查看数据卷是否挂载成功</span></span><br><span class="line">docker inspect 容器ID</span><br></pre></td></tr></table></figure>
+
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta prompt_">#</span><span class="language-bash">继承其它容器的卷规则</span></span><br><span class="line">docker run -it --privileged=true --volumes-from 容器id --name 容器名 镜像名</span><br></pre></td></tr></table></figure>
+
+<h2 id="镜像"><a href="#镜像" class="headerlink" title="镜像"></a>镜像</h2><p>镜像是一种轻量级、可执行的独立软件包，它包含运行某个软件所需的所有内容。</p>
+<p>**联合文件系统(UnionFS)**：联合文件系统是一种分层、轻量级并且高性能的文件系统，它支持对文件系统的修改作为一个提交来一层层的叠加，同时可以将不同目录挂载到同一个虚拟文件系统下。</p>
+<p>UnionFS 是 Docker 镜像的基础。镜像可以通过分层来进行继承，基于基础镜像（没有父镜像），可以制作各种具体的应用镜像（类似花卷）。</p>
+<p>特性：一次同时加载多个文件系统，但从外面看起来，只能看到一个文件系统，联合加载会把各层文件系统叠加起来，这样最终的文件系统会包含所有底层的文件和目录。</p>
+<p>注意：Docker镜像层都是只读的，容器层（最外暴露的一层）时可写的</p>
+<h3 id="制作与提交"><a href="#制作与提交" class="headerlink" title="制作与提交"></a>制作与提交</h3><figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta prompt_">#</span><span class="language-bash">提交容器副本使之成为一个新的镜像</span></span><br><span class="line">docker commit -m=&quot;描述信息&quot; -a=&quot;作者&quot; 容器ID 目标镜像名:标签名</span><br></pre></td></tr></table></figure>
+
+<p>上面的操作只是将镜像提交到了本地，可以通过<code>docker images</code>查看</p>
+<p>我们可以将提交的本地镜像提交到阿里云个人仓库：<a target="_blank" rel="noopener" href="https://promotion.aliyun.com/ntms/act/kubernetes.html">开放云原生应用-云原生（Cloud Native）</a></p>
+<p>登录后搜索 容器镜像服务，然后选择个人根据提示创建命名空间及仓库（选择本地仓库），然后根据操作指南进行提交即可，以下记录一下相关命令：</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta prompt_">#</span><span class="language-bash">登录</span></span><br><span class="line">docker login --username=lemonpuer registry.cn-hangzhou.aliyuncs.com</span><br><span class="line"><span class="meta prompt_">#</span><span class="language-bash">从Registry中拉取镜像</span></span><br><span class="line">docker pull registry.cn-hangzhou.aliyuncs.com/lemonpuer/lemon:[镜像版本号]</span><br><span class="line"><span class="meta prompt_"></span></span><br><span class="line"><span class="meta prompt_">#</span><span class="language-bash">重命名镜像</span></span><br><span class="line">docker tag [ImageId] registry.cn-hangzhou.aliyuncs.com/lemonpuer/lemon:[镜像版本号]</span><br><span class="line"><span class="meta prompt_">#</span><span class="language-bash">推送镜像</span></span><br><span class="line">docker push registry.cn-hangzhou.aliyuncs.com/lemonpuer/lemon:[镜像版本号]</span><br></pre></td></tr></table></figure>
+
+<blockquote>
+<p>登录密码为开通服务是设置的秘密</p>
+</blockquote>
+<h4 id="私有库"><a href="#私有库" class="headerlink" title="私有库"></a>私有库</h4><p>Docker Registry：Docker官方提供的工具，用于构建私有镜像仓库</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta prompt_">#</span><span class="language-bash">拉取镜像</span></span><br><span class="line">docker pull registry</span><br><span class="line"><span class="meta prompt_">#</span><span class="language-bash">启动</span></span><br><span class="line">docker run -d -p 5000:5000  -v /registry/myregistry/:/tmp/registry --privileged=true registry</span><br><span class="line"><span class="meta prompt_">#</span><span class="language-bash">查看库中镜像</span></span><br><span class="line">curl -XGET http://ip:5000/v2/_catalo</span><br><span class="line"><span class="meta prompt_">#</span><span class="language-bash">默认不支持http，修改配置文件</span></span><br><span class="line">vim /etc/docker/daemon.json</span><br><span class="line">&#123;</span><br><span class="line">  &quot;registry-mirrors&quot;: [</span><br><span class="line">        &quot;https://dockerhub.azk8s.cn&quot;,</span><br><span class="line">        &quot;https://hub-mirror.c.163.com&quot;</span><br><span class="line">    ],</span><br><span class="line">  &quot;insecure-registries&quot;: [&quot;ip:5000&quot;]</span><br><span class="line">&#125;</span><br><span class="line"><span class="meta prompt_">#</span><span class="language-bash">修改本地镜像TAG</span></span><br><span class="line">docker tag  镜像名:TAG ip:5000/镜像名:TAG</span><br><span class="line"><span class="meta prompt_">#</span><span class="language-bash">推送到私服</span></span><br><span class="line">docker push ip:5000/镜像名:TAG</span><br><span class="line"><span class="meta prompt_">#</span><span class="language-bash">拉取镜像</span></span><br><span class="line">docker pull ip:5000/镜像名:TAG</span><br></pre></td></tr></table></figure>
+
+<h3 id="安装MySQL"><a href="#安装MySQL" class="headerlink" title="安装MySQL"></a>安装MySQL</h3><p>不建议直接使用<code>docker run mysql</code>，数据容易丢失。</p>
+<p>推荐命令：</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">docker run -d -p 3306:3306 --privileged=true -v /mydata/mysql/log:/var/log/mysql -v /mydata/mysql/data:/var/lib/mysql -v /mydata/mysql/conf:/etc/mysql/conf.d -e MYSQL_ROOT_PASSWORD=123456  --name mysql mysql:8.0.31-debian</span><br></pre></td></tr></table></figure>
+
+<blockquote>
+<p>这样即使直接将容器删除，也不会影响表中的数据</p>
+</blockquote>
+<h3 id="安装Redis"><a href="#安装Redis" class="headerlink" title="安装Redis"></a>安装Redis</h3><figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">docker run  -p 6379:6379 --name redis --privileged=true -v /mydata/redis/redis.conf:/etc/redis/redis.conf -v /mydata/redis/data:/data -d redis redis-server /etc/redis/redis.conf</span><br></pre></td></tr></table></figure>
+
+<p>配置文件：<a href="../../_resources/redis.conf">redis.conf</a></p>
+<h1 id="进阶部分"><a href="#进阶部分" class="headerlink" title="进阶部分"></a>进阶部分</h1><h2 id="集群安装"><a href="#集群安装" class="headerlink" title="集群安装"></a>集群安装</h2><h3 id="MySQL"><a href="#MySQL" class="headerlink" title="MySQL"></a>MySQL</h3><figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta prompt_">#</span><span class="language-bash">启动master</span></span><br><span class="line">docker run -d -p 3306:3306 --privileged=true -v /mydata/mysql/log:/var/log/mysql -v /mydata/mysql/data:/var/lib/mysql -v /mydata/mysql/conf:/etc/mysql/conf.d -e MYSQL_ROOT_PASSWORD=123456  --name mysql-master mysql:8.0.31-debian</span><br><span class="line"><span class="meta prompt_">#</span><span class="language-bash">进入master</span></span><br><span class="line">docker exec -it mysql-master /bin/bash</span><br><span class="line"><span class="meta prompt_">#</span><span class="language-bash">登录后创建数据同步用户</span></span><br><span class="line">CREATE USER &#x27;slave&#x27;@&#x27;%&#x27; IDENTIFIED BY &#x27;123456&#x27;;</span><br><span class="line">GRANT REPLICATION SLAVE, REPLICATION CLIENT ON *.* TO &#x27;slave&#x27;@&#x27;%&#x27;;</span><br><span class="line"><span class="meta prompt_"></span></span><br><span class="line"><span class="meta prompt_">#</span><span class="language-bash">启动slave</span></span><br><span class="line">docker run -d -p 3307:3306 --privileged=true -v /mydata/mysql/log:/var/log/mysql -v /mydata/mysql/data:/var/lib/mysql -v /mydata/mysql/conf:/etc/mysql/conf.d -e MYSQL_ROOT_PASSWORD=123456  --name mysql-slave mysql:8.0.31-debian</span><br><span class="line"><span class="meta prompt_">#</span><span class="language-bash">进入slave</span></span><br><span class="line">docker exec -it mysql-slave /bin/bash</span><br><span class="line"><span class="meta prompt_">#</span><span class="language-bash">登陆后配置主从复制</span></span><br><span class="line">change master to master_host=&#x27;宿主机ip&#x27;, master_user=&#x27;slave&#x27;, master_password=&#x27;123456&#x27;, master_port=3306, master_log_file=&#x27;mall-mysql-bin.000001&#x27;, master_log_pos=617, master_connect_retry=30;</span><br></pre></td></tr></table></figure>
+
+<p>主从复制参数说明：</p>
+<ul>
+<li>master_host：主数据库的IP地址；</li>
+<li>master_port：主数据库的运行端口；</li>
+<li>master_user：在主数据库创建的用于同步数据的用户账号；</li>
+<li>master_password：在主数据库创建的用于同步数据的用户密码；</li>
+<li>master_log_file：指定从数据库要复制数据的日志文件，通过查看主数据的状态，获取File参数；</li>
+<li>master_log_pos：指定从数据库从哪个位置开始复制数据，通过查看主数据的状态，获取Position参数；</li>
+<li>master_connect_retry：连接失败重试的时间间隔，单位为秒。</li>
+</ul>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">#在数据库中查看主从同步状态</span><br><span class="line">show slave status \G;</span><br><span class="line">#在从数据库中开启主从同步</span><br><span class="line">start slave;</span><br></pre></td></tr></table></figure>
+
+<blockquote>
+<p>&#x2F;G 表示以键值对的形式展示</p>
+</blockquote>
+<h3 id="Redis"><a href="#Redis" class="headerlink" title="Redis"></a>Redis</h3><p>理论：</p>
+<p>redis集群有三种存储方案：</p>
+<ul>
+<li>哈希取余分区</li>
+</ul>
+<p>缺点：扩容和缩容后，映射关系需要重新进行计算(很多数据要迁移)</p>
+<ul>
+<li>一致性哈希算法分区</li>
+</ul>
+<p>乍一听听不懂，其实也很好理解，构建一个一致性哈希环[0,2^32-1]，根据Redis的信息映射到哈希环的一个点，key根据计算会落到哈希环的一个点，它顺时针遇到的第一个Redis便存储该数据。</p>
+<p>有更好的容错性和扩展性，扩缩容只会改变哈希环中两个redis节点之间的数据，但新的问题是容易因为节点分布不均匀造成数据倾斜。</p>
+<ul>
+<li>哈希槽（Redis采用的方式）</li>
+</ul>
+<p>Redis 集群中内置了 16384 个哈希槽，redis 会根据节点数量大致均等的将哈希槽映射到不同的节点。我们只需要控制每个Redis节点分配的槽数即可。</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line">docker run -d --name redis-node-1 --net host --privileged=true -v /mydata/redis/share/redis-node-1:/mydata redis --cluster-enabled yes --appendonly yes --port 6381</span><br><span class="line"></span><br><span class="line">docker run -d --name redis-node-2 --net host --privileged=true -v /mydata/redis/share/redis-node-2:/mydata redis --cluster-enabled yes --appendonly yes --port 6382</span><br><span class="line"> </span><br><span class="line">docker run -d --name redis-node-3 --net host --privileged=true -v /mydata/redis/share/redis-node-3:/mydata redis --cluster-enabled yes --appendonly yes --port 6383</span><br><span class="line"> </span><br><span class="line">docker run -d --name redis-node-4 --net host --privileged=true -v /mydata/redis/share/redis-node-4:/mydata redis --cluster-enabled yes --appendonly yes --port 6384</span><br><span class="line"> </span><br><span class="line">docker run -d --name redis-node-5 --net host --privileged=true -v /mydata/redis/share/redis-node-5:/mydata redis --cluster-enabled yes --appendonly yes --port 6385</span><br><span class="line"> </span><br><span class="line">docker run -d --name redis-node-6 --net host --privileged=true -v /mydata/redis/share/redis-node-6:/mydata redis --cluster-enabled yes --appendonly yes --port 6386</span><br></pre></td></tr></table></figure>
+
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta prompt_">#</span><span class="language-bash">设置主从关系</span></span><br><span class="line">redis-cli --cluster create 192.168.124.106:6381 192.168.124.106:6382 192.168.124.106:6383 192.168.124.106:6384 192.168.124.106:6385 192.168.124.106:6386 --cluster-replicas 1</span><br></pre></td></tr></table></figure>
+
+<blockquote>
+<p>–cluster-replicas 1 表示为每个master创建一个slave节点；集群会自动搭配对应的主从关系</p>
+</blockquote>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta prompt_">#</span><span class="language-bash">查看节点状态</span></span><br><span class="line">cluster info</span><br><span class="line">cluster nodes</span><br></pre></td></tr></table></figure>
+
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta prompt_">#</span><span class="language-bash">连接集群</span></span><br><span class="line">redis-cli -p 6381 -c</span><br><span class="line"><span class="meta prompt_">#</span><span class="language-bash">查看集群信息</span></span><br><span class="line">redis-cli --cluster check ip:6381</span><br></pre></td></tr></table></figure>
+
+<blockquote>
+<p>-c：优化路由；如果不带会导致部分数据不能存储</p>
+</blockquote>
+<h4 id="扩缩容"><a href="#扩缩容" class="headerlink" title="扩缩容"></a>扩缩容</h4><figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta prompt_">#</span><span class="language-bash">新增节点</span></span><br><span class="line">docker run -d --name redis-node-7 --net host --privileged=true -v /mydata/redis/share/redis-node-7:/mydata redis --cluster-enabled yes --appendonly yes --port 6387</span><br><span class="line"></span><br><span class="line">docker run -d --name redis-node-8 --net host --privileged=true -v /mydata/redis/share/redis-node-8:/mydata redis --cluster-enabled yes --appendonly yes --port 6388</span><br><span class="line"><span class="meta prompt_"></span></span><br><span class="line"><span class="meta prompt_">#</span><span class="language-bash">将7号节点作为master加入集群</span></span><br><span class="line">redis-cli --cluster add-node 自己实际IP地址:6387 自己实际IP地址:6381</span><br><span class="line"><span class="meta prompt_">#</span><span class="language-bash">重新分配槽号</span></span><br><span class="line">redis-cli --cluster reshard ip:6381</span><br><span class="line"><span class="meta prompt_">#</span><span class="language-bash">分配从节点</span></span><br><span class="line">redis-cli --cluster add-node ip:新slave端口 ip:新master端口 --cluster-slave --cluster-master-id 新主机节点ID</span><br></pre></td></tr></table></figure>
+
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta prompt_">#</span><span class="language-bash">从节点可以直接删除</span></span><br><span class="line">redis-cli --cluster del-node ip:6388 从机6388节点ID</span><br><span class="line"><span class="meta prompt_">#</span><span class="language-bash">将7号节点中的槽位分配给其它节点</span></span><br><span class="line">redis-cli --cluster reshard ip:6381</span><br><span class="line"><span class="meta prompt_">#</span><span class="language-bash">删除7号节点</span></span><br></pre></td></tr></table></figure>
+
+<blockquote>
+<p>扩缩容其实和Redis第五章在虚拟机中的操作一样</p>
+</blockquote>
+<h2 id="DockerFile"><a href="#DockerFile" class="headerlink" title="DockerFile"></a>DockerFile</h2><p>Dockerfile是用来构建Docker镜像的文本文件，是由一条条构建镜像所需的指令和参数构成的脚本。</p>
+<p>官方教程：<a target="_blank" rel="noopener" href="https://docs.docker.com/engine/reference/builder/">Dockerfile reference | Docker Docs</a></p>
+<p>规范：</p>
+<ul>
+<li>每条保留字指令都<strong>必须为大写字母</strong>且后面要跟随至少一个参数</li>
+<li>指令按照从上到下，顺序执行</li>
+<li>#表示注释</li>
+<li>每条指令都会创建一个新的镜像层并对镜像进行提交</li>
+</ul>
+<p>内部流程：</p>
+<ol>
+<li>docker从基础镜像运行一个容器</li>
+<li>执行一条指令并对容器作出修改</li>
+<li>执行类似docker commit的操作提交一个新的镜像层</li>
+<li>docker再基于刚提交的镜像运行一个新容器</li>
+<li>循环上面操作直到所有指令都执行完成</li>
+</ol>
+<h3 id="常用指令"><a href="#常用指令" class="headerlink" title="常用指令"></a>常用指令</h3><ol>
+<li>FROM：基础镜像，当前新镜像是基于哪个镜像的，指定一个已经存在的镜像作为模板，第一条指令必须是from</li>
+<li>MAINTAINER：镜像维护者的姓名和邮箱地址</li>
+<li>RUN：容器构建时需要运行的命令，有两种格式：<ul>
+<li>shell格式：<code>RUN &lt;命令行命令&gt;</code>；示例：<code>RUN yum -y install vim</code></li>
+<li>exec格式：<code>RUN [&quot;可执行文件&quot;,&quot;参数1&quot;,&quot;参数2&quot;...]</code>；示例：<code>RUN [&quot;~/zk.sh&quot;,&quot;stop&quot;]</code>等价于<code>RUN ~/zk.sh stop</code></li>
+</ul>
+</li>
+<li>EXPOSE：声明当前容器对外暴露的端口</li>
+<li>WORKDIR：指定在创建容器后，终端默认登陆的进来工作目录，一个落脚点</li>
+<li>USER：指定该镜像以什么样的用户去执行，如果都不指定，默认是root</li>
+<li>ENV：用来在构建镜像过程中设置环境变量</li>
+<li>ADD：将宿主机目录下的文件拷贝进镜像且会自动处理URL和解压tar压缩包</li>
+<li>COPY：类似ADD，拷贝文件和目录到镜像中。将从构建上下文目录中 &lt;源路径&gt; 的文件&#x2F;目录复制到新的一层的镜像内的 &lt;目标路径&gt; 位置。<code>COPY src源路径 dest目标路径</code>或<code>COPY [&quot;src源路径&quot;, &quot;dest目标路径&quot;]</code></li>
+<li>VOLUME：容器数据卷，用于数据保存和持久化工作</li>
+<li>CMD：指定容器启动后的操作，除了shell格式和exec格式，当指定了ENTRYPOINT指令时，会成为参数列表格式：<code>CMD [&quot;参数1&quot;,&quot;参数2&quot;...]</code></li>
+</ol>
+<blockquote>
+<p>Dockerfile 中可以有多个 CMD 指令，但只有最后一个生效，CMD 会被 docker run 之后的参数替换</p>
+<p>CMD是在docker run时运行；RUN是在docker build时运行。</p>
+</blockquote>
+<ol start="12">
+<li>ENTRYPOINT：用来指定一个容器启动时要运行的命令；类似于 CMD 指令，但是ENTRYPOINT不会被docker run后面的命令覆盖，并且这些命令行参数会被当作参数送给 ENTRYPOINT 指令指定的程序</li>
+</ol>
+<p>案例说明：</p>
+<figure class="highlight dockerfile"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">FROM</span> nginx</span><br><span class="line"><span class="comment">#定参</span></span><br><span class="line"><span class="keyword">ENTRYPOINT</span><span class="language-bash"> [<span class="string">&quot;nginx&quot;</span>,<span class="string">&quot;-c&quot;</span>]</span></span><br><span class="line"><span class="comment">#变参</span></span><br><span class="line"><span class="keyword">CMD</span><span class="language-bash"> [<span class="string">&quot;/etc/nginx/nginx.conf&quot;</span>]</span></span><br></pre></td></tr></table></figure>
+
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta prompt_">#</span><span class="language-bash">实际效果：nginx -c /etc/nginx/nginx.conf</span></span><br><span class="line">docker run nginx:test</span><br><span class="line"><span class="meta prompt_">#</span><span class="language-bash">实际效果：nginx -c /etc/nginx/new.conf</span></span><br><span class="line">docker run  nginx:test /etc/nginx/new.conf</span><br></pre></td></tr></table></figure>
+
+<p>配置Redis+Java8的镜像：</p>
+<figure class="highlight dockerfile"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">#当前最新的7.2.3；debian</span></span><br><span class="line"><span class="keyword">FROM</span> redis</span><br><span class="line"></span><br><span class="line"><span class="keyword">ADD</span><span class="language-bash"> jdk-8u391-linux-x64.tar.gz /usr/local/java/</span></span><br><span class="line"><span class="comment">#配置java环境变量</span></span><br><span class="line"><span class="keyword">ENV</span> JAVA_HOME /usr/local/java/jdk1.<span class="number">8.0</span>_391</span><br><span class="line"><span class="keyword">ENV</span> JRE_HOME $JAVA_HOME/jre</span><br><span class="line"><span class="keyword">ENV</span> CLASSPATH $JAVA_HOME/lib/dt.jar:$JAVA_HOME/lib/tools.jar:$JRE_HOME/lib:$CLASSPATH</span><br><span class="line"><span class="keyword">ENV</span> PATH $JAVA_HOME/bin:$PATH</span><br><span class="line"></span><br><span class="line"><span class="keyword">EXPOSE</span> <span class="number">8080</span></span><br></pre></td></tr></table></figure>
+
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta prompt_">#</span><span class="language-bash">构建</span></span><br><span class="line">docker build -t mylinux:1.0 .</span><br><span class="line"><span class="meta prompt_">#</span><span class="language-bash">运行</span></span><br><span class="line">docker run  -p 6379:6379 -p 80:8080 --name mylinux --privileged=true -v /mydata/redis/redis.conf:/etc/redis/redis.conf -v /mydata/redis/data:/data -d mylinux:1.0 redis-server /etc/redis/redis.conf</span><br></pre></td></tr></table></figure>
+
+<h3 id="虚悬镜像"><a href="#虚悬镜像" class="headerlink" title="虚悬镜像"></a>虚悬镜像</h3><p>仓库名、标签都是<none>的镜像，俗称dangling image</p>
+<p>虚悬镜像没有存在的价值，一般都删掉</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta prompt_">#</span><span class="language-bash">查看</span></span><br><span class="line">docker image ls -f dangling=true</span><br><span class="line"><span class="meta prompt_">#</span><span class="language-bash">删除</span></span><br><span class="line">docker image prune</span><br></pre></td></tr></table></figure>
+
+<h2 id="Docker网络"><a href="#Docker网络" class="headerlink" title="Docker网络"></a>Docker网络</h2><p>在我们启动Docker后，使用<code>ip addr</code>会发现列表中多了一个docker0</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta prompt_">#</span><span class="language-bash">查看docker网络模式命令</span></span><br><span class="line">docker network ls</span><br></pre></td></tr></table></figure>
+
+<p>默认三大网络模式：</p>
+<ol>
+<li>bridge：网桥模式（相当于NAT）</li>
+<li>host：主机网络（相当于主机网络）</li>
+<li>none：无网络</li>
+</ol>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta prompt_">#</span><span class="language-bash">查看网络源数据</span></span><br><span class="line">docker network inspect XXX网络名字</span><br><span class="line"><span class="meta prompt_">#</span><span class="language-bash">新建网络</span></span><br><span class="line">docker network create XXX网络名字</span><br><span class="line"><span class="meta prompt_">#</span><span class="language-bash">删除网络</span></span><br><span class="line">docker network rm XXX网络名字</span><br></pre></td></tr></table></figure>
+
+<p>作用：内置了容器服务名和ip的映射，容器IP变动时候可以通过服务名直接网络通信而不受到影响</p>
+<ol start="4">
+<li>container：和已经存在的一个容器共享一个网络ip配置</li>
+</ol>
+<p>示例：<code>docker run -it --network container:alpine1 --name alpine2  alpine /bin/sh</code></p>
+<blockquote>
+<p>关闭alpine1；alpine2的网路数据也会消失</p>
+</blockquote>
+<h2 id="容器编排"><a href="#容器编排" class="headerlink" title="容器编排"></a>容器编排</h2><p>Docker-Compose是Docker官方的开源项目，负责实现对Docker容器集群的快速编排。</p>
+<p>当服务过多并且相互有依赖关系（设定启动顺序）的情况是，我们手动一个个启动容器是非常累的，Compose允许用户通过一个单独的docker-compose.yml模板文件（YAML 格式）来定义一组相关联的应用容器为一个项目（project），这样可以很容易地用一个配置文件定义一个多容器的工程，然后使用一条指令完成项目构建和启动。</p>
+<p>官网介绍：<a target="_blank" rel="noopener" href="https://docs.docker.com/compose/compose-file/compose-file-v3/">Compose 文件版本 3 参考 |Docker 文档</a></p>
+<p>下载：<a target="_blank" rel="noopener" href="https://docs.docker.com/compose/install/linux/#install-the-plugin-manually">安装 Compose 插件 |Docker 文档</a></p>
+<p>概念：</p>
+<ul>
+<li>服务：应用容器实例</li>
+<li>工程：由一组关联的应用容器组成的一个完整业务单元，在 docker-compose.yml 文件中定义</li>
+</ul>
+<p>使用步骤：</p>
+<ol>
+<li>编写Dockerfile定义各个微服务应用并构建出对应的镜像文件</li>
+<li>使用 docker-compose.yml 定义一个完整业务单元，安排好整体应用中的各个容器服务。</li>
+<li>执行<code>docker-compose up</code>命令 来启动并运行整个应用程序，完成一键部署上线</li>
+</ol>
+<p>常用命令：</p>
+<table>
+<thead>
+<tr>
+<th align="center">命令</th>
+<th>说明</th>
+</tr>
+</thead>
+<tbody><tr>
+<td align="center">docker-compose -h</td>
+<td>查看帮助</td>
+</tr>
+<tr>
+<td align="center">docker-compose up</td>
+<td>启动所有docker-compose服务</td>
+</tr>
+<tr>
+<td align="center">docker-compose up -d</td>
+<td>启动所有docker-compose服务并后台运行</td>
+</tr>
+<tr>
+<td align="center">docker-compose down</td>
+<td>停止并删除容器、网络、卷、镜像</td>
+</tr>
+<tr>
+<td align="center">docker-compose exec  yml里面的服务id</td>
+<td>进入容器实例内部  docker-compose exec docker-compose.yml文件中写的服务id &#x2F;bin&#x2F;bash</td>
+</tr>
+<tr>
+<td align="center">docker-compose ps</td>
+<td>展示当前docker-compose编排过的运行的所有容器</td>
+</tr>
+<tr>
+<td align="center">docker-compose top</td>
+<td>展示当前docker-compose编排过的容器进程</td>
+</tr>
+<tr>
+<td align="center">docker-compose logs  yml里面的服务id</td>
+<td>查看容器输出日志</td>
+</tr>
+<tr>
+<td align="center">docker-compose config</td>
+<td>检查配置</td>
+</tr>
+<tr>
+<td align="center">docker-compose config -q</td>
+<td>检查配置，有问题才有输出</td>
+</tr>
+<tr>
+<td align="center">docker-compose restart</td>
+<td>重启服务</td>
+</tr>
+<tr>
+<td align="center">docker-compose start</td>
+<td>启动服务</td>
+</tr>
+<tr>
+<td align="center">docker-compose stop</td>
+<td>停止服务</td>
+</tr>
+</tbody></table>
+<p>示例：</p>
+<figure class="highlight yaml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br></pre></td><td class="code"><pre><span class="line"><span class="attr">version:</span> <span class="string">&quot;3&quot;</span></span><br><span class="line"> </span><br><span class="line"><span class="attr">services:</span></span><br><span class="line">  <span class="attr">microService:</span></span><br><span class="line">    <span class="attr">image:</span> <span class="string">zzyy_docker:1.6</span></span><br><span class="line">    <span class="attr">container_name:</span> <span class="string">ms01</span></span><br><span class="line">    <span class="attr">ports:</span></span><br><span class="line">      <span class="bullet">-</span> <span class="string">&quot;6001:6001&quot;</span></span><br><span class="line">    <span class="attr">volumes:</span></span><br><span class="line">      <span class="bullet">-</span> <span class="string">/app/microService:/data</span></span><br><span class="line">    <span class="attr">networks:</span> </span><br><span class="line">      <span class="bullet">-</span> <span class="string">atguigu_net</span> </span><br><span class="line">    <span class="attr">depends_on:</span> </span><br><span class="line">      <span class="bullet">-</span> <span class="string">redis</span></span><br><span class="line">      <span class="bullet">-</span> <span class="string">mysql</span></span><br><span class="line"> </span><br><span class="line">  <span class="attr">redis:</span></span><br><span class="line">    <span class="attr">image:</span> <span class="string">redis:6.0.8</span></span><br><span class="line">    <span class="attr">ports:</span></span><br><span class="line">      <span class="bullet">-</span> <span class="string">&quot;6379:6379&quot;</span></span><br><span class="line">    <span class="attr">volumes:</span></span><br><span class="line">      <span class="bullet">-</span> <span class="string">/app/redis/redis.conf:/etc/redis/redis.conf</span></span><br><span class="line">      <span class="bullet">-</span> <span class="string">/app/redis/data:/data</span></span><br><span class="line">    <span class="attr">networks:</span> </span><br><span class="line">      <span class="bullet">-</span> <span class="string">atguigu_net</span></span><br><span class="line">    <span class="attr">command:</span> <span class="string">redis-server</span> <span class="string">/etc/redis/redis.conf</span></span><br><span class="line"> </span><br><span class="line">  <span class="attr">mysql:</span></span><br><span class="line">    <span class="attr">image:</span> <span class="string">mysql:5.7</span></span><br><span class="line">    <span class="attr">environment:</span></span><br><span class="line">      <span class="attr">MYSQL_ROOT_PASSWORD:</span> <span class="string">&#x27;123456&#x27;</span></span><br><span class="line">      <span class="attr">MYSQL_ALLOW_EMPTY_PASSWORD:</span> <span class="string">&#x27;no&#x27;</span></span><br><span class="line">      <span class="attr">MYSQL_DATABASE:</span> <span class="string">&#x27;db2021&#x27;</span></span><br><span class="line">      <span class="attr">MYSQL_USER:</span> <span class="string">&#x27;zzyy&#x27;</span></span><br><span class="line">      <span class="attr">MYSQL_PASSWORD:</span> <span class="string">&#x27;zzyy123&#x27;</span></span><br><span class="line">    <span class="attr">ports:</span></span><br><span class="line">       <span class="bullet">-</span> <span class="string">&quot;3306:3306&quot;</span></span><br><span class="line">    <span class="attr">volumes:</span></span><br><span class="line">       <span class="bullet">-</span> <span class="string">/app/mysql/db:/var/lib/mysql</span></span><br><span class="line">       <span class="bullet">-</span> <span class="string">/app/mysql/conf/my.cnf:/etc/my.cnf</span></span><br><span class="line">       <span class="bullet">-</span> <span class="string">/app/mysql/init:/docker-entrypoint-initdb.d</span></span><br><span class="line">    <span class="attr">networks:</span></span><br><span class="line">      <span class="bullet">-</span> <span class="string">atguigu_net</span></span><br><span class="line">    <span class="attr">command:</span> <span class="string">--default-authentication-plugin=mysql_native_password</span> <span class="comment">#解决外部无法访问</span></span><br><span class="line"> </span><br><span class="line"><span class="attr">networks:</span> </span><br><span class="line">   <span class="attr">atguigu_net:</span> </span><br></pre></td></tr></table></figure>
+
+<h2 id="可视化工具"><a href="#可视化工具" class="headerlink" title="可视化工具"></a>可视化工具</h2><p>Portainer 是一款轻量级的应用，它提供了图形化界面，用于方便地管理Docker环境，包括单机环境和集群环境。</p>
+<p>官网：<a target="_blank" rel="noopener" href="https://www.portainer.io/">Portainer</a>；<a target="_blank" rel="noopener" href="https://docs.portainer.io/start/install-ce/server/docker/linux">Install Portainer CE with Docker</a></p>
+<blockquote>
+<p>CE表示社区版；跟着官网操作安装即可</p>
+</blockquote>
+<h2 id="容器监控CIG"><a href="#容器监控CIG" class="headerlink" title="容器监控CIG"></a>容器监控CIG</h2><p>通过<code>docker status</code>可以查看当前机器上所有容器的资源占用数据，但数据资料是实时的，没有数据存储、健康预警等功能。</p>
+<p>CIG：CAdvisor监控收集+InfluxDB存储数据+Granfana展示图表</p>
+<p>对应的docker-compose.yml：</p>
+<figure class="highlight yaml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br></pre></td><td class="code"><pre><span class="line"><span class="attr">version:</span> <span class="string">&#x27;3.1&#x27;</span></span><br><span class="line"> </span><br><span class="line"><span class="attr">volumes:</span></span><br><span class="line">  <span class="attr">grafana_data:</span> &#123;&#125;</span><br><span class="line"> </span><br><span class="line"><span class="attr">services:</span></span><br><span class="line"> <span class="attr">influxdb:</span></span><br><span class="line">  <span class="attr">image:</span> <span class="string">tutum/influxdb:0.9</span></span><br><span class="line">  <span class="attr">restart:</span> <span class="string">always</span></span><br><span class="line">  <span class="attr">environment:</span></span><br><span class="line">    <span class="bullet">-</span> <span class="string">PRE_CREATE_DB=cadvisor</span></span><br><span class="line">  <span class="attr">ports:</span></span><br><span class="line">    <span class="bullet">-</span> <span class="string">&quot;8083:8083&quot;</span></span><br><span class="line">    <span class="bullet">-</span> <span class="string">&quot;8086:8086&quot;</span></span><br><span class="line">  <span class="attr">volumes:</span></span><br><span class="line">    <span class="bullet">-</span> <span class="string">./data/influxdb:/data</span></span><br><span class="line"> </span><br><span class="line"> <span class="attr">cadvisor:</span></span><br><span class="line">  <span class="attr">image:</span> <span class="string">google/cadvisor</span></span><br><span class="line">  <span class="attr">links:</span></span><br><span class="line">    <span class="bullet">-</span> <span class="string">influxdb:influxsrv</span></span><br><span class="line">  <span class="attr">command:</span> <span class="string">-storage_driver=influxdb</span> <span class="string">-storage_driver_db=cadvisor</span> <span class="string">-storage_driver_host=influxsrv:8086</span></span><br><span class="line">  <span class="attr">restart:</span> <span class="string">always</span></span><br><span class="line">  <span class="attr">ports:</span></span><br><span class="line">    <span class="bullet">-</span> <span class="string">&quot;8080:8080&quot;</span></span><br><span class="line">  <span class="attr">volumes:</span></span><br><span class="line">    <span class="bullet">-</span> <span class="string">/:/rootfs:ro</span></span><br><span class="line">    <span class="bullet">-</span> <span class="string">/var/run:/var/run:rw</span></span><br><span class="line">    <span class="bullet">-</span> <span class="string">/sys:/sys:ro</span></span><br><span class="line">    <span class="bullet">-</span> <span class="string">/var/lib/docker/:/var/lib/docker:ro</span></span><br><span class="line"> </span><br><span class="line"> <span class="attr">grafana:</span></span><br><span class="line">  <span class="attr">user:</span> <span class="string">&quot;104&quot;</span></span><br><span class="line">  <span class="attr">image:</span> <span class="string">grafana/grafana</span></span><br><span class="line">  <span class="attr">user:</span> <span class="string">&quot;104&quot;</span></span><br><span class="line">  <span class="attr">restart:</span> <span class="string">always</span></span><br><span class="line">  <span class="attr">links:</span></span><br><span class="line">    <span class="bullet">-</span> <span class="string">influxdb:influxsrv</span></span><br><span class="line">  <span class="attr">ports:</span></span><br><span class="line">    <span class="bullet">-</span> <span class="string">&quot;3000:3000&quot;</span></span><br><span class="line">  <span class="attr">volumes:</span></span><br><span class="line">    <span class="bullet">-</span> <span class="string">grafana_data:/var/lib/grafana</span></span><br><span class="line">  <span class="attr">environment:</span></span><br><span class="line">    <span class="bullet">-</span> <span class="string">HTTP_USER=admin</span></span><br><span class="line">    <span class="bullet">-</span> <span class="string">HTTP_PASS=admin</span></span><br><span class="line">    <span class="bullet">-</span> <span class="string">INFLUXDB_HOST=influxsrv</span></span><br><span class="line">    <span class="bullet">-</span> <span class="string">INFLUXDB_PORT=8086</span></span><br><span class="line">    <span class="bullet">-</span> <span class="string">INFLUXDB_NAME=cadvisor</span></span><br><span class="line">    <span class="bullet">-</span> <span class="string">INFLUXDB_USER=root</span></span><br><span class="line">    <span class="bullet">-</span> <span class="string">INFLUXDB_PASS=root</span></span><br></pre></td></tr></table></figure>
+
+<blockquote>
+<p><code>--restart=always</code>：跟随docker容器启动</p>
+</blockquote>
+<p>一般中小公司就够用了，更完善的功能就需要上K8S了</p>
+
+      </div>
+      <div class="post-tags-categories">
+        
+        <div class="tags">
+          
+            <a href="/tags/Docker/" class="">
+              Docker
+            </a>
+          
+        </div>
+        
+      </div>
+      
+    </article>
+    <!-- 上一篇文章和下一篇文章 -->
+    
+      <!-- 文章详情页的上一页和下一页 -->
+<div class="post-nav">
+
+
+
+  
+  <div class="post-nav-prev post-nav-item">
+    <div class="post-nav-img" style="background-size: cover; 
+      background-position: center center;">
+      <img class="lazyload lazyload placeholder" src="https://images.wallpaperscraft.com/image/single/landscape_art_road_127350_1920x1080.jpg" class="lazyload placeholder" data-srcset="https://images.wallpaperscraft.com/image/single/landscape_art_road_127350_1920x1080.jpg" srcset="https://pic1.zhimg.com/v2-cd38920285d125be80b3eb504052c550_b.webp" alt="">
+    </div>
+    <a href="/2024/03/03/kuang-jia/10.cloud-alibaba/" class="post-nav-link">
+      <div class="title">
+        <i class="fas fa-angle-left"></i> 上一篇:
+        <div class="title-text">Spring Cloud Alibaba</div>
+      </div>
+      
+      <!-- <div class="content">
+        1. 背景Netflix版本由于停更，引发了Cloud各种组件的升级和替换：
+
+创建父工程：
+1234567891011
+      </div> -->
+    </a>
+  </div>
+
+
+
+  
+  <div class="post-nav-next post-nav-item">
+    <div class="post-nav-img" style="background-size: cover; 
+      background-position: center center;">
+      <img class="lazyload lazyload placeholder" src="https://images.wallpaperscraft.com/image/single/plane_sky_art_129149_1920x1080.jpg" class="lazyload placeholder" data-srcset="https://images.wallpaperscraft.com/image/single/plane_sky_art_129149_1920x1080.jpg" srcset="https://pic1.zhimg.com/v2-cd38920285d125be80b3eb504052c550_b.webp" src="" alt="">
+    </div>
+    <a href="/2024/01/01/zhong-jian-jian/4.kafka/" class="post-nav-link">
+      <div class="title">
+        下一篇: <i class="fas fa-angle-right"></i>
+        <div class="title-text">Kafka</div>
+      </div>
+      <!-- <div class="content">
+        1. 概述官网：Apache Kafka
+传统定义：Kafka是一个分布式的基于发布&#x2F;订阅模式的消息队列(Me
+      </div> -->
+    </a>
+  </div>
+
+</div>
+
+    
+    
+
+    <!-- 打赏 -->
+    
+
+    <!-- 分享 -->
+    
+      <!-- https://github.com/overtrue/share.js -->
+<!-- 文章详情页的分享 -->
+<div class="social-share" data-sites="twitter,facebook,google,qq,qzone,wechat,weibo,douban,linkedin" data-wechat-qrcode-helper="<p>微信扫一扫即可分享！</p>"></div>
+
+<script src="/js/shareJs/social-share.min.js"></script>
+</script>
+
+<style>
+  .social-share {
+    margin: 20px 0;
+  }
+</style>
+
+
+    
+    
+    <!-- 评论 -->
+    <!-- 评论 -->
+
+  <div id="myComment">
+    
+      <div id="gitment-container"></div>
+
+    
+  </div>
+
+<!-- comment script in themes\hexo-theme-bamboo\layout\_partial\scripts\index.ejs -->
+
+
+  </div>
+
+  <!-- 目录 -->
+  <aside id='l_side'>
+  
+    
+      <section class="widget side_blogger">
+  <div class='content'>
+    
+      
+        <a class='avatar flat-box rectangle' href='/about/'>
+          <img src='https://i.postimg.cc/yNJTSNTj/image.jpg'/>
+        </a>
+      
+    
+    
+      <div class='text'>
+        
+          <h2>LemonPuer</h2>
+        
+        
+          <p>个人博客</p>
+
+        
+        
+          <p><span id="jinrishici-sentence">Lemon</span></p>
+          <script src="https://sdk.jinrishici.com/v2/browser/jinrishici.js" charset="utf-8"></script>
+        
+      </div>
+    
+    
+      <div class="social-wrapper">
+        
+          
+            <a href="https://api.dzzui.com/api/ip"
+              class="social fa fa-wifi flat-btn"
+              target="_blank"
+              rel="external nofollow noopener noreferrer">
+              
+            </a>
+          
+        
+          
+            <a href="mailto:1695812011@qq.com"
+              class="social fas fa-envelope flat-btn"
+              target="_blank"
+              rel="external nofollow noopener noreferrer">
+              
+            </a>
+          
+        
+          
+            <a href="https://github.com/LemonPuer"
+              class="social fab fa-github flat-btn"
+              target="_blank"
+              rel="external nofollow noopener noreferrer">
+              
+            </a>
+          
+        
+          
+            <a href="tencent://AddContact/?fromId=50&amp;fromSubId=1&amp;subcmd=all&amp;uin=1695812011"
+              class="social fab fa-qq flat-btn"
+              target="_blank"
+              rel="external nofollow noopener noreferrer">
+              
+            </a>
+          
+        
+      </div>
+    
+  </div>
+</section>
+
+    
+  
+  
+  
+    
+  
+
+  <div class="layout_sticky">    
+    
+      
+<section class="widget side_toc">
+  
+  <header>
+    
+      <i style="color: " class="fas fa-list fa-fw" aria-hidden="true"></i><span class='name' style="color: ">本文目录</span>
+    
+  </header>
+
+
+  <div class='content'>
+    <div class="toc-main">
+      <div class="toc-content">
+        <!-- <ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#%E5%9F%BA%E7%A1%80%E9%83%A8%E5%88%86"><span class="toc-text">基础部分</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E7%AE%80%E4%BB%8B"><span class="toc-text">简介</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%AE%89%E8%A3%85"><span class="toc-text">安装</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%BA%95%E5%B1%82%E5%8E%9F%E7%90%86"><span class="toc-text">底层原理</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%B8%B8%E7%94%A8%E5%91%BD%E4%BB%A4"><span class="toc-text">常用命令</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%B8%AE%E5%8A%A9%E5%91%BD%E4%BB%A4"><span class="toc-text">帮助命令</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E9%95%9C%E5%83%8F%E5%91%BD%E4%BB%A4"><span class="toc-text">镜像命令</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%AE%B9%E5%99%A8%E5%91%BD%E4%BB%A4"><span class="toc-text">容器命令</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#%E5%90%8E%E5%8F%B0%E5%90%AF%E5%8A%A8"><span class="toc-text">后台启动</span></a></li></ol></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E6%95%B0%E6%8D%AE%E5%8D%B7"><span class="toc-text">数据卷</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E9%95%9C%E5%83%8F"><span class="toc-text">镜像</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%88%B6%E4%BD%9C%E4%B8%8E%E6%8F%90%E4%BA%A4"><span class="toc-text">制作与提交</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#%E7%A7%81%E6%9C%89%E5%BA%93"><span class="toc-text">私有库</span></a></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%AE%89%E8%A3%85MySQL"><span class="toc-text">安装MySQL</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%AE%89%E8%A3%85Redis"><span class="toc-text">安装Redis</span></a></li></ol></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#%E8%BF%9B%E9%98%B6%E9%83%A8%E5%88%86"><span class="toc-text">进阶部分</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E9%9B%86%E7%BE%A4%E5%AE%89%E8%A3%85"><span class="toc-text">集群安装</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#MySQL"><span class="toc-text">MySQL</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Redis"><span class="toc-text">Redis</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#%E6%89%A9%E7%BC%A9%E5%AE%B9"><span class="toc-text">扩缩容</span></a></li></ol></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#DockerFile"><span class="toc-text">DockerFile</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%B8%B8%E7%94%A8%E6%8C%87%E4%BB%A4"><span class="toc-text">常用指令</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E8%99%9A%E6%82%AC%E9%95%9C%E5%83%8F"><span class="toc-text">虚悬镜像</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Docker%E7%BD%91%E7%BB%9C"><span class="toc-text">Docker网络</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%AE%B9%E5%99%A8%E7%BC%96%E6%8E%92"><span class="toc-text">容器编排</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%8F%AF%E8%A7%86%E5%8C%96%E5%B7%A5%E5%85%B7"><span class="toc-text">可视化工具</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%AE%B9%E5%99%A8%E7%9B%91%E6%8E%A7CIG"><span class="toc-text">容器监控CIG</span></a></li></ol></li></ol> -->
+        <div class="toc"></div>
+      </div>
+    </div>
+  </div>
+</section>
+<!-- 手机端目录按钮 -->
+<div id="toc-mobile-btn">
+  <i class="fas fa-list-ul" aria-hidden="true"></i>
+</div>
+
+      
+  <section class="widget side_recent_post">
+    
+  <header>
+    
+      <a style="color: " href='/tags/'><i class="fas fa-book fa-fw" aria-hidden="true"></i><span class='name'>最新文章</span></a>
+    
+  </header>
+
+
+    <div class='content'>
+      
+      <!-- hash算法 -->
+      
+      <div class="aside-list">
+        
+          <div class="aside-list-item">
+            
+            
+            
+
+            <div class="post-img-box">
+              <a href="/2024/04/04/kuang-jia/5.springboot-2/" class="post-img " style="background-size: cover; 
+                background-position: center center;">
+                <img class="lazyload lazyload placeholder" style="width:100%;height:100%;object-fit:cover;" data-src="https://images.wallpaperscraft.com/image/single/child_river_dreams_127495_1920x1080.jpg" class="lazyload placeholder" data-srcset="https://images.wallpaperscraft.com/image/single/child_river_dreams_127495_1920x1080.jpg" srcset="https://pic1.zhimg.com/v2-cd38920285d125be80b3eb504052c550_b.webp" alt="">
+              </a>
+            </div>
+            <div class="post-date-title">
+              <div>
+                
+                  <span class="post-date">04-04</span>
+                
+              </div>
+              <a class="post-title" href="/2024/04/04/kuang-jia/5.springboot-2/">SpringBoot-2</a>
+            </div>
+          </div>
+        
+          <div class="aside-list-item">
+            
+            
+            
+
+            <div class="post-img-box">
+              <a href="/2024/04/04/kuang-jia/5.springboot-1/" class="post-img " style="background-size: cover; 
+                background-position: center center;">
+                <img class="lazyload lazyload placeholder" style="width:100%;height:100%;object-fit:cover;" data-src="https://images.wallpaperscraft.com/image/single/child_river_dreams_127495_1920x1080.jpg" class="lazyload placeholder" data-srcset="https://images.wallpaperscraft.com/image/single/child_river_dreams_127495_1920x1080.jpg" srcset="https://pic1.zhimg.com/v2-cd38920285d125be80b3eb504052c550_b.webp" alt="">
+              </a>
+            </div>
+            <div class="post-date-title">
+              <div>
+                
+                  <span class="post-date">04-04</span>
+                
+              </div>
+              <a class="post-title" href="/2024/04/04/kuang-jia/5.springboot-1/">SpringBoot-1</a>
+            </div>
+          </div>
+        
+          <div class="aside-list-item">
+            
+            
+            
+
+            <div class="post-img-box">
+              <a href="/2024/03/03/kuang-jia/10.cloud-alibaba/" class="post-img " style="background-size: cover; 
+                background-position: center center;">
+                <img class="lazyload lazyload placeholder" style="width:100%;height:100%;object-fit:cover;" data-src="https://images.wallpaperscraft.com/image/single/landscape_art_road_127350_1920x1080.jpg" class="lazyload placeholder" data-srcset="https://images.wallpaperscraft.com/image/single/landscape_art_road_127350_1920x1080.jpg" srcset="https://pic1.zhimg.com/v2-cd38920285d125be80b3eb504052c550_b.webp" alt="">
+              </a>
+            </div>
+            <div class="post-date-title">
+              <div>
+                
+                  <span class="post-date">03-03</span>
+                
+              </div>
+              <a class="post-title" href="/2024/03/03/kuang-jia/10.cloud-alibaba/">Spring Cloud Alibaba</a>
+            </div>
+          </div>
+        
+          <div class="aside-list-item">
+            
+            
+            
+
+            <div class="post-img-box">
+              <a href="/2024/01/13/zhong-jian-jian/5.docker/" class="post-img " style="background-size: cover; 
+                background-position: center center;">
+                <img class="lazyload lazyload placeholder" style="width:100%;height:100%;object-fit:cover;" data-src="https://images.wallpaperscraft.com/image/single/deer_winter_night_129602_1920x1080.jpg" class="lazyload placeholder" data-srcset="https://images.wallpaperscraft.com/image/single/deer_winter_night_129602_1920x1080.jpg" srcset="https://pic1.zhimg.com/v2-cd38920285d125be80b3eb504052c550_b.webp" alt="">
+              </a>
+            </div>
+            <div class="post-date-title">
+              <div>
+                
+                  <span class="post-date">01-13</span>
+                
+              </div>
+              <a class="post-title" href="/2024/01/13/zhong-jian-jian/5.docker/">Docker</a>
+            </div>
+          </div>
+        
+          <div class="aside-list-item">
+            
+            
+            
+
+            <div class="post-img-box">
+              <a href="/2024/01/01/zhong-jian-jian/4.kafka/" class="post-img " style="background-size: cover; 
+                background-position: center center;">
+                <img class="lazyload lazyload placeholder" style="width:100%;height:100%;object-fit:cover;" data-src="https://images.wallpaperscraft.com/image/single/plane_sky_art_129149_1920x1080.jpg" class="lazyload placeholder" data-srcset="https://images.wallpaperscraft.com/image/single/plane_sky_art_129149_1920x1080.jpg" srcset="https://pic1.zhimg.com/v2-cd38920285d125be80b3eb504052c550_b.webp" alt="">
+              </a>
+            </div>
+            <div class="post-date-title">
+              <div>
+                
+                  <span class="post-date">01-01</span>
+                
+              </div>
+              <a class="post-title" href="/2024/01/01/zhong-jian-jian/4.kafka/">Kafka</a>
+            </div>
+          </div>
+        
+      </div>
+    </div>
+  </section>
+
+    
+  </div>
+</aside>
+
+  <!-- 图片放大 Wrap images with fancybox support -->
+  <script src="/js/wrapImage.js"></script>
+</div>
+
+<!-- 文章详情页背景图 -->
+<div id="appBgSwiper" style="position: fixed;left: 0;top: 0;width: 100%;height: 100%;z-index: -2;"
+	:style="{'background-color': bgColor ? bgColor : 'transparent'}">
+	<transition-group tag="ul" :name="names">
+		<li v-for='(image,index) in img' :key='index' v-show="index === mark" class="bg-swiper-box">
+			<img :src="image" class="bg-swiper-img no-lazy">
+		</li>
+	</transition-group>
+</div>
+<script>
+	var vm = new Vue({
+		el: '#appBgSwiper',
+		data: {
+			names: '' || 'fade' || 'fade', // translate-fade fade
+			mark: 0,
+			img: [],
+			bgColor: '',
+			time: null
+		},
+		methods: {   //添加方法
+			change(i, m) {
+				if (i > m) {
+					// this.names = 'fade';
+				} else if (i < m) {
+					// this.names = 'fade';
+				} else {
+					return;
+				}
+				this.mark = i;
+			},
+			prev() {
+				// this.names = 'fade';
+				this.mark--;
+				if (this.mark === -1) {
+					this.mark = 3;
+					return
+				}
+			},
+			next() {
+				// this.names = 'fade';
+				this.mark++;
+				if (this.mark === this.img.length) {
+					this.mark = 0;
+					return
+				}
+			},
+			autoPlay() {
+				// this.names = 'fade';
+				this.mark++;
+				if (this.mark === this.img.length) {
+					this.mark = 0;
+					return
+				}
+			},
+			play() {
+				let bgImgDelay = '' || '180000'
+				let delay = parseInt(bgImgDelay) || 180000;
+				this.time = setInterval(this.autoPlay, delay);
+			},
+			enter() {
+				clearInterval(this.time);
+			},
+			leave() {
+				this.play();
+			}
+		},
+		created() {
+			this.play()
+		},
+		beforeDestroy() {
+			clearInterval(this.time);
+		},
+		mounted() {
+			let prop = '' || 'rgba(160,238,225,0.3)';
+			let isImg = prop.includes('.bmp') || prop.includes('.jpg') || prop.includes('.png') || prop.includes('.tif') || prop.includes('.gif') || prop.includes('.pcx') || prop.includes('.tga') || prop.includes('.exif') || prop.includes('.fpx') || prop.includes('.psd') || prop.includes('.cdr') || prop.includes('.pcd') || prop.includes('.dxf') || prop.includes('.ufo') || prop.includes('.eps') || prop.includes('.ai') || prop.includes('.raw') || prop.includes('.WMF') || prop.includes('.webp') || prop.includes('.jpeg') || prop.includes('http://') || prop.includes('https://')
+			if (isImg) {
+				let img = prop.split(',');
+				let configRoot = '/'
+				let arrImg = [];
+				img.forEach(el => {
+					var Expression = /http(s)?:\/\/([\w-]+\.)+[\w-]+(\/[\w- .\/?%&=]*)?/;
+					var objExp = new RegExp(Expression);
+
+					if (objExp.test(el)) {
+						// http or https
+						arrImg.push(el);
+					} else {
+						// 非http or https开头
+						// 本地文件
+						let firstStr = el.charAt(0);
+						if (firstStr == '/') {
+							el = el.substr(1); // 删除第一个字符 '/',因为 configRoot最后一个字符为 /
+						}
+						el = configRoot + el;
+						arrImg.push(el);
+					}
+				})
+				this.img = arrImg;
+			} else {
+				this.bgColor = prop;
+			}
+		}
+	})
+</script>
+
+<style>
+	.bg-swiper-box {
+		position: absolute;
+		display: block;
+		width: 100%;
+		height: 100%;
+	}
+
+	.bg-swiper-img {
+		object-fit: cover;
+		width: 100%;
+		height: 100%;
+	}
+</style>
+
+
+
+
+  <script>
+  function loadMermaid() {
+    if (document.getElementsByClassName('mermaid').length) {
+      if (window.mermaidJsLoad) mermaid.init()
+      else {
+        loadScript('https://unpkg.com/mermaid/dist/mermaid.min.js').then(() => {
+          window.mermaidJsLoad = true
+          mermaid.initialize({
+            theme: 'default',
+          })
+          if ('true') {
+            mermaid.init();
+          }
+        })
+      }
+    }
+  };
+  document.addEventListener("DOMContentLoaded", function () {
+    loadMermaid();
+  })
+
+  document.addEventListener('pjax:complete', function () {
+    loadMermaid();
+  })
+  
+</script>
+
+
+      </main>
+    </div>
+
+    <!-- 页脚 -->
+    
+  
+  
+    <!-- 底部鱼儿跳动效果，依赖于jquery-->
+<div id="j-fish-skip" style=" position: relative;height: 153px;width: auto;"></div>
+<script>
+  var RENDERER = {
+    POINT_INTERVAL: 5,
+    FISH_COUNT: 3,
+    MAX_INTERVAL_COUNT: 50,
+    INIT_HEIGHT_RATE: .5,
+    THRESHOLD: 50,
+    FISH_COLOR: '',
+    init: function () {
+      this.setFishColor(); this.setParameters(), this.reconstructMethods(), this.setup(), this.bindEvent(), this.render()
+    },
+    setFishColor: function () {
+      let isDark = JSON.parse(localStorage.getItem('dark')) || JSON.parse('false');
+      if (isDark) {
+        this.FISH_COLOR = '#222'; // 暗黑色，有时间把这整成一个变量
+      } else {
+        this.FISH_COLOR = '' || 'rgba(160,238,225,0.8)';
+      }
+    },
+    setParameters: function () {
+      this.$window = $(window), this.$container = $("#j-fish-skip"), this.$canvas = $("<canvas />"), this.context = this.$canvas.appendTo(this.$container).get(0).getContext("2d"), this.points = [], this.fishes = [], this.watchIds = []
+    },
+    createSurfacePoints: function () {
+      var t = Math.round(this.width / this.POINT_INTERVAL);
+      this.pointInterval = this.width / (t - 1), this.points.push(new SURFACE_POINT(this, 0));
+      for (var i = 1; i < t; i++) {
+        var e = new SURFACE_POINT(this, i * this.pointInterval),
+          h = this.points[i - 1];
+        e.setPreviousPoint(h), h.setNextPoint(e), this.points.push(e)
+      }
+    },
+    reconstructMethods: function () {
+      this.watchWindowSize = this.watchWindowSize.bind(this), this.jdugeToStopResize = this.jdugeToStopResize.bind(this), this.startEpicenter = this.startEpicenter.bind(this), this.moveEpicenter = this.moveEpicenter.bind(this), this.reverseVertical = this.reverseVertical.bind(this), this.render = this.render.bind(this)
+    },
+    setup: function () {
+      this.points.length = 0, this.fishes.length = 0, this.watchIds.length = 0, this.intervalCount = this.MAX_INTERVAL_COUNT, this.width = this.$container.width(), this.height = this.$container.height(), this.fishCount = this.FISH_COUNT * this.width / 500 * this.height / 500, this.$canvas.attr({
+        width: this.width,
+        height: this.height
+      }), this.reverse = !1, this.fishes.push(new FISH(this)), this.createSurfacePoints()
+    },
+    watchWindowSize: function () {
+      this.clearTimer(), this.tmpWidth = this.$window.width(), this.tmpHeight = this.$window.height(), this.watchIds.push(setTimeout(this.jdugeToStopResize, this.WATCH_INTERVAL))
+    },
+    clearTimer: function () {
+      for (; this.watchIds.length > 0;) clearTimeout(this.watchIds.pop())
+    },
+    jdugeToStopResize: function () {
+      var t = this.$window.width(),
+        i = this.$window.height(),
+        e = t == this.tmpWidth && i == this.tmpHeight;
+      this.tmpWidth = t, this.tmpHeight = i, e && this.setup()
+    },
+    bindEvent: function () {
+      this.$window.on("resize", this.watchWindowSize), this.$container.on("mouseenter", this.startEpicenter), this.$container.on("mousemove", this.moveEpicenter)
+    },
+    getAxis: function (t) {
+      var i = this.$container.offset();
+      return {
+        x: t.clientX - i.left + this.$window.scrollLeft(),
+        y: t.clientY - i.top + this.$window.scrollTop()
+      }
+    },
+    startEpicenter: function (t) {
+      this.axis = this.getAxis(t)
+    },
+    moveEpicenter: function (t) {
+      var i = this.getAxis(t);
+      this.axis || (this.axis = i), this.generateEpicenter(i.x, i.y, i.y - this.axis.y), this.axis = i
+    },
+    generateEpicenter: function (t, i, e) {
+      if (!(i < this.height / 2 - this.THRESHOLD || i > this.height / 2 + this.THRESHOLD)) {
+        var h = Math.round(t / this.pointInterval);
+        h < 0 || h >= this.points.length || this.points[h].interfere(i, e)
+      }
+    },
+    reverseVertical: function () {
+      this.reverse = !this.reverse;
+      for (var t = 0, i = this.fishes.length; t < i; t++) this.fishes[t].reverseVertical()
+    },
+    controlStatus: function () {
+      for (var t = 0, i = this.points.length; t < i; t++) this.points[t].updateSelf();
+      for (t = 0, i = this.points.length; t < i; t++) this.points[t].updateNeighbors();
+      this.fishes.length < this.fishCount && 0 == --this.intervalCount && (this.intervalCount = this.MAX_INTERVAL_COUNT, this.fishes.push(new FISH(this)))
+    },
+    render: function () {
+      requestAnimationFrame(this.render), this.controlStatus(), this.context.clearRect(0, 0, this.width, this.height), this.context.fillStyle = this.FISH_COLOR;
+      for (var t = 0, i = this.fishes.length; t < i; t++) this.fishes[t].render(this.context);
+      this.context.save(), this.context.globalCompositeOperation = "xor", this.context.beginPath(), this.context.moveTo(0, this.reverse ? 0 : this.height);
+      for (t = 0, i = this.points.length; t < i; t++) this.points[t].render(this.context);
+      this.context.lineTo(this.width, this.reverse ? 0 : this.height), this.context.closePath(), this.context.fill(), this.context.restore()
+    }
+  },
+  SURFACE_POINT = function (t, i) {
+    this.renderer = t, this.x = i, this.init()
+  };
+  SURFACE_POINT.prototype = {
+    SPRING_CONSTANT: .03,
+    SPRING_FRICTION: .9,
+    WAVE_SPREAD: .3,
+    ACCELARATION_RATE: .01,
+    init: function () {
+      this.initHeight = this.renderer.height * this.renderer.INIT_HEIGHT_RATE, this.height = this.initHeight, this.fy = 0, this.force = {
+        previous: 0,
+        next: 0
+      }
+    },
+    setPreviousPoint: function (t) {
+      this.previous = t
+    },
+    setNextPoint: function (t) {
+      this.next = t
+    },
+    interfere: function (t, i) {
+      this.fy = this.renderer.height * this.ACCELARATION_RATE * (this.renderer.height - this.height - t >= 0 ? -1 : 1) * Math.abs(i)
+    },
+    updateSelf: function () {
+      this.fy += this.SPRING_CONSTANT * (this.initHeight - this.height), this.fy *= this.SPRING_FRICTION, this.height += this.fy
+    },
+    updateNeighbors: function () {
+      this.previous && (this.force.previous = this.WAVE_SPREAD * (this.height - this.previous.height)), this.next && (this.force.next = this.WAVE_SPREAD * (this.height - this.next.height))
+    },
+    render: function (t) {
+      this.previous && (this.previous.height += this.force.previous, this.previous.fy += this.force.previous), this.next && (this.next.height += this.force.next, this.next.fy += this.force.next), t.lineTo(this.x, this.renderer.height - this.height)
+    }
+  };
+  var FISH = function (t) {
+    this.renderer = t, this.init()
+  };
+  FISH.prototype = {
+    GRAVITY: .4,
+    init: function () {
+      this.direction = Math.random() < .5, this.x = this.direction ? this.renderer.width + this.renderer.THRESHOLD : -this.renderer.THRESHOLD, this.previousY = this.y, this.vx = this.getRandomValue(4, 10) * (this.direction ? -1 : 1), this.renderer.reverse ? (this.y = this.getRandomValue(1 * this.renderer.height / 10, 4 * this.renderer.height / 10), this.vy = this.getRandomValue(2, 5), this.ay = this.getRandomValue(.05, .2)) : (this.y = this.getRandomValue(6 * this.renderer.height / 10, 9 * this.renderer.height / 10), this.vy = this.getRandomValue(-5, -2), this.ay = this.getRandomValue(-.2, -.05)), this.isOut = !1, this.theta = 0, this.phi = 0
+    },
+    getRandomValue: function (t, i) {
+      return t + (i - t) * Math.random()
+    },
+    reverseVertical: function () {
+      this.isOut = !this.isOut, this.ay *= -1
+    },
+    controlStatus: function (t) {
+      this.previousY = this.y, this.x += this.vx, this.y += this.vy, this.vy += this.ay, this.renderer.reverse ? this.y > this.renderer.height * this.renderer.INIT_HEIGHT_RATE ? (this.vy -= this.GRAVITY, this.isOut = !0) : (this.isOut && (this.ay = this.getRandomValue(.05, .2)), this.isOut = !1) : this.y < this.renderer.height * this.renderer.INIT_HEIGHT_RATE ? (this.vy += this.GRAVITY, this.isOut = !0) : (this.isOut && (this.ay = this.getRandomValue(-.2, -.05)), this.isOut = !1), this.isOut || (this.theta += Math.PI / 20, this.theta %= 2 * Math.PI, this.phi += Math.PI / 30, this.phi %= 2 * Math.PI), this.renderer.generateEpicenter(this.x + (this.direction ? -1 : 1) * this.renderer.THRESHOLD, this.y, this.y - this.previousY), (this.vx > 0 && this.x > this.renderer.width + this.renderer.THRESHOLD || this.vx < 0 && this.x < -this.renderer.THRESHOLD) && this.init()
+    },
+    render: function (t) {
+      t.save(), t.translate(this.x, this.y), t.rotate(Math.PI + Math.atan2(this.vy, this.vx)), t.scale(1, this.direction ? 1 : -1), t.beginPath(), t.moveTo(-30, 0), t.bezierCurveTo(-20, 15, 15, 10, 40, 0), t.bezierCurveTo(15, -10, -20, -15, -30, 0), t.fill(), t.save(), t.translate(40, 0), t.scale(.9 + .2 * Math.sin(this.theta), 1), t.beginPath(), t.moveTo(0, 0), t.quadraticCurveTo(5, 10, 20, 8), t.quadraticCurveTo(12, 5, 10, 0), t.quadraticCurveTo(12, -5, 20, -8), t.quadraticCurveTo(5, -10, 0, 0), t.fill(), t.restore(), t.save(), t.translate(-3, 0), t.rotate((Math.PI / 3 + Math.PI / 10 * Math.sin(this.phi)) * (this.renderer.reverse ? -1 : 1)), t.beginPath(), this.renderer.reverse ? (t.moveTo(5, 0), t.bezierCurveTo(10, 10, 10, 30, 0, 40), t.bezierCurveTo(-12, 25, -8, 10, 0, 0)) : (t.moveTo(-5, 0), t.bezierCurveTo(-10, -10, -10, -30, 0, -40), t.bezierCurveTo(12, -25, 8, -10, 0, 0)), t.closePath(), t.fill(), t.restore(), t.restore(), this.controlStatus(t)
+    }
+  }, $(function () {
+    RENDERER.init()
+    $('.dark').click(function () {
+      setTimeout(() => {
+        RENDERER.setFishColor();
+        RENDERER.context.fill();
+      });
+    })
+  });
+</script>
+  
+  <div class="footer bg-color">
+    <div class="footer-main">
+      
+        
+          <div class="link">
+            
+              
+                <a target="_blank" rel="noopener" href="https://space.bilibili.com/409809855" class="social">
+                  
+                    <i class="iconfont icon-bilibili" aria-hidden="true"></i>
+                  
+                </a>
+              
+            
+              
+                <a target="_blank" rel="noopener" href="https://github.com/LemonPuer" class="social">
+                  
+                    <i class="fab fa-github" aria-hidden="true"></i>
+                  
+                </a>
+              
+            
+          </div>
+        
+      
+        
+          <div class="footer-copyright">
+            <p>欢迎访问本小站</p>
+
+          </div>
+        
+      
+    </div>
+  </div>
+
+
+
+    <!-- 渲染暗黑按钮 -->
+    
+      <div class="dark">
+  <div class="dark-content">
+    <i class="fas fa-moon" aria-hidden="true"></i>
+    <!-- <span>关灯</span> -->
+  </div>
+  
+</div>
+
+<script>
+  $(function() {
+    let isDark = JSON.parse(localStorage.getItem('dark'))  || JSON.parse('false');
+    if (isDark) {
+      $(".dark-content").replaceWith(
+          `
+          <div class='dark-content'>
+            <i class="fas fa-lightbulb" aria-hidden="true"></i>
+          </div>
+          `
+        );
+    }
+    $('.dark').click(function() {
+      if ($(document.body).is('.darkModel')) {
+        $(document.body).removeClass('darkModel');
+        localStorage.setItem('dark', false);
+        $(".dark-content").replaceWith(
+          `
+          <div class='dark-content'>
+            <i class="fas fa-moon" aria-hidden="true"></i>
+          </div>
+          `
+        );
+      } else {
+        $(document.body).addClass('darkModel');
+        localStorage.setItem('dark', true);
+        $(".dark-content").replaceWith(
+          `
+          <div class='dark-content'>
+            <i class="fas fa-lightbulb" aria-hidden="true"></i>
+          </div>
+          `
+        );
+      }
+    })
+  })
+</script>
+    
+    <!-- 渲染回到顶部按钮 -->
+    
+      <div class="goTop top-btn-color" pointer>
+  <i class="fas fa-arrow-up" aria-hidden="true"></i>
+</div>
+<script src="/js/goTop.js"></script>
+
+    
+    <!-- 渲染左下角音乐播放器 -->
+    
+      <link rel="stylesheet" href="/js/aplayer/APlayer@1.10.1.min.css">
+<style>
+.aplayer .aplayer-lrc p {
+  
+  font-size: 12px;
+  font-weight: 700;
+  line-height: 16px !important;
+}
+
+.aplayer .aplayer-lrc p.aplayer-lrc-current {
+  
+  font-size: 15px;
+  color: #42b983;
+}
+
+
+.aplayer.aplayer-fixed.aplayer-narrow .aplayer-body {
+  left: -66px !important;
+}
+
+.aplayer.aplayer-fixed.aplayer-narrow .aplayer-body:hover {
+  left: 0px !important;
+}
+
+
+</style>
+<meting-js  
+  class=""
+  server="netease"
+  type="playlist"
+  id="8517155639"
+  fixed='true'
+  autoplay='true'
+  theme='#42b983'
+  loop='all'
+  order='random'
+  preload='auto'
+  volume='0.7'
+  list-folded='true'
+>
+</meting-js>
+
+<!-- <style>
+  #aplayer {
+    position: fixed;
+    left: 0;
+    bottom: 300px;
+  }
+</style> -->
+<script src="https://unpkg.com/aplayer@1.10.1/dist/APlayer.min.js"></script>
+<script src="https://unpkg.com/meting@2/dist/Meting.min.js"></script>
+    
+
+    <!-- 图片放大 -->
+    
+      <script src="https://fastly.jsdelivr.net/npm/@fancyapps/ui@5.0/dist/fancybox/fancybox.umd.js"></script>
+    
+
+    <!-- 百度解析 -->
+    <!-- Baidu Analytics -->
+
+<script>
+    var _hmt = _hmt || [];
+    (function () {
+        var hm = document.createElement("script");
+        hm.src = "https://hm.baidu.com/hm.js?1dd9810333ef61187ef351132128d6dc";
+        var s = document.getElementsByTagName("script")[0];
+        s.parentNode.insertBefore(hm, s);
+    })();
+</script>
+
+    <!-- Baidu Push -->
+
+<script>
+    (function () {
+        var bp = document.createElement('script');
+        var curProtocol = window.location.protocol.split(':')[0];
+        if (curProtocol === 'https') {
+            bp.src = 'https://zz.bdstatic.com/linksubmit/push.js';
+        } else {
+            bp.src = 'http://push.zhanzhang.baidu.com/push.js';
+        }
+        var s = document.getElementsByTagName("script")[0];
+        s.parentNode.insertBefore(bp, s);
+    })();
+</script>
+
+    
+    <!-- 背景彩带 -->
+    
+      <script type="text/javascript" size="100" alpha='0.4' zIndex="-1" src="/js/ribbon.min.js"></script>
+    
+
+    <script src="/js/utils/index.js"></script>
+    <script src="/js/app.js"></script>
+    
+    <!-- 文章目录所需js -->
+<!-- <link href="/js/tocbot/tocbot.css" rel="stylesheet">
+<script src="/js/tocbot/tocbot.min.js"></script> -->
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/tocbot/4.18.2/tocbot.min.js"></script>
+
+
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/tocbot/4.18.2/tocbot.css">
+
+<script>
+  var headerEl = 'h2, h3, h4',  //headers 
+    content = '.post-detail',//文章容器
+    idArr = {};  //标题数组以确定是否增加索引id
+  //add #id
+  var option = {
+    // Where to render the table of contents.
+    tocSelector: '.toc',
+    // Where to grab the headings to build the table of contents.
+    contentSelector: content,
+    // Which headings to grab inside of the contentSelector element.
+    headingSelector: headerEl,
+    scrollSmooth: true,
+    scrollSmoothOffset: -70,
+    // headingsOffset: -($(window).height() * 0.4 - 45),
+    headingsOffset: -($(window).height() * 0.4 - 70),
+    // positionFixedSelector: '.toc-main',
+    // positionFixedClass: 'is-position-fixed',
+    fixedSidebarOffset: 'auto',
+    activeLinkClass: 'is-active-link',
+    orderedList: true,
+    collapseDepth: 20,
+    // onClick: function (e) {},
+  }
+  if ($('.toc').length > 0) {
+
+    $(content).children(headerEl).each(function () {
+      //去除空格以及多余标点
+      var headerId = $(this).text().replace(/[\s|\~|`|\!|\@|\#|\$|\%|\^|\&|\*|\(|\)|\_|\+|\=|\||\|\[|\]|\{|\}|\;|\:|\"|\'|\,|\<|\.|\>|\/|\?|\：|\，|\。]/g, '');
+
+      headerId = headerId.toLowerCase();
+      if (idArr[headerId]) {
+        //id已经存在
+        $(this).attr('id', headerId + '-' + idArr[headerId]);
+        idArr[headerId]++;
+      }
+      else {
+        //id未存在
+        idArr[headerId] = 1;
+        $(this).attr('id', headerId);
+      }
+    });
+
+    document.addEventListener("DOMContentLoaded", function () {
+      tocbot.init(option);
+      mobileTocClick();
+    });
+
+  }
+
+  window.tocScrollFn = function () {
+    return bamboo.throttle(function () {
+      findHeadPosition();
+    }, 100)()
+  }
+  window.addEventListener('scroll', tocScrollFn);
+
+  const findHeadPosition = function (top) {
+    if ($('.toc-list').length <= 0) {
+      return false;
+    }
+    setTimeout(() => {  // or DOMContentLoaded 
+      autoScrollToc();
+    }, 0);
+  }
+
+  const autoScrollToc = function () {
+    const $activeItem = document.querySelector('.is-active-link');
+    const $cardToc = document.querySelector('.toc-content');
+    const activePosition = $activeItem.getBoundingClientRect().top
+    const sidebarScrollTop = $cardToc.scrollTop
+    if (activePosition > (document.documentElement.clientHeight - 100)) {
+      $cardToc.scrollTop = sidebarScrollTop + 150
+    }
+    if (activePosition < 150) {
+      $cardToc.scrollTop = sidebarScrollTop - 150
+    }
+  }
+
+  document.addEventListener('pjax:send', function () {
+    if ($('.toc').length) {
+      tocbot.destroy();
+    }
+  });
+
+  document.addEventListener('pjax:complete', function () {
+    if ($('.toc').length) {
+      tocbot.init(option);
+      mobileTocClick();
+    }
+  });
+  
+  // 手机端toc按钮点击出现目录
+  const mobileTocClick = function () {
+    const $cardTocLayout = document.getElementsByClassName('side_toc')[0];
+    const $cardToc = $cardTocLayout.getElementsByClassName('toc-content')[0];
+    let right = '45px';
+    if (window.innerWidth >= 551 && window.innerWidth <= 992) {
+      right = '100px'
+    }
+    const mobileToc = {
+      open: () => {
+        $cardTocLayout.style.cssText = 'animation: toc-open .3s; opacity: 1; right: ' + right
+      },
+
+      close: () => {
+        $cardTocLayout.style.animation = 'toc-close .2s'
+        setTimeout(() => {
+          $cardTocLayout.style.cssText = "opacity:''; animation: ''; right: ''"
+        }, 100)
+      }
+    }
+    document.getElementById('toc-mobile-btn').addEventListener('click', () => {
+      if (window.getComputedStyle($cardTocLayout).getPropertyValue('opacity') === '0') mobileToc.open()
+      else mobileToc.close()
+    })
+
+    $cardToc.addEventListener('click', (e) => {
+      if (window.innerWidth < 992) { // 小于992px的时候
+        mobileToc.close()
+      }
+    })
+  }
+</script>
+
+<style>
+  /* .is-position-fixed {
+    position: sticky !important;
+    top: 74px;
+  }
+
+  .toc-main ul {
+    counter-reset: show-list;
+  }
+
+  .toc-main ul li::before {
+    content: counter(item)".";
+    display: block;
+    position: absolute;
+    left: 12px;
+    top: 0;
+  } */
+</style>
+ 
+
+<!-- 设置导航背景 -->
+<script>
+  let setHeaderClass = () => {
+    const nav = $('#navHeader');
+    const navTop = nav.outerHeight();
+    const winTop = $(window).scrollTop();
+    if(winTop > navTop) {
+      nav.addClass('header-bg-color');
+    }
+    else {
+      nav.removeClass('header-bg-color');
+    }
+  };
+
+  let scrollCollect = () => {
+    return bamboo.throttle(function (e) {
+      setHeaderClass();
+    }, 200)()
+  }
+
+  let initHeaderBg = () => {
+    setHeaderClass();
+  }
+
+  setHeaderClass();
+  window.addEventListener('scroll', scrollCollect);
+
+  document.addEventListener('pjax:send', function () {
+    window.removeEventListener('scroll', scrollCollect)
+  })
+  document.addEventListener('pjax:complete', function () {
+    window.addEventListener('scroll', scrollCollect);
+    setHeaderClass();
+  })
+</script> 
+
+<!-- 渲染issues标签里的内容 -->
+<script>
+  function loadIssuesJS() {
+    if ($(".post-detail").find(".issues-api").length == 0) {
+      return;
+    } 
+    loadScript('/js/issues/index.js');
+  };
+  $(function () {
+    loadIssuesJS();
+  });
+  document.addEventListener('pjax:complete', function () {
+    if (typeof IssuesAPI == "undefined") {
+      loadIssuesJS();
+    }
+  })
+</script>
+
+<!-- 渲染远程json加载的图片标签(getPhotoOnline)里的内容 -->
+<script>
+  function loadPhotoOnlineJS() {
+    if ($(".post-detail").find(".getJsonPhoto-api").length == 0) {
+      return;
+    } 
+    loadScript('/js/getPhotoOnline/index.js');
+  };
+  $(function () {
+    loadPhotoOnlineJS();
+  });
+  document.addEventListener('pjax:complete', function () {
+    if (typeof getPhotoJson == "undefined") {
+      loadPhotoOnlineJS();
+    }
+  })
+</script>
+
+<!-- 渲染远程json加载的talk标签(getTalkOnline)里的内容 -->
+<script>
+  function loadTalkOnlineJS() {
+    if ($(".post-detail").find(".getJsonTalk-api").length == 0) {
+      return;
+    } 
+    loadScript('https://cdnjs.cloudflare.com/ajax/libs/waterfall.js/1.0.2/waterfall.min.js'); // 瀑布流插件，https://raphamorim.io/waterfall.js/
+    loadScript('/js/getTalkOnline/index.js');
+  };
+  $(function () {
+    loadTalkOnlineJS();
+  });
+  document.addEventListener('pjax:complete', function () {
+    if (typeof getTalkJson == "undefined") {
+      loadTalkOnlineJS();
+    }
+  })
+</script>
+
+<!-- 渲染远程json加载的site-card标签(getSiteOnline)里的内容 -->
+<script>
+  function loadSiteOnlineJS() {
+    if ($(".post-detail").find(".getJsonSite-api").length == 0) {
+      return;
+    } 
+    loadScript('/js/getSiteOnline/index.js');
+  };
+  $(function () {
+    loadSiteOnlineJS();
+  });
+  document.addEventListener('pjax:complete', function () {
+    if (typeof getSiteJson == "undefined") {
+      loadSiteOnlineJS();
+    }
+  })
+</script>
+
+<!-- 输入框打字特效 -->
+<!-- 输入框打字特效 -->
+
+  <script src="/js/activate-power-mode.js"></script>
+  <script>
+    POWERMODE.colorful = true;  // 打开随机颜色特效
+    POWERMODE.shake = false;    // 关闭输入框抖动
+    document.body.addEventListener('input', POWERMODE);//监听打字事件
+  </script>
+
+
+<!-- markdown代码一键复制功能 -->
+
+  <link rel="stylesheet" href="https://unpkg.com/v-plugs-ayu/lib/ayu.css">
+  <script src="https://unpkg.com/v-plugs-ayu/lib/ayu.umd.min.js"></script>
+  <script src="/js/clipboard/clipboard.min.js"></script>
+  <div id="appCopy">
+  </div>
+  <script data-pjax>
+    var vm = new Vue({
+      el: '#appCopy',
+      data: {
+      },
+      computed: {
+      },
+      mounted() {
+        const that = this;
+        var copy = '复制';
+        /* code */
+        var initCopyCode = function () {
+          var copyHtml = '';
+          copyHtml += '<button class="btn-copy" data-clipboard-snippet="" style="position:absolute;top:0;right:0;z-index:1;">';
+          copyHtml += '<i class="fas fa-copy"></i><span>' + copy + '</span>';
+          copyHtml += '</button>';
+          $(".post-detail pre").not('.gutter pre').wrap("<div class='codeBox' style='position:relative;width:100%;'></div>")
+          $(".post-detail pre").not('.gutter pre').before(copyHtml);
+          new ClipboardJS('.btn-copy', {
+            target: function (trigger) {
+              return trigger.nextElementSibling;
+            }
+          });
+        }
+        initCopyCode();
+        $('.btn-copy').unbind('click').bind('click', function () {
+          doSomething();
+        })
+        $(document).unbind('keypress').bind('keypress', function (e) {
+          if (e.ctrlKey && e.keyCode == 67) {
+            doSomething();
+          }
+        })
+
+        function doSomething() {
+          that.$notify({
+            title: "成功",
+            content: "代码已复制",
+            type: 'success'
+          })
+        }
+      },
+      methods: {
+      },
+      created() { }
+    })
+  </script>
+  
+
+<!-- 图片懒加载 -->
+<script defer src="https://unpkg.com/vanilla-lazyload@17.1.0/dist/lazyload.min.js"></script>
+<script>
+  // https://www.npmjs.com/package/vanilla-lazyload
+  // Set the options globally
+  // to make LazyLoad self-initialize
+  window.lazyLoadOptions = {
+    elements_selector: ".lazyload",
+    threshold: 0
+  };
+  // Listen to the initialization event
+  // and get the instance of LazyLoad
+  window.addEventListener(
+    "LazyLoad::Initialized",
+    function (event) {
+      window.lazyLoadInstance = event.detail.instance;
+    },
+    false
+  );
+  document.addEventListener('DOMContentLoaded', function () {
+    lazyLoadInstance.update();
+  });
+  document.addEventListener('pjax:complete', function () {
+    lazyLoadInstance.update();
+  });
+</script>
+
+
+<!-- 卡片滚动动画 -->
+   
+
+<!-- 评论所需js -->
+
+  
+    <script type="text/javascript">
+  var utteranceCommon = {};
+
+  function check_utterance() {
+    let isDark = JSON.parse(localStorage.getItem('dark')) || JSON.parse('false');
+    if (isDark) {
+      utteranceCommon.Theme = 'github-dark';
+    } else {
+      utteranceCommon.Theme = 'github-light';
+    }
+
+    return document.getElementById("gitment-container");
+  }
+  comment_el = '#gitment-container';
+  load_utterance = function () {
+    if ($(comment_el).length) {
+      // 匿名函数，防止污染全局变量
+      const HEAD = check_utterance();
+
+      var utterances = document.createElement('script');
+      utterances.type = 'text/javascript';
+      utterances.async = true;
+      utterances.setAttribute('issue-term', 'pathname')
+      utterances.setAttribute('theme', utteranceCommon.Theme)
+      utterances.setAttribute('repo', 'LemonPuer/lemonpuer.github.io')
+      utterances.crossorigin = 'anonymous';
+      utterances.src = 'https://utteranc.es/client.js';
+      // content 是要插入评论的地方
+      document.getElementById('gitment-container').appendChild(utterances);
+
+    }
+  }
+
+  function dark_utterance() {
+    const HEAD = check_utterance();
+    if (!HEAD) return;
+    const message = {
+      type: 'set-theme',
+      theme: utteranceCommon.Theme
+    };
+    const utteranceIframe = document.querySelector('iframe');
+    utteranceIframe.contentWindow.postMessage(message, 'https://utteranc.es');
+  }
+
+  $(document).ready(load_utterance);
+  document.addEventListener('pjax:complete', function () {
+    load_utterance();
+  });
+
+  $('.dark').click(function () {
+    setTimeout(() => {
+      dark_utterance();
+    });
+  })
+
+</script>
+
+<style>
+  .utterances {
+    max-width: inherit !important;
+  }
+</style>
+  
+
+
+<!-- 鼠标点击特效 -->
+<!-- 爱心点击 -->
+
+  
+    <canvas class="fireworks" style="position: fixed;left: 0;top: 0;z-index: 999; pointer-events: none;" ></canvas>
+    <script src="//cdn.bootcss.com/animejs/2.2.0/anime.min.js"></script>
+    <script src="/js/cursor/explosion.min.js"></script>
+  
+
+
+
+
+  <script async src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js" data-pjax></script>
+
+
+<!-- 轮播图标签 -->
+<script>
+  var bambooSwiperTag = {};
+  function load_swiper() {
+    if (!document.querySelectorAll(".post-swiper-container")[0]) return;
+    loadCSS("https://unpkg.com/swiper@6/swiper-bundle.min.css")
+    loadScript("https://unpkg.com/swiper@6/swiper-bundle.min.js").then(() => {
+      pjax_swiper();
+    });
+  }
+
+  load_swiper();
+
+  function pjax_swiper() {
+    bambooSwiperTag.swiper = new Swiper('.post-swiper-container', {
+      slidesPerView: 'auto',
+      spaceBetween: 8,
+      centeredSlides: true,
+      loop: true,
+      autoplay: true ? {
+        delay: 3000,
+        stopOnLastSlide: false,
+        disableOnInteraction: false,
+      } : false,
+      pagination: {
+        el: '.swiper-pagination',
+        clickable: true,
+      },
+      navigation: {
+        nextEl: '.swiper-button-next',
+        prevEl: '.swiper-button-prev',
+      },
+      on:{
+        init: function(){
+          swiperAnimateCache(this); //隐藏动画元素 
+          swiperAnimate(this); //初始化完成开始动画
+        }, 
+        slideChangeTransitionEnd: function(){ 
+          swiperAnimate(this); //每个slide切换结束时也运行当前slide动画
+          //this.slides.eq(this.activeIndex).find('.ani').removeClass('ani'); 动画只展现一次，去除ani类名
+        } 
+      }
+    });
+  }
+
+  document.addEventListener('pjax:complete', function () {
+    if (!document.querySelectorAll(".post-swiper-container")[0]) return;
+    if (typeof bambooSwiperTag.swiper === "undefined") {
+      load_swiper();
+    } else {
+      pjax_swiper();
+    }
+  });
+</script>
+    <!-- pjax -->
+    
+
+<!-- pjax -->
+
+
+  <script src="/js/pjax@0.2.8/index.js"></script>
+  
+    <!-- 样式位于：source/css/_third-party/pjaxanimate.styl -->
+
+<div class="pjax-animate">
+  
+    <div class="loading-circle"><div id="loader-circle"></div></div>
+    <script>
+      window.ShowLoading = function() {
+        $(".loading-circle").css("display", "block");
+      };
+      window.HideLoading = function() {
+        $(".loading-circle").css("display", "none");
+      }
+    </script>
+  
+	<script>
+    document.addEventListener('pjax:complete', function () {
+      window.HideLoading();
+    })
+    document.addEventListener('pjax:send', function () {
+      window.ShowLoading();
+    })
+    document.addEventListener('pjax:error', function () {
+      window.HideLoading();
+    })
+	</script>
+</div>
+
+  
+
+  <script>
+    var pjax = new Pjax({
+      elements: 'a[href]:not([href^="#"]):not([href="javascript:void(0)"]):not([no-pjax])',   // 拦截正常带链接的 a 标签
+      selectors: ["#pjax-container","title"],                                   // 根据实际需要确认重载区域
+      cacheBust: false,   // url 地址追加时间戳，用以避免浏览器缓存
+      timeout: 5000
+    });
+
+    document.addEventListener('pjax:send', function (e) {
+
+      try {
+        var currentUrl = window.location.pathname;
+        var targetUrl = e.triggerElement.href;
+        var banUrl = [""];
+        if (banUrl[0] != "") {
+          banUrl.forEach(item => {
+            if(currentUrl.indexOf(item) != -1 || targetUrl.indexOf(item) != -1) {
+              window.location.href = targetUrl;
+            }
+          });
+        }
+      } catch (error) {}
+
+      $(window).unbind('resize');
+      $(window).unbind('scroll');
+      $(document).unbind('scroll');
+      $(document).unbind('click');
+      $('body').unbind('click');
+
+    })
+    
+    document.addEventListener('pjax:complete', function () {
+      $('script[data-pjax], .pjax-reload script').each(function () {
+        $(this).parent().append($(this).remove());
+      });
+    });
+
+    document.addEventListener('pjax:error', function (e) {
+      window.location.href = e.triggerElement.href;
+    })
+    
+    // 刷新不从顶部开始
+    document.addEventListener("DOMContentLoaded", function () {
+      history.scrollRestoration = 'auto';
+    })
+  </script>
+
+
+
+  </body>
+</html>

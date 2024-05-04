@@ -1,0 +1,2615 @@
+<!DOCTYPE html>
+<html>
+  <!-- meta/link... -->
+  
+
+
+
+<head>
+  <meta http-equiv="content-type" content="text/html; charset=utf-8">
+  <meta content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0" name="viewport">
+  <!-- Global site tag (gtag.js) - Google Analytics -->
+
+
+  <title>Redis系列第六章 | Lemon</title>
+
+  <link rel="icon" type="image/x-icon, image/vnd.microsoft.icon" href="/bitbug_favicon.ico">
+  <link rel="stylesheet" href="https://at.alicdn.com/t/font_1911880_c1nvbyezg17.css">
+  <link href="https://unpkg.com/@fortawesome/fontawesome-free/css/all.min.css" rel="stylesheet">
+  <link href="/js/swiper/swiper@5.4.1.min.css" rel="stylesheet">
+  
+  
+    <script>
+        var themeModelId = '5';
+        if (themeModelId) {
+            localStorage.setItem('modelId', themeModelId);
+        }
+    </script>
+    
+    <script defer src="https://fastly.jsdelivr.net/gh/lemonpuer/live2d-widget@latest/autoload.js"></script>
+    <script>
+        var live2dOpen = eval('true') || false;
+        if (!live2dOpen) {
+            localStorage.setItem('waifu-display', 1609323474481);
+        }
+    </script>
+  
+  
+  
+<link rel="stylesheet" href="/css/animate.min.css">
+
+  
+<link rel="stylesheet" href="/css/style.css">
+
+  
+  
+    <link href="https://fastly.jsdelivr.net/npm/@fancyapps/ui@5.0/dist/fancybox/fancybox.css" rel="stylesheet">
+  
+  
+    
+<link rel="stylesheet" href="/js/shareJs/share.min.css">
+
+  
+  <style>
+        @media (max-width: 992px) {
+            #waifu {
+                display: none;
+            }
+        }
+    </style>
+    <script defer src="//cdn.bootcss.com/pace/1.0.2/pace.min.js"></script>
+    <link href="//cdn.bootcss.com/pace/1.0.2/themes/pink/pace-theme-flash.css" rel="stylesheet">
+
+    
+    
+    <!-- 依赖于jquery和vue -->
+    
+        <script src="https://unpkg.com/jquery@3.5.1/dist/jquery.min.js"></script>
+    
+
+    
+        <script src="https://unpkg.com/vue@2.6.11/dist/vue.min.js"></script>
+    
+
+    <!-- import link -->
+    
+        
+            <link rel="stylesheet" type="text/css" href="https://at.alicdn.com/t/c/font_4157890_fix3f9jhjk.css">
+        
+            
+        
+    
+    <!-- import script -->
+    
+        
+            
+        
+            
+        
+    
+
+<meta name="generator" content="Hexo 6.3.0"></head>
+
+  
+  <!-- 预加载动画 -->
+  <!-- 页面预加载动画 -->
+
+  
+    <div class="preloader-1" id="loader">
+  <div  aria-label="Orange and tan hamster running in a metal wheel" role="img" class="wheel-and-hamster">
+    <div class="wheel"></div>
+    <div class="hamster">
+      <div class="hamster__body">
+        <div class="hamster__head">
+          <div class="hamster__ear"></div>
+          <div class="hamster__eye"></div>
+          <div class="hamster__nose"></div>
+        </div>
+        <div class="hamster__limb hamster__limb--fr"></div>
+        <div class="hamster__limb hamster__limb--fl"></div>
+        <div class="hamster__limb hamster__limb--br"></div>
+        <div class="hamster__limb hamster__limb--bl"></div>
+        <div class="hamster__tail"></div>
+      </div>
+    </div>
+    <div class="spoke"></div>
+  </div>
+</div>
+  
+<script>
+  var endLoading = function () {
+    document.body.style.overflow = 'auto';
+    document.getElementById('loader').classList.add("loading");
+  }
+  window.addEventListener('DOMContentLoaded',endLoading);
+</script>
+
+  <body>
+    <!-- 判断是否为暗黑风格 -->
+    <!-- 判断是否为黑夜模式 -->
+<script>
+  let isDark = JSON.parse(localStorage.getItem('dark')) || JSON.parse('false');
+
+  if (isDark) {
+    $(document.body).addClass('darkModel');
+  }
+</script>
+
+    <!-- 需要在上面加载的js -->
+    <script>
+  function loadScript(src, cb) {
+    return new Promise(resolve => {
+      setTimeout(function () {
+        var HEAD = document.getElementsByTagName("head")[0] || document.documentElement;
+        var script = document.createElement("script");
+        script.setAttribute("type", "text/javascript");
+        if (cb) {
+          if (JSON.stringify(cb)) {
+            for (let p in cb) {
+              if (p == "onload") {
+                script[p] = () => {
+                  cb[p]()
+                  resolve()
+                }
+              } else {
+                script[p] = cb[p]
+                script.onload = resolve
+              }
+            }
+          } else {
+            script.onload = () => {
+              cb()
+              resolve()
+            };
+          }
+        } else {
+          script.onload = resolve
+        }
+        script.setAttribute("src", src);
+        HEAD.appendChild(script);
+      });
+    });
+  }
+
+  //https://github.com/filamentgroup/loadCSS
+  var loadCSS = function (src) {
+    return new Promise(resolve => {
+      setTimeout(function () {
+        var link = document.createElement('link');
+        link.rel = "stylesheet";
+        link.href = src;
+        link.onload = resolve;
+        document.getElementsByTagName("head")[0].appendChild(link);
+      });
+    });
+  };
+
+</script> 
+
+<!-- 轮播图所需要的js -->
+<script src="/js/swiper/swiper.min.js"></script>
+<script src="/js/swiper/vue-awesome-swiper.js"></script>
+<script src="/js/swiper/swiper.animate1.0.3.min.js"></script>
+
+<script type="text/javascript">
+  Vue.use(window.VueAwesomeSwiper)
+</script>
+
+
+  <script src="/js/vue-typed-js/index.js"></script>
+
+
+<!-- 首页的公告滚动插件的js需要重新加载 -->
+<script src="/js/vue-seamless-scroll/index.js"></script>
+
+<!-- 打字机效果js -->
+<script src="https://unpkg.com/typed.js@2.0.11"></script>
+
+
+    <div id="safearea">
+      <main class="main" id="pjax-container">
+        <!-- 头部导航 -->
+        
+<header class="header  " 
+  id="navHeader"
+  style="position: fixed;
+  left: 0; top: 0; z-index: 10;width: 100%;"
+>
+  <div class="header-content">
+    <div class="bars">
+      <div id="appDrawer" class="sidebar-image">
+  <div class="drawer-box-icon">
+    <i class="fas fa-bars" aria-hidden="true" @click="showDialogDrawer"></i>
+  </div>
+  
+  <transition name="fade">
+    <div class="drawer-box_mask" v-cloak style="display: none;" v-show="visible" @click.self="cancelDialogDrawer">
+    </div>
+  </transition>
+  <div class="drawer-box" :class="{'active': visible}">
+    <div class="drawer-box-head bg-color">
+      <img class="drawer-box-head_logo lazyload placeholder" src="https://i.postimg.cc/yNJTSNTj/image.jpg" class="lazyload placeholder" data-srcset="https://i.postimg.cc/yNJTSNTj/image.jpg" srcset="https://pic1.zhimg.com/v2-cd38920285d125be80b3eb504052c550_b.webp" alt="logo">
+      <h3 class="drawer-box-head_title">Lemon</h3>
+      <h5 class="drawer-box-head_desc">个人博客</h5>
+    </div>
+    
+    <div class="drawer-box-content">
+      <ul class="drawer-box-content_menu">
+        
+          
+            <li class="drawer-box-content_item" style="position: relative;">
+              
+                <a href="/" class="drawer-menu-item-link">
+                  
+                    <i class="fas fa-home" aria-hidden="true"></i>
+                  
+                  <span class="name">首页</span>
+                </a>
+              
+            </li>
+          
+            <li class="drawer-box-content_item" style="position: relative;">
+              
+                <a href="/archives" class="drawer-menu-item-link">
+                  
+                    <i class="fas fa-archive" aria-hidden="true"></i>
+                  
+                  <span class="name">归档</span>
+                </a>
+              
+            </li>
+          
+            <li class="drawer-box-content_item" style="position: relative;">
+              
+                <a href="/tags" class="drawer-menu-item-link">
+                  
+                    <i class="fas fa-tags" aria-hidden="true"></i>
+                  
+                  <span class="name">标签</span>
+                </a>
+              
+            </li>
+          
+            <li class="drawer-box-content_item" style="position: relative;">
+              
+                <a href="/categories" class="drawer-menu-item-link">
+                  
+                    <i class="fas fa-bookmark" aria-hidden="true"></i>
+                  
+                  <span class="name">分类</span>
+                </a>
+              
+            </li>
+          
+            <li class="drawer-box-content_item" style="position: relative;">
+              
+                <a href="/friends" class="drawer-menu-item-link">
+                  
+                    <i class="fas fa-link" aria-hidden="true"></i>
+                  
+                  <span class="name">友情链接</span>
+                </a>
+              
+            </li>
+          
+            <li class="drawer-box-content_item" style="position: relative;">
+              
+                <a href="javascript:;" class="drawer-menu-item-link has-children" @click="openOrCloseMenu(5)">
+                  <span>
+                    
+                    <span class="name">更多</span>
+                  </span>
+                  <i class="fas fa-chevron-left arrow " :class="{'icon-rotate': isOpen(5)}" aria-hidden="true"></i>
+                </a>
+                <ul class="drawer-sub-menu" v-if="isOpen(5)">
+                  
+                  <li>
+                    <a href="/about">
+                      
+                      <i class="fa fa-id-card" style="margin-top: -20px;"></i>
+                      
+                      <span>关于</span>
+                    </a>
+                  </li>
+                  
+                  <li>
+                    <a target="_blank" rel="noopener" href="https://bing.com/">
+                      
+                      <i class="fa fa-search" style="margin-top: -20px;"></i>
+                      
+                      <span>必应</span>
+                    </a>
+                  </li>
+                  
+                </ul>
+              
+            </li>
+          
+        
+        
+      </ul>
+    </div>
+  </div>
+</div>
+
+<script>
+  var body = document.body || document.documentElement || window;
+  var vm = new Vue({
+    el: '#appDrawer',
+    data: {
+      visible: false,
+      top: 0,
+      openArr: [],
+    },
+    computed: {
+    },
+    mounted() {
+    },
+    methods: {
+      isOpen(index) {
+        if (this.openArr.includes(index)) {
+          return true;
+        } else {
+          return false;
+        }
+      },
+      openOrCloseMenu(curIndex) {
+        const index = this.openArr.indexOf(curIndex);
+        if (index !== -1) {
+          this.openArr.splice(index, 1);
+        } else {
+          this.openArr.push(curIndex);
+        }
+      },
+      showDialogDrawer() {
+        this.visible = true;
+        // 防止页面滚动，只能让弹框滚动
+        this.top = $(document).scrollTop()
+        body.style.cssText = 'width: 100%; height: 100%;overflow: hidden;';
+      },
+      cancelDialogDrawer() {
+        this.visible = false;
+        body.removeAttribute('style');
+        $(document).scrollTop(this.top)
+      }
+    },
+    created() {}
+  })
+</script>
+
+    </div>
+    <div class="blog-title" id="author-avatar">
+      
+        <div class="avatar">
+          <img src="https://i.postimg.cc/yNJTSNTj/image.jpg" class="lazyload placeholder" data-srcset="https://i.postimg.cc/yNJTSNTj/image.jpg" srcset="https://pic1.zhimg.com/v2-cd38920285d125be80b3eb504052c550_b.webp" alt="logo">
+        </div>
+      
+      <a href="/" class="logo">Lemon</a>
+    </div>
+    <nav class="navbar">
+      <ul class="menu">
+        
+          
+            <li class="menu-item" style="position: relative;">
+              
+                <a href="/" class="menu-item-link" title="首页">
+                  
+                    <i class="fas fa-home" aria-hidden="true"></i>
+                  
+                  <span class="name">首页</span>
+                </a>
+              
+            </li>
+          
+            <li class="menu-item" style="position: relative;">
+              
+                <a href="/archives" class="menu-item-link" title="归档">
+                  
+                    <i class="fas fa-archive" aria-hidden="true"></i>
+                  
+                  <span class="name">归档</span>
+                </a>
+              
+            </li>
+          
+            <li class="menu-item" style="position: relative;">
+              
+                <a href="/tags" class="menu-item-link" title="标签">
+                  
+                    <i class="fas fa-tags" aria-hidden="true"></i>
+                  
+                  <span class="name">标签</span>
+                </a>
+              
+            </li>
+          
+            <li class="menu-item" style="position: relative;">
+              
+                <a href="/categories" class="menu-item-link" title="分类">
+                  
+                    <i class="fas fa-bookmark" aria-hidden="true"></i>
+                  
+                  <span class="name">分类</span>
+                </a>
+              
+            </li>
+          
+            <li class="menu-item" style="position: relative;">
+              
+                <a href="/friends" class="menu-item-link" title="友情链接">
+                  
+                    <i class="fas fa-link" aria-hidden="true"></i>
+                  
+                  <span class="name">友情链接</span>
+                </a>
+              
+            </li>
+          
+            <li class="menu-item" style="position: relative;">
+              
+                <a href="javascript:;" class="menu-item-link" title="更多">
+                  
+                  <span class="name">更多</span>
+                  <i class="fas fa-chevron-down arrow" aria-hidden="true"></i>
+                </a>
+                <ul class="sub-menu">
+                  
+                  <li>
+                    <a href="/about">
+                      
+                      <i class="fa fa-id-card" style="margin-top: -20px;"></i>
+                      
+                      <span>关于</span>
+                    </a>
+                  </li>
+                  
+                  <li>
+                    <a target="_blank" rel="noopener" href="https://bing.com/">
+                      
+                      <i class="fa fa-search" style="margin-top: -20px;"></i>
+                      
+                      <span>必应</span>
+                    </a>
+                  </li>
+                  
+                </ul>
+              
+            </li>
+          
+        
+      </ul>
+      
+      
+        <div id="appSearch">
+  <div class="search"  @click="showDialog()"><i class="fas fa-search" aria-hidden="true"></i></div>
+  <transition name="fade">
+    <div class="message-box_wrapper" style="display: none;" v-cloak v-show="dialogVisible" @click.self="cancelDialogVisible()">
+      <div class="message-box animated bounceInDown">
+        <h2>
+          <span>
+            <i class="fas fa-search" aria-hidden="true"></i>
+            <span class="title">本地搜索</span>
+          </span>
+          <i class="fas fa-times close" pointer style="float:right;" aria-hidden="true" @click.self="cancelDialogVisible()"></i>
+        </h2>
+        <form class="site-search-form">
+          <input type="text"
+            placeholder="请输入关键字"
+            id="local-search-input" 
+            @click="getSearchFile()"
+            class="st-search-input"
+            v-model="searchInput"
+          />
+        </form>
+        <div class="result-wrapper">
+          <div id="local-search-result" class="local-search-result-cls"></div>
+        </div>
+      </div>
+    </div>
+  </transition>
+</div>
+<script src="/js/local_search.js"></script>
+<script>
+  var body = document.body || document.documentElement || window;
+  var vm = new Vue({
+    el: '#appSearch',
+    data: {
+      dialogVisible: false,
+      searchInput: '',
+      top: 0,
+    },
+    computed: {
+    },
+    mounted() {
+      window.addEventListener('pjax:complete', () => {
+        this.cancelDialogVisible();
+      })
+    },
+    methods: {
+      showDialog() {
+        this.dialogVisible = true;
+        // 防止页面滚动，只能让弹框滚动
+        this.top = $(document).scrollTop()
+        body.style.cssText = 'overflow: hidden;';
+      },
+      getSearchFile() {
+        if (!this.searchInput) {
+          getSearchFile("/search.xml");
+        }
+      },
+      cancelDialogVisible() {
+        this.dialogVisible = false;
+        body.removeAttribute('style');
+        $(document).scrollTop(this.top)
+      },
+    },
+    created() {}
+  })
+</script>
+<!-- 解决刷新页面闪烁问题，可以在元素上添加display: none, 或者用vue.extend方法，详情：https://blog.csdn.net/qq_31393401/article/details/81017912 -->
+<!-- 下面是搜索基本写法 -->
+<!-- <script type="text/javascript" id="local.search.active">
+  var inputArea = document.querySelector("#local-search-input");
+  inputArea.onclick   = function(){ getSearchFile(); this.onclick = null }
+  inputArea.onkeydown = function(){ if(event.keyCode == 13) return false }
+</script> -->
+
+      
+
+    </nav>
+  </div>
+  
+  
+    <div id="he-plugin-simple"></div>
+    <script>
+      WIDGET = {
+        CONFIG: {
+          "modules": "012",
+          "background": 5,
+          "tmpColor": "4A4A4A",
+          "tmpSize": 16,
+          "cityColor": "4A4A4A",
+          "citySize": 16,
+          "aqiSize": 16,
+          "weatherIconSize": 24,
+          "alertIconSize": 18,
+          "padding": "10px 10px 10px 10px",
+          "shadow": "1",
+          "language": "auto",
+          "borderRadius": 5,
+          "fixed": "false",
+          "vertical": "middle",
+          "horizontal": "center",
+          "key": "2784dd3fcb1e4f0f9a9b579bf69641f2"
+        }
+      }
+    </script>
+    <script defer src="https://widget.qweather.net/simple/static/js/he-simple-common.js?v=2.0"></script> 
+    
+</header>
+        <!-- 内容区域 -->
+        
+ <!-- prismjs 代码高亮 -->
+ 
+
+
+<div class="bg-dark-floor" style="position: fixed;left: 0;top: 0;width: 100%;height: 100%;z-index: -1;"></div>
+
+
+  <!-- 文章详情页顶部图片和标题 -->
+
+
+
+
+<div class="post-detail-header" id="thumbnail_canvas" style="background-repeat: no-repeat; background-size: cover; 
+  background-position: center center;position: relative;background-image:url('https://images.wallpaperscraft.com/image/single/fern_plant_leaves_108470_1920x1080.jpg')">
+  <div class="post-detail-header-mask"></div>
+  <canvas id="header_canvas"style="position:absolute;bottom:0;pointer-events:none;"></canvas>
+  
+  <div class="post-detail-header_info-box">
+    <div class="title-box">
+      <span class="title">
+        Redis系列第六章
+      </span>
+    </div>
+    
+    
+      
+        <span class="post-detail-header_date">
+          <i class="fas fa-calendar"></i> 发表于：2023-12-18 |
+        </span>
+      
+
+      
+        <span class="post-detail-header_categories">
+          <i class="iconfont iconbookmark1"></i> 分类：
+          
+            <a href="/categories/%E4%B8%AD%E9%97%B4%E4%BB%B6/" class="post-detail-header_category">
+              中间件
+            </a>
+          
+        </span>
+      
+
+      
+        <div class="post-detail-header_wordcount">
+          <span class="totalcount">
+            <i class="fas fa-file-text-o"></i> 字数统计: 4.8k |
+          </span>
+  
+          <span class="min2read">
+            <i class="fas fa-clock"></i> 阅读时长: 17分钟 |
+          </span>
+  
+          
+            <span class="reading">
+              <i class="fas fa-eye"></i> 阅读量：<span id="busuanzi_value_page_pv"></span>
+            </span>
+          
+        </div>
+      
+    
+  </div>
+  
+  
+    <script src="/js/bubble/bubble.js"></script>
+  
+</div>
+
+
+
+
+
+<div class="post-detail-content post-row" 
+  style="padding-top: 0px;">
+  <div class="main-content">
+    <article class="post post-detail">
+      <div class="post-content">
+        <h1 id="简介"><a href="#简介" class="headerlink" title="简介"></a>简介</h1><p>Lua 是一个由标准 C 语言开发的、开源的、可扩展的、轻量级的、弱类型的、解释型脚本语言。官网：<a target="_blank" rel="noopener" href="https://www.lua.org/">The Programming Language Lua</a></p>
+<h2 id="Linux-系统"><a href="#Linux-系统" class="headerlink" title="Linux 系统"></a>Linux 系统</h2><p>CentOS7 中自带 Lua ：</p>
+<p><img src="https://cdn.jsdelivr.net/gh/lemonpuer/figure@latest/blog-images/20231216171944.png" class="lazyload placeholder" data-srcset="https://cdn.jsdelivr.net/gh/lemonpuer/figure@latest/blog-images/20231216171944.png" srcset="https://pic1.zhimg.com/v2-cd38920285d125be80b3eb504052c550_b.webp" alt="df968885da161258d077acdba147663e.png"></p>
+<p>使用高版本的Lua需要安装：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">#解压Lua源码</span><br><span class="line">tar -zxvf lua-5.4.4.tar.gz -C /opt/apps/</span><br><span class="line">#进入Lua的解压目录准备编译环境</span><br><span class="line">yum -y install gcc gcc-c++</span><br><span class="line">#编译</span><br><span class="line">make linux test</span><br><span class="line">#安装</span><br><span class="line">make install</span><br></pre></td></tr></table></figure>
+
+<p>重启后便能使用新版本的Lua</p>
+<blockquote>
+<p>lua -v 可以查看Lua版本</p>
+</blockquote>
+<h3 id="交互模式"><a href="#交互模式" class="headerlink" title="交互模式"></a>交互模式</h3><p>Lua 为用户提供了两种交互模式：命令行模式与脚本文件模式。</p>
+<h4 id="命令行模式："><a href="#命令行模式：" class="headerlink" title="命令行模式："></a>命令行模式：</h4><p>在任意目录下使用 lua 命令进入 lua 命令行模式，在其中输入语句后回车即可运行显示出结果。使用 Ctrl + C 退出模式。</p>
+<p>lua 对语句后的分号要求不是强制性的，有没有都行。</p>
+<p><img src="https://cdn.jsdelivr.net/gh/lemonpuer/figure@latest/blog-images/20231216171950.png" class="lazyload placeholder" data-srcset="https://cdn.jsdelivr.net/gh/lemonpuer/figure@latest/blog-images/20231216171950.png" srcset="https://pic1.zhimg.com/v2-cd38920285d125be80b3eb504052c550_b.webp" alt="6e4784bd08dae341f68b32bf771e9839.png"></p>
+<h4 id="脚本文件模式："><a href="#脚本文件模式：" class="headerlink" title="脚本文件模式："></a>脚本文件模式：</h4><p>该模式是先要编写脚本文件，然后再使用 lua 命令来运行文件。</p>
+<p>创建 hello.lua</p>
+<figure class="highlight lua"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">print</span>(<span class="string">&quot;hello lua&quot;</span>);</span><br></pre></td></tr></table></figure>
+
+<p>运行：<code>lua hello.lua</code></p>
+<p>运行方式二：</p>
+<p>在脚本文件第一行增加<code>#!/usr/bin/lua</code>，表示当前文件将使用 lua  命令运行。</p>
+<figure class="highlight lua"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">#!/usr/bin/lua</span><br><span class="line"><span class="built_in">print</span>(<span class="string">&quot;hello lua&quot;</span>);</span><br></pre></td></tr></table></figure>
+
+<p>修改文件执行权限即可运行，类似 shell 脚本</p>
+<h2 id="Windows-系统"><a href="#Windows-系统" class="headerlink" title="Windows 系统"></a>Windows 系统</h2><p>在 Windows 系统中 Lua 的运行环境。最常用的为 SciTE。</p>
+<p>SciTE 是一款 Lua 脚本测试编辑器，提供 Lua 的编辑运行环境。官方下载地址：<a target="_blank" rel="noopener" href="https://github.com/rjpcomputing/luaforwindows/releases">Releases · rjpcomputing&#x2F;luaforwindows · GitHub</a></p>
+<h1 id="语法基础"><a href="#语法基础" class="headerlink" title="语法基础"></a>语法基础</h1><p>Lua 的行注释为两个连续的减号，段注释以 –[[ 开头，以 –]] 结尾。</p>
+<h2 id="数据类型"><a href="#数据类型" class="headerlink" title="数据类型"></a>数据类型</h2><p>Lua 中有 8 种类型，分别为：nil、boolean、number、string、userdata、function、thread  和 table。通过 type()函数可以查看一个数据的类型</p>
+<table>
+<thead>
+<tr>
+<th align="center">数据类型</th>
+<th>描述</th>
+</tr>
+</thead>
+<tbody><tr>
+<td align="center">nil</td>
+<td>只有值 nil 属于该类，表示一个无效值，与 Java 中的 null 类似。但在条件表达式中相当于 false。</td>
+</tr>
+<tr>
+<td align="center">boolean</td>
+<td>包含两个值：false 和 true。</td>
+</tr>
+<tr>
+<td align="center">number</td>
+<td>表示双精度类型的实浮点数。</td>
+</tr>
+<tr>
+<td align="center">string</td>
+<td>字符串，由一对双引号或单引号括起来。当一个字符串包含多行时，可以在第一行中以[[开头，在最后一行中以]]结尾，那么在[[与]]括起来的这多行内容就是一个字符串。换行符为字符串”\n”。</td>
+</tr>
+<tr>
+<td align="center">table</td>
+<td>类似于 Java 中的数组，但比数组的功能更强大，更灵活。</td>
+</tr>
+<tr>
+<td align="center">function</td>
+<td>由 C 或 Lua 编写的函数。</td>
+</tr>
+<tr>
+<td align="center">thread</td>
+<td>协同线程，是协同函数的执行体，即正在执行的协同函数。</td>
+</tr>
+<tr>
+<td align="center">userdata</td>
+<td>一种用户自定义数据，用于表示一种由应用程序或 C&#x2F;C++ 语言库所创建的类型，可以将任意 C&#x2F;C++ 的任意数据类型的数据存储到 Lua 变量中调用。</td>
+</tr>
+</tbody></table>
+<h2 id="标识符"><a href="#标识符" class="headerlink" title="标识符"></a>标识符</h2><p>程序设计语言中的标识符主要包含保留字、变量、常量、方法名、函数名、类名等。Lua 的标识符由字母、数字与下划线组成，但不能以数字开头。Lua 是大小写敏感的。</p>
+<h3 id="保留字"><a href="#保留字" class="headerlink" title="保留字"></a>保留字</h3><p>Lua 常见的保留字共有 22 个。除了这 22 个外，Lua 中还定义了很多的内置全局变量，这些内置全局变量的一个共同特征是，以下划线开头后跟全大写字母。我们在定义自己的标识符时不能与这些保留字、内置全局变量重复。</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">and		break		do		else</span><br><span class="line">elseif		end		false		for</span><br><span class="line">function	if		in		local</span><br><span class="line">nil 		not		or		repeat</span><br><span class="line">return		then		true		until</span><br><span class="line">while 		goto</span><br></pre></td></tr></table></figure>
+
+<h3 id="变量"><a href="#变量" class="headerlink" title="变量"></a>变量</h3><p>Lua 是弱类型语言，变量无需类型声明即可直接使用。</p>
+<p>变量分为全局变量与局部变量。Lua 中的变量默认都是全局变量，即使声明在语句块或函数里。全局变量一旦声明，在当前文件中的任何地方都可访问。</p>
+<p>局部变量 local 相当于 Java 中的 private 变量，只能在声明的语句块中 使用。</p>
+<p>Lua 是动态类型语言，变量的类型可以随时改变，无需声明。</p>
+<h2 id="运算符"><a href="#运算符" class="headerlink" title="运算符"></a>运算符</h2><h3 id="算术运算符"><a href="#算术运算符" class="headerlink" title="算术运算符"></a>算术运算符</h3><table>
+<thead>
+<tr>
+<th align="center">操作符</th>
+<th>描述</th>
+</tr>
+</thead>
+<tbody><tr>
+<td align="center">+</td>
+<td>加法</td>
+</tr>
+<tr>
+<td align="center">-</td>
+<td>减法</td>
+</tr>
+<tr>
+<td align="center">*</td>
+<td>乘法</td>
+</tr>
+<tr>
+<td align="center">&#x2F;</td>
+<td>除法</td>
+</tr>
+<tr>
+<td align="center">%</td>
+<td>取余</td>
+</tr>
+<tr>
+<td align="center">^</td>
+<td>乘幂</td>
+</tr>
+<tr>
+<td align="center">-</td>
+<td>负号</td>
+</tr>
+<tr>
+<td align="center">&#x2F;&#x2F;</td>
+<td>整除运算（&gt;&#x3D;lua5.3）</td>
+</tr>
+</tbody></table>
+<blockquote>
+<p><code>5/2=2.5; 5//2=2</code></p>
+</blockquote>
+<h3 id="关系运算符"><a href="#关系运算符" class="headerlink" title="关系运算符"></a>关系运算符</h3><table>
+<thead>
+<tr>
+<th align="center">操作符</th>
+<th>描述</th>
+</tr>
+</thead>
+<tbody><tr>
+<td align="center">&#x3D;&#x3D;</td>
+<td>等于</td>
+</tr>
+<tr>
+<td align="center">~&#x3D;</td>
+<td>不等于</td>
+</tr>
+<tr>
+<td align="center">&gt;</td>
+<td>大于</td>
+</tr>
+<tr>
+<td align="center">&lt;</td>
+<td>小于</td>
+</tr>
+<tr>
+<td align="center">&gt;&#x3D;</td>
+<td>大于等于</td>
+</tr>
+<tr>
+<td align="center">&lt;&#x3D;</td>
+<td>小于等于</td>
+</tr>
+</tbody></table>
+<h3 id="逻辑运算符"><a href="#逻辑运算符" class="headerlink" title="逻辑运算符"></a>逻辑运算符</h3><p>Lua 系统将 false 与 nil 作为假，将 true 与非 nil 作为真，即使是 0 也是真。</p>
+<table>
+<thead>
+<tr>
+<th align="center">操作符</th>
+<th>描述</th>
+</tr>
+</thead>
+<tbody><tr>
+<td align="center">and</td>
+<td>逻辑与</td>
+</tr>
+<tr>
+<td align="center">or</td>
+<td>逻辑或</td>
+</tr>
+<tr>
+<td align="center">not</td>
+<td>逻辑非</td>
+</tr>
+</tbody></table>
+<h3 id="特殊运算符"><a href="#特殊运算符" class="headerlink" title="特殊运算符"></a>特殊运算符</h3><table>
+<thead>
+<tr>
+<th align="center">操作符</th>
+<th>描述</th>
+</tr>
+</thead>
+<tbody><tr>
+<td align="center">..(两个点)</td>
+<td>字符串连接符</td>
+</tr>
+<tr>
+<td align="center">#</td>
+<td>返回字符串或表的长度</td>
+</tr>
+</tbody></table>
+<h2 id="函数"><a href="#函数" class="headerlink" title="函数"></a>函数</h2><p>Lua 中函数的定义是以 function 开头，后跟函数名与参数列表，以 end 结尾。其可以没有返回值，也可以一次返回多个值。</p>
+<ol>
+<li>固定参函数</li>
+</ol>
+<p>Lua 中的函数在调用时不要求实参的个数必须与函数中形参的个数同。如果实参个数少于形参个数，则系统自动使用 nil 填充；如果实参个数多于形参个数，多出的将被系统自动忽略。</p>
+<p><img src="https://cdn.jsdelivr.net/gh/lemonpuer/figure@latest/blog-images/ae95dfa12faa0c1b97beb371cd9b2209.png" class="lazyload placeholder" data-srcset="https://cdn.jsdelivr.net/gh/lemonpuer/figure@latest/blog-images/ae95dfa12faa0c1b97beb371cd9b2209.png" srcset="https://pic1.zhimg.com/v2-cd38920285d125be80b3eb504052c550_b.webp" alt="ae95dfa12faa0c1b97beb371cd9b2209.png"></p>
+<ol start="2">
+<li>可变参函数</li>
+</ol>
+<p>在函数定义时不给出具体形参的个数，而是使用三个连续的点号。在函数调用时就可以向该函数传递任意个数的参数，函数可以全部接收。</p>
+<ol start="3">
+<li>可返回多个值</li>
+</ol>
+<p>Lua 中的函数一次可以返回多个值，但需要有多个变量来同时接收。</p>
+<p><img src="https://cdn.jsdelivr.net/gh/lemonpuer/figure@latest/blog-images/20231216171959.png" class="lazyload placeholder" data-srcset="https://cdn.jsdelivr.net/gh/lemonpuer/figure@latest/blog-images/20231216171959.png" srcset="https://pic1.zhimg.com/v2-cd38920285d125be80b3eb504052c550_b.webp" alt="033a1faed42736b9ce1ff706c12666d6.png"></p>
+<ol start="4">
+<li>函数作为参数</li>
+</ol>
+<p>Lua 的函数中，允许函数作为参数。而作为参数的函数，可以是已经定义好的普通函数，也可以是匿名函数。</p>
+<h2 id="控制语句"><a href="#控制语句" class="headerlink" title="控制语句"></a>控制语句</h2><h3 id="流程控制语句"><a href="#流程控制语句" class="headerlink" title="流程控制语句"></a>流程控制语句</h3><h4 id="if"><a href="#if" class="headerlink" title="if"></a>if</h4><p>Lua 提供了 if…then 用于表示条件判断，其中 if 的判断条件可以是任意表达式。</p>
+<p>Lua 中的 if 语句的判断条件可以使用小括号括起来，也可以不使用。</p>
+<p>Lua 中提供了专门的关键字 elseif 来做 if 嵌套语句。</p>
+<p><img src="https://cdn.jsdelivr.net/gh/lemonpuer/figure@latest/blog-images/20231216172007.png" class="lazyload placeholder" data-srcset="https://cdn.jsdelivr.net/gh/lemonpuer/figure@latest/blog-images/20231216172007.png" srcset="https://pic1.zhimg.com/v2-cd38920285d125be80b3eb504052c550_b.webp" alt="e154464edc36890d2567ddf82ea37132.png"></p>
+<h3 id="循环控制语句"><a href="#循环控制语句" class="headerlink" title="循环控制语句"></a>循环控制语句</h3><p>Lua 提供了四种循环控制语句：while…do 循环、repeat…until 循环、数值 for 循环，及泛型 for 循环。同时，Lua 还提供了 break 与 goto 两种循环流程控制语句。</p>
+<p><img src="https://cdn.jsdelivr.net/gh/lemonpuer/figure@latest/blog-images/9d1ed5ffda6f4f5436aad7d640630744.png" class="lazyload placeholder" data-srcset="https://cdn.jsdelivr.net/gh/lemonpuer/figure@latest/blog-images/9d1ed5ffda6f4f5436aad7d640630744.png" srcset="https://pic1.zhimg.com/v2-cd38920285d125be80b3eb504052c550_b.webp" alt="9d1ed5ffda6f4f5436aad7d640630744.png"></p>
+<p>其中 for 循环只参用于循环变量为数值型的情况。</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">其语法格式为：</span><br><span class="line">for var=exp1, exp2, exp3 do</span><br><span class="line"> 循环体</span><br><span class="line">end</span><br></pre></td></tr></table></figure>
+
+<p>var 为指定的循环变量，exp1 为循环起始值，exp2 为循环结束值，exp3 为循环步长。 步长默认为 1，可省略。</p>
+<ul>
+<li>泛型 for</li>
+</ul>
+<p>泛型 for 用于遍历 table 中的所有值，其需要与 Lua 的迭代器联合使用。</p>
+<ul>
+<li>break</li>
+</ul>
+<p>break 语句可以提前终止循环，只能用于循环之中。</p>
+<ul>
+<li>goto</li>
+</ul>
+<p>goto 语句可以将执行流程无条件地跳转到指定的标记语句处开始执行</p>
+<p>语句标记使用一对双冒号括起来，置于语句前面。goto 语句可以使用在循环之外。 注意，Lua5.1 中不支持双冒号的语句标记。</p>
+<p>该语法不建议使用</p>
+<p><img src="https://cdn.jsdelivr.net/gh/lemonpuer/figure@latest/blog-images/20231216172051.png" class="lazyload placeholder" data-srcset="https://cdn.jsdelivr.net/gh/lemonpuer/figure@latest/blog-images/20231216172051.png" srcset="https://pic1.zhimg.com/v2-cd38920285d125be80b3eb504052c550_b.webp" alt="31fd63711e58bad4873f8415f27bc347.png"></p>
+<h1 id="语法进阶"><a href="#语法进阶" class="headerlink" title="语法进阶"></a>语法进阶</h1><h2 id="table"><a href="#table" class="headerlink" title="table"></a>table</h2><h3 id="数组"><a href="#数组" class="headerlink" title="数组"></a>数组</h3><p>使用 table 可以定义一维、二维、多维数组。Lua 中的数组索引是从 1 开始的，且无需声明数组长度，可以随时增加元素。当然，同一数组中的元素可以是任意类型。</p>
+<p><img src="https://cdn.jsdelivr.net/gh/lemonpuer/figure@latest/blog-images/20231216172058.png" class="lazyload placeholder" data-srcset="https://cdn.jsdelivr.net/gh/lemonpuer/figure@latest/blog-images/20231216172058.png" srcset="https://pic1.zhimg.com/v2-cd38920285d125be80b3eb504052c550_b.webp" alt="4abc6878d630643c734767174f5bb9d0.png"></p>
+<h3 id="map"><a href="#map" class="headerlink" title="map"></a>map</h3><p>使用 table 也可以定义出类似 map 的 key-value 数据结构。其可以定义 table 时直接指定 key-value，也可单独指定 key-value。而访问时，一般都是通过 table 的 key 直接访问，也可以数组索引方式来访问，此时的 key 即为索引。</p>
+<p><img src="https://cdn.jsdelivr.net/gh/lemonpuer/figure@latest/blog-images/20231216172130.png" class="lazyload placeholder" data-srcset="https://cdn.jsdelivr.net/gh/lemonpuer/figure@latest/blog-images/20231216172130.png" srcset="https://pic1.zhimg.com/v2-cd38920285d125be80b3eb504052c550_b.webp" alt="4bed0658e87155a719862ec9c79241bc.png"></p>
+<h3 id="混合结构"><a href="#混合结构" class="headerlink" title="混合结构"></a>混合结构</h3><p>Lua 允许将数组与 key-value 混合在同一个 table 中进行定义。key-value 不会占用数组的数字索引值。</p>
+<h2 id="table-操作函数"><a href="#table-操作函数" class="headerlink" title="table 操作函数"></a>table 操作函数</h2><p>Lua 中提供了对 table 进行操作的函数。</p>
+<ul>
+<li>table.concat()</li>
+</ul>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">table.concat (table [, sep [, start [, end]]])</span><br></pre></td></tr></table></figure>
+
+<p>该函数用于将指定的 table 数组元素进行字符串连接。连接从 start 索引位置到 end 索引位置的所有数组元素, 元素间使用指定的分隔符 sep 隔开。如果 table 是一个混合结构，那么仅是连接数组元素。</p>
+<ul>
+<li>table.unpack()</li>
+</ul>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">table.unpack (table [, i [, j]])</span><br></pre></td></tr></table></figure>
+
+<p>该函数返回指定 table 的数组中的从第 i 个元素到第 j 个元素值。i 与 j 是可选的，默认 i 为 1，j 为数组的最后一个元素。Lua5.1 不支持该函数。</p>
+<ul>
+<li>table.pack()</li>
+</ul>
+<p>该函数的参数是一个可变参，其可将指定的参数打包为一个 table 返回。这个返回的 table 中具有一个属性 n，用于表示该 table 包含的元素个数。Lua5.1 不支持该函数。</p>
+<ul>
+<li>table.maxn()</li>
+</ul>
+<p><code>table.maxn(table)</code></p>
+<p>该函数返回指定 table 的数组中的最大索引值，即数组包含元素的个数。</p>
+<ul>
+<li>table.insert()</li>
+</ul>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">table.insert (table, [pos,] value)</span><br></pre></td></tr></table></figure>
+
+<p>该函数用于在指定 table 的数组部分指定位置 pos 插入值为 value 的一个元素。其后的元素会被后移。pos 参数可选，默认为数组部分末尾。</p>
+<ul>
+<li>table.remove ()</li>
+</ul>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">table.remove (table [, pos])</span><br></pre></td></tr></table></figure>
+
+<p>该函数用于删除并返回指定 table 中数组部分位于 pos 位置的元素。其后的元素会被前移。pos 参数可选，默认删除数组中的最后一个元素。</p>
+<ul>
+<li>table.sort()</li>
+</ul>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">table.sort(table [,fun(a,b)])</span><br></pre></td></tr></table></figure>
+
+<p>该函数用于对指定的 table 的数组元素进行升序排序，也可按照指定函数 fun(a,b) 中指定的规则进行排序。fun(a,b)是一个用于比较 a 与 b 的函数，a 与 b 分别代表数组中的两个相邻元素。</p>
+<ul>
+<li>如果 arr 中的元素既有字符串又有数值型，那么对其进行排序会报错。</li>
+<li>如果数组中多个元素相同，则其相同的多个元素的排序结果不确定</li>
+<li>如果数组元素中包含 nil，则排序会报错。</li>
+</ul>
+<h3 id="迭代器"><a href="#迭代器" class="headerlink" title="迭代器"></a>迭代器</h3><p>Lua 提供了两个迭代器 pairs(table)与 ipairs(table)。这两个迭代器通常会应用于泛型 for 循环中，用于遍历指定的 table。</p>
+<ul>
+<li>ipairs(table)：仅会迭代指定 table 中的数组元素。</li>
+<li>pairs(table)：会迭代整个 table 元素，无论是数组元素，还是 key-value。</li>
+</ul>
+<p><img src="https://cdn.jsdelivr.net/gh/lemonpuer/figure@latest/blog-images/20231216172148.png" class="lazyload placeholder" data-srcset="https://cdn.jsdelivr.net/gh/lemonpuer/figure@latest/blog-images/20231216172148.png" srcset="https://pic1.zhimg.com/v2-cd38920285d125be80b3eb504052c550_b.webp" alt="2b125b87dc279ed3c0effc0539065a54.png"></p>
+<h3 id="模块"><a href="#模块" class="headerlink" title="模块"></a>模块</h3><p>模块是Lua中特有的一种数据结构。从 Lua 5.1 开始，Lua 加入了标准的模块管理机制，可以把一些公用的代码放在一个文件里，以 API 接口的形式在其他地方调用，有利于代码的重用和降低代码耦合度。</p>
+<p>模块文件主要由 table 组成。在 table 中添加相应的变量、函数，最后文件返回该 table 即可。如果其它文件中需要使用该模块，只需通过 require 将该模块导入即可。</p>
+<ol>
+<li>定义模块</li>
+</ol>
+<p>模块是一个 lua 文件，其中会包含一个 table。一般情况下该文件名与该 table 名称相同，但其并不是必须的。</p>
+<ol start="2">
+<li>使用模块</li>
+</ol>
+<p>require(“文件路径”)，其中文件名是不能写.lua 扩展名的。该函数可以将指定的 lua 文件静态导入（合并为一个文件）。该函数的使用可 以省略小括号，写为 require “文件路径”。</p>
+<p>require()函数是有返回值的，返回的就是模块文件最后 return 的 table。可以使用一个变量接收该 table 值作为模块的别名，就可以使用别名来访问模块了。</p>
+<h3 id="元表与元方法"><a href="#元表与元方法" class="headerlink" title="元表与元方法"></a>元表与元方法</h3><p>元表，即 Lua 中普通 table 的元数据表，而元方法则是元表中定义的普通表的默认行为。Lua 中的每个普通 table 都可为其定义一个元表，用于扩展该普通 table 的行为功能。</p>
+<p>元表中有两个重要函数：</p>
+<ul>
+<li>setmetatable(table,metatable)：将 metatable 指定为普通表 table 的元表。</li>
+<li>getmetatable(table)：获取指定普通表 table 的元表。</li>
+</ul>
+<h4 id="元方法"><a href="#元方法" class="headerlink" title="元方法"></a>元方法</h4><ul>
+<li>_ _index</li>
+</ul>
+<p>当用户在对 table 进行读取访问时，如果访问的数组索引或 key 不存在，那么系统就会<br>自动调用元表的_ _index 元方法。该重写的方法可以是一个函数，也可以是另一个表。如果重写的_ _index 元方法是函数，且有返回值，则直接返回；如果没有返回值，则返回 nil。</p>
+<p><img src="https://cdn.jsdelivr.net/gh/lemonpuer/figure@latest/blog-images/20231216172154.png" class="lazyload placeholder" data-srcset="https://cdn.jsdelivr.net/gh/lemonpuer/figure@latest/blog-images/20231216172154.png" srcset="https://pic1.zhimg.com/v2-cd38920285d125be80b3eb504052c550_b.webp" alt="f76bdc8c6197b4c7c61eabc143739129.png"></p>
+<p><img src="https://cdn.jsdelivr.net/gh/lemonpuer/figure@latest/blog-images/20231216172156.png" class="lazyload placeholder" data-srcset="https://cdn.jsdelivr.net/gh/lemonpuer/figure@latest/blog-images/20231216172156.png" srcset="https://pic1.zhimg.com/v2-cd38920285d125be80b3eb504052c550_b.webp" alt="7fe41de0916ede6dde6cfe53d48a50e9.png"></p>
+<ul>
+<li>_ _newindex</li>
+</ul>
+<p>当用户为 table 中一个不存在的索引或 key 赋值时，就会自动调用元表的_ _newindex 元方法。该重写的方法可以是一个函数，也可以是另一个表。如果重写的_ _newindex 元方法是函数，且有返回值，则直接返回；如果没有返回值，则返回 nil。</p>
+<p><img src="https://cdn.jsdelivr.net/gh/lemonpuer/figure@latest/blog-images/20231216172215.png" class="lazyload placeholder" data-srcset="https://cdn.jsdelivr.net/gh/lemonpuer/figure@latest/blog-images/20231216172215.png" srcset="https://pic1.zhimg.com/v2-cd38920285d125be80b3eb504052c550_b.webp" alt="5be037635f0f0580fe1dcfe7d3f9f1a6.png"></p>
+<ul>
+<li>运算符元方法</li>
+</ul>
+<p>如果要为一个表扩展加号(+)、减号(-)、等于(&#x3D;&#x3D;)、小于(&lt;)等运算功能，则可重写相应的元方法。</p>
+<table>
+<thead>
+<tr>
+<th align="center">元方法</th>
+<th>说明</th>
+<th align="center">元方法</th>
+<th>说明</th>
+</tr>
+</thead>
+<tbody><tr>
+<td align="center">__add</td>
+<td>加法，+</td>
+<td align="center">__band</td>
+<td>按位与，&amp;</td>
+</tr>
+<tr>
+<td align="center">__sub</td>
+<td>减法，-</td>
+<td align="center">__bor</td>
+<td>按位或，|</td>
+</tr>
+<tr>
+<td align="center">__mul</td>
+<td>乘法，*</td>
+<td align="center">__bxor</td>
+<td>按位异或，~</td>
+</tr>
+<tr>
+<td align="center">__div</td>
+<td>除法，&#x2F;</td>
+<td align="center">__bnot</td>
+<td>按位非，~</td>
+</tr>
+<tr>
+<td align="center">__mod</td>
+<td>取模，%</td>
+<td align="center">__shl</td>
+<td>按位左移，&lt;&lt;</td>
+</tr>
+<tr>
+<td align="center">__pow</td>
+<td>次幂，^</td>
+<td align="center">__shr</td>
+<td>按位右移，&gt;&gt;</td>
+</tr>
+<tr>
+<td align="center">__unm</td>
+<td>取反，-</td>
+<td align="center">__eq</td>
+<td>等于，&#x3D;&#x3D;</td>
+</tr>
+<tr>
+<td align="center">__idiv</td>
+<td>取整除法，&#x2F;&#x2F;</td>
+<td align="center">__lt</td>
+<td>小于，&lt;</td>
+</tr>
+<tr>
+<td align="center">__concat</td>
+<td>字符串连接，..</td>
+<td align="center">__le</td>
+<td>小于等于，&lt;&#x3D;</td>
+</tr>
+<tr>
+<td align="center">__len</td>
+<td>字符串长度，#</td>
+<td align="center"></td>
+<td></td>
+</tr>
+</tbody></table>
+<p><img src="https://cdn.jsdelivr.net/gh/lemonpuer/figure@latest/blog-images/20231216172225.png" class="lazyload placeholder" data-srcset="https://cdn.jsdelivr.net/gh/lemonpuer/figure@latest/blog-images/20231216172225.png" srcset="https://pic1.zhimg.com/v2-cd38920285d125be80b3eb504052c550_b.webp" alt="184f26dd60b20c81c2bd592c069f497c.png"></p>
+<ul>
+<li>_ _tostring</li>
+</ul>
+<p>直接输出一个 table，其输出的内容为类型与 table 的存放地址。如果想让其输出 table 中的内容，可重写_ _tostring 元方法。</p>
+<p><img src="https://cdn.jsdelivr.net/gh/lemonpuer/figure@latest/blog-images/20231216172234.png" class="lazyload placeholder" data-srcset="https://cdn.jsdelivr.net/gh/lemonpuer/figure@latest/blog-images/20231216172234.png" srcset="https://pic1.zhimg.com/v2-cd38920285d125be80b3eb504052c550_b.webp" alt="de3c8ec34e1cbcfa4a0e025aa6f35f22.png"></p>
+<ul>
+<li>__call</li>
+</ul>
+<p>当将一个 table 以函数形式来使用时，系统会自动调用重写的_ _call 元方法。该用法主要是可以简化对 table 的相关操作，将对 table 的操作与函数直接相结合。</p>
+<p><img src="https://cdn.jsdelivr.net/gh/lemonpuer/figure@latest/blog-images/20231216172253.png" class="lazyload placeholder" data-srcset="https://cdn.jsdelivr.net/gh/lemonpuer/figure@latest/blog-images/20231216172253.png" srcset="https://pic1.zhimg.com/v2-cd38920285d125be80b3eb504052c550_b.webp" alt="c1b9cbb5c1531e1eeb971753a1954dea.png"></p>
+<ul>
+<li>元表单独定义</li>
+</ul>
+<p>为了便于管理与复用，可以将元素单独定义为一个文件。该文件中仅可定义一个元表，且一般文件名与元表名称相同。</p>
+<p>若一个文件要使用其它文件中定义的元表，只需使用 require “元表文件名”即可将元表导入使用。 如果用户想扩展该元表，则可在用户自己文件中重写其相应功能的元方法。</p>
+<h2 id="面向对象"><a href="#面向对象" class="headerlink" title="面向对象"></a>面向对象</h2><p>Lua 中没有类的概念，但通过 table、function 与元表可以模拟和构造出具有类这样功能的结构。</p>
+<p><img src="https://cdn.jsdelivr.net/gh/lemonpuer/figure@latest/blog-images/20231216172309.png" class="lazyload placeholder" data-srcset="https://cdn.jsdelivr.net/gh/lemonpuer/figure@latest/blog-images/20231216172309.png" srcset="https://pic1.zhimg.com/v2-cd38920285d125be80b3eb504052c550_b.webp" alt="a159c884c79f08ec89fd1d580ad5ea19.png"></p>
+<p>Lua 中使用 table、function 与元表可以定义出类：使用一个表作为基础类，使用一个 function 作为该基础类的 new()方法。在该 new()方法中创建一个空表，再为该空表指定一个 元表。该元表重写_ _index 元方法，且将基础表指定为重写的_ _index 元方法。由于 new() 中的表是空表，所以用户访问的所有 key 都会从基础类（表）中查找。</p>
+<p><img src="https://cdn.jsdelivr.net/gh/lemonpuer/figure@latest/blog-images/20231216172436.png" class="lazyload placeholder" data-srcset="https://cdn.jsdelivr.net/gh/lemonpuer/figure@latest/blog-images/20231216172436.png" srcset="https://pic1.zhimg.com/v2-cd38920285d125be80b3eb504052c550_b.webp" alt="e6fa697c8c77856967133623746b492b.png"></p>
+<h2 id="协同线程与协同函数"><a href="#协同线程与协同函数" class="headerlink" title="协同线程与协同函数"></a>协同线程与协同函数</h2><h4 id="协同线程"><a href="#协同线程" class="headerlink" title="协同线程"></a>协同线程</h4><p>Lua 中有一种特殊的线程，称为 coroutine，协同线程，简称协程。其可以在运行时暂停执行，然后转去执行其它线程，然后还可返回再继续执行没有执行完毕的内容。</p>
+<p>协同线程也称为协作多线程，在 Lua 中表示独立的执行线程。任意时刻只会有一个协程执行，而不会出现多个协程同时执行的情况。协同线程的类型为 thread，其启动、暂停、重启等，都需要通过函数来控制。</p>
+<table>
+<thead>
+<tr>
+<th align="center">方法</th>
+<th>描述</th>
+</tr>
+</thead>
+<tbody><tr>
+<td align="center">create(function)</td>
+<td>创建一个协同线程实例，即返回的是 thread 类型。参数是一个 function。其需要通过 resume()来启动协同线程的执行</td>
+</tr>
+<tr>
+<td align="center">resume(thread, …)</td>
+<td>启动指定的协同线程的执行，使其从开始处或前面挂起处开始执行。可以向 create()的内置函数传递相应的参数。如果内置函数具有返回值，resume()会全部接收并返回。</td>
+</tr>
+<tr>
+<td align="center">running()</td>
+<td>返回正在运行的协同线程实例，即 thread 类型值</td>
+</tr>
+<tr>
+<td align="center">yield()</td>
+<td>挂起协同线程，并将协同线程设置为挂起状态。resume()可从挂起处重启被挂起的协同线程</td>
+</tr>
+<tr>
+<td align="center">status(thread)</td>
+<td>查看协同线程的状态。状态有三种：运行态 running，挂起态 suspended，消亡态 dead</td>
+</tr>
+<tr>
+<td align="center">close()</td>
+<td>关闭协同线程</td>
+</tr>
+<tr>
+<td align="center">wrap(function)</td>
+<td>创建一个协同函数，返回的是 function 类型。一旦调用该函数就会创建并执行一个协同线程实例</td>
+</tr>
+</tbody></table>
+<h4 id="协同函数"><a href="#协同函数" class="headerlink" title="协同函数"></a>协同函数</h4><p>协同线程可以单独创建执行，也可以通过协同函数的调用启动执行。使用 coroutine 的 wrap() 函数创建的就是协同函数，其类型为 function。</p>
+<p>由于协同函数的本质就是函数，所以协同函数的调用方式就是标准的函数调用方式。只不过，协同函数的调用会启动其内置的协同线程。</p>
+<p><img src="https://cdn.jsdelivr.net/gh/lemonpuer/figure@latest/blog-images/20231216172506.png" class="lazyload placeholder" data-srcset="https://cdn.jsdelivr.net/gh/lemonpuer/figure@latest/blog-images/20231216172506.png" srcset="https://pic1.zhimg.com/v2-cd38920285d125be80b3eb504052c550_b.webp" alt="62013d3f8bd177e0868c4f6abf4a4024.png"></p>
+<h2 id="文件IO"><a href="#文件IO" class="headerlink" title="文件IO"></a>文件IO</h2><p>Lua 中提供了大量对文件进行 IO 操作的函数。静态函数是指通过 io.xxx()方式对文件进行操作的函数，而实例函数则是通过 Lua 中面向对象方式操作的函数。</p>
+<h3 id="常用静态函数"><a href="#常用静态函数" class="headerlink" title="常用静态函数"></a>常用静态函数</h3><ol>
+<li>io.open()</li>
+</ol>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">io.open (filename [, mode])</span><br></pre></td></tr></table></figure>
+
+<p>以指定模式打开指定文件，返回要打开文件的句柄(对象)。其中模式 mode 有三种，但同时还可配合两个符号使用：</p>
+<ul>
+<li>r：只读，默认模式</li>
+<li>w：只写，写入内容会覆盖文件原有内容</li>
+<li>a：只写，以追加方式写入内容</li>
+<li>+：增加符，在 r+、w+、a+均变为了读写</li>
+<li>b：二进制表示符。如果要操作的文件为二进制文件，则需要变为 rb、wb、ab。</li>
+</ul>
+<p>2 .io.input()</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">io.input (file)</span><br></pre></td></tr></table></figure>
+
+<p>指定要读取的文件。</p>
+<ol start="3">
+<li>io.output()</li>
+</ol>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">io.output()</span><br></pre></td></tr></table></figure>
+
+<p>指定要写入的文件。</p>
+<ol start="4">
+<li>io.read()</li>
+</ol>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">io.read([format])</span><br></pre></td></tr></table></figure>
+
+<p>以指定格式读取 io.input()中指定的输入文件。其中 format 格式有：</p>
+<ul>
+<li>*l：从当前位置的下一个位置开始读取整个行，默认格式</li>
+<li>*n：读取下一个数字，其将作为浮点数或整数</li>
+<li>*a：从当前位置的下一个位置开始读取整个文件</li>
+<li>number：这是一个数字，表示要读取的字符的个数</li>
+</ul>
+<ol start="5">
+<li>io.write()</li>
+</ol>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">io.write(data)</span><br></pre></td></tr></table></figure>
+
+<p>将指定的数据 data 写入到 io.output()中指定的输出文件。</p>
+<p>实例：</p>
+<p><img src="https://cdn.jsdelivr.net/gh/lemonpuer/figure@latest/blog-images/20231216172534.png" class="lazyload placeholder" data-srcset="https://cdn.jsdelivr.net/gh/lemonpuer/figure@latest/blog-images/20231216172534.png" srcset="https://pic1.zhimg.com/v2-cd38920285d125be80b3eb504052c550_b.webp" alt="1bb5861331d4dbb4e6bfbd09760988b6.png"></p>
+<h3 id="常用实例函数"><a href="#常用实例函数" class="headerlink" title="常用实例函数"></a>常用实例函数</h3><ol>
+<li>file:read()</li>
+</ol>
+<p>这里的 file 使用的是 io.open()函数返回的 file，其实际就是 Lua 中的一个对象。其用法与 io.read()的相同。</p>
+<ol start="2">
+<li>file:write()</li>
+</ol>
+<p>用法与 io.write()的相同。</p>
+<ol start="3">
+<li>file:seek()</li>
+</ol>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">file:seek ([whence [, offset]])</span><br></pre></td></tr></table></figure>
+
+<p>该函数用于获取或设置文件读写指针的当前位置。位置从 1 开始计数，除文件最后一行外，每行都有行结束符，其会占两个字符位置。位置 0 表示文件第一个位置的前面位置。</p>
+<p>当 seek()为无参时会返回读写指针的当前位置。参数 whence 的值有三种，表示将指针定位的不同位置。而 offset 则表示相对于 whence 指定位置的偏移量，offset 的默认值为 0，为正表示向后偏移，为负表示向前偏移。</p>
+<ul>
+<li>set：表示将指针定位到文件开头处，即 0 位置处</li>
+<li>cur：表示指针保持当前位置不变，默认值</li>
+<li>end：表示将指针定位到文件结尾处</li>
+</ul>
+
+      </div>
+      <div class="post-tags-categories">
+        
+        <div class="tags">
+          
+            <a href="/tags/Redis/" class="">
+              Redis
+            </a>
+          
+        </div>
+        
+      </div>
+      
+    </article>
+    <!-- 上一篇文章和下一篇文章 -->
+    
+      <!-- 文章详情页的上一页和下一页 -->
+<div class="post-nav">
+
+
+
+  
+  <div class="post-nav-prev post-nav-item">
+    <div class="post-nav-img" style="background-size: cover; 
+      background-position: center center;">
+      <img class="lazyload lazyload placeholder" src="https://images.wallpaperscraft.com/image/single/fern_plant_leaves_108470_1920x1080.jpg" class="lazyload placeholder" data-srcset="https://images.wallpaperscraft.com/image/single/fern_plant_leaves_108470_1920x1080.jpg" srcset="https://pic1.zhimg.com/v2-cd38920285d125be80b3eb504052c550_b.webp" alt="">
+    </div>
+    <a href="/2023/12/18/zhong-jian-jian/redis/7.fen-bu-shi-suo/" class="post-nav-link">
+      <div class="title">
+        <i class="fas fa-angle-left"></i> 上一篇:
+        <div class="title-text">Redis系列第七章</div>
+      </div>
+      
+      <!-- <div class="content">
+        简介分布式锁是控制分布式系统间同步访问共享资源的一种方式，其可以保证共享资源在并发场景下的数据一致性。
+工作原理：
+为了
+      </div> -->
+    </a>
+  </div>
+
+
+
+  
+  <div class="post-nav-next post-nav-item">
+    <div class="post-nav-img" style="background-size: cover; 
+      background-position: center center;">
+      <img class="lazyload lazyload placeholder" src="https://images.wallpaperscraft.com/image/single/fern_plant_leaves_108470_1920x1080.jpg" class="lazyload placeholder" data-srcset="https://images.wallpaperscraft.com/image/single/fern_plant_leaves_108470_1920x1080.jpg" srcset="https://pic1.zhimg.com/v2-cd38920285d125be80b3eb504052c550_b.webp" src="" alt="">
+    </div>
+    <a href="/2023/12/18/zhong-jian-jian/redis/5.fen-bu-shi-xi-tong-yu-huan-cun/" class="post-nav-link">
+      <div class="title">
+        下一篇: <i class="fas fa-angle-right"></i>
+        <div class="title-text">Redis系列第五章</div>
+      </div>
+      <!-- <div class="content">
+        Redis 分布式系统Redis 分布式系统，官方称为 Redis Cluster，Redis 集群，其是 Redis 
+      </div> -->
+    </a>
+  </div>
+
+</div>
+
+    
+    
+
+    <!-- 打赏 -->
+    
+
+    <!-- 分享 -->
+    
+      <!-- https://github.com/overtrue/share.js -->
+<!-- 文章详情页的分享 -->
+<div class="social-share" data-sites="twitter,facebook,google,qq,qzone,wechat,weibo,douban,linkedin" data-wechat-qrcode-helper="<p>微信扫一扫即可分享！</p>"></div>
+
+<script src="/js/shareJs/social-share.min.js"></script>
+</script>
+
+<style>
+  .social-share {
+    margin: 20px 0;
+  }
+</style>
+
+
+    
+    
+    <!-- 评论 -->
+    <!-- 评论 -->
+
+  <div id="myComment">
+    
+      <div id="gitment-container"></div>
+
+    
+  </div>
+
+<!-- comment script in themes\hexo-theme-bamboo\layout\_partial\scripts\index.ejs -->
+
+
+  </div>
+
+  <!-- 目录 -->
+  <aside id='l_side'>
+  
+    
+      <section class="widget side_blogger">
+  <div class='content'>
+    
+      
+        <a class='avatar flat-box rectangle' href='/about/'>
+          <img src='https://i.postimg.cc/yNJTSNTj/image.jpg'/>
+        </a>
+      
+    
+    
+      <div class='text'>
+        
+          <h2>LemonPuer</h2>
+        
+        
+          <p>个人博客</p>
+
+        
+        
+          <p><span id="jinrishici-sentence">Lemon</span></p>
+          <script src="https://sdk.jinrishici.com/v2/browser/jinrishici.js" charset="utf-8"></script>
+        
+      </div>
+    
+    
+      <div class="social-wrapper">
+        
+          
+            <a href="https://api.dzzui.com/api/ip"
+              class="social fa fa-wifi flat-btn"
+              target="_blank"
+              rel="external nofollow noopener noreferrer">
+              
+            </a>
+          
+        
+          
+            <a href="mailto:1695812011@qq.com"
+              class="social fas fa-envelope flat-btn"
+              target="_blank"
+              rel="external nofollow noopener noreferrer">
+              
+            </a>
+          
+        
+          
+            <a href="https://github.com/LemonPuer"
+              class="social fab fa-github flat-btn"
+              target="_blank"
+              rel="external nofollow noopener noreferrer">
+              
+            </a>
+          
+        
+          
+            <a href="tencent://AddContact/?fromId=50&amp;fromSubId=1&amp;subcmd=all&amp;uin=1695812011"
+              class="social fab fa-qq flat-btn"
+              target="_blank"
+              rel="external nofollow noopener noreferrer">
+              
+            </a>
+          
+        
+      </div>
+    
+  </div>
+</section>
+
+    
+  
+  
+  
+    
+  
+
+  <div class="layout_sticky">    
+    
+      
+<section class="widget side_toc">
+  
+  <header>
+    
+      <i style="color: " class="fas fa-list fa-fw" aria-hidden="true"></i><span class='name' style="color: ">本文目录</span>
+    
+  </header>
+
+
+  <div class='content'>
+    <div class="toc-main">
+      <div class="toc-content">
+        <!-- <ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#%E7%AE%80%E4%BB%8B"><span class="toc-text">简介</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#Linux-%E7%B3%BB%E7%BB%9F"><span class="toc-text">Linux 系统</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E4%BA%A4%E4%BA%92%E6%A8%A1%E5%BC%8F"><span class="toc-text">交互模式</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#%E5%91%BD%E4%BB%A4%E8%A1%8C%E6%A8%A1%E5%BC%8F%EF%BC%9A"><span class="toc-text">命令行模式：</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%E8%84%9A%E6%9C%AC%E6%96%87%E4%BB%B6%E6%A8%A1%E5%BC%8F%EF%BC%9A"><span class="toc-text">脚本文件模式：</span></a></li></ol></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Windows-%E7%B3%BB%E7%BB%9F"><span class="toc-text">Windows 系统</span></a></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#%E8%AF%AD%E6%B3%95%E5%9F%BA%E7%A1%80"><span class="toc-text">语法基础</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E6%95%B0%E6%8D%AE%E7%B1%BB%E5%9E%8B"><span class="toc-text">数据类型</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E6%A0%87%E8%AF%86%E7%AC%A6"><span class="toc-text">标识符</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E4%BF%9D%E7%95%99%E5%AD%97"><span class="toc-text">保留字</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%8F%98%E9%87%8F"><span class="toc-text">变量</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E8%BF%90%E7%AE%97%E7%AC%A6"><span class="toc-text">运算符</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E7%AE%97%E6%9C%AF%E8%BF%90%E7%AE%97%E7%AC%A6"><span class="toc-text">算术运算符</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%85%B3%E7%B3%BB%E8%BF%90%E7%AE%97%E7%AC%A6"><span class="toc-text">关系运算符</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E9%80%BB%E8%BE%91%E8%BF%90%E7%AE%97%E7%AC%A6"><span class="toc-text">逻辑运算符</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E7%89%B9%E6%AE%8A%E8%BF%90%E7%AE%97%E7%AC%A6"><span class="toc-text">特殊运算符</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%87%BD%E6%95%B0"><span class="toc-text">函数</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E6%8E%A7%E5%88%B6%E8%AF%AD%E5%8F%A5"><span class="toc-text">控制语句</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E6%B5%81%E7%A8%8B%E6%8E%A7%E5%88%B6%E8%AF%AD%E5%8F%A5"><span class="toc-text">流程控制语句</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#if"><span class="toc-text">if</span></a></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%BE%AA%E7%8E%AF%E6%8E%A7%E5%88%B6%E8%AF%AD%E5%8F%A5"><span class="toc-text">循环控制语句</span></a></li></ol></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#%E8%AF%AD%E6%B3%95%E8%BF%9B%E9%98%B6"><span class="toc-text">语法进阶</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#table"><span class="toc-text">table</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E6%95%B0%E7%BB%84"><span class="toc-text">数组</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#map"><span class="toc-text">map</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E6%B7%B7%E5%90%88%E7%BB%93%E6%9E%84"><span class="toc-text">混合结构</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#table-%E6%93%8D%E4%BD%9C%E5%87%BD%E6%95%B0"><span class="toc-text">table 操作函数</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E8%BF%AD%E4%BB%A3%E5%99%A8"><span class="toc-text">迭代器</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E6%A8%A1%E5%9D%97"><span class="toc-text">模块</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%85%83%E8%A1%A8%E4%B8%8E%E5%85%83%E6%96%B9%E6%B3%95"><span class="toc-text">元表与元方法</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#%E5%85%83%E6%96%B9%E6%B3%95"><span class="toc-text">元方法</span></a></li></ol></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E9%9D%A2%E5%90%91%E5%AF%B9%E8%B1%A1"><span class="toc-text">面向对象</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%8D%8F%E5%90%8C%E7%BA%BF%E7%A8%8B%E4%B8%8E%E5%8D%8F%E5%90%8C%E5%87%BD%E6%95%B0"><span class="toc-text">协同线程与协同函数</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#%E5%8D%8F%E5%90%8C%E7%BA%BF%E7%A8%8B"><span class="toc-text">协同线程</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%E5%8D%8F%E5%90%8C%E5%87%BD%E6%95%B0"><span class="toc-text">协同函数</span></a></li></ol></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E6%96%87%E4%BB%B6IO"><span class="toc-text">文件IO</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%B8%B8%E7%94%A8%E9%9D%99%E6%80%81%E5%87%BD%E6%95%B0"><span class="toc-text">常用静态函数</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%B8%B8%E7%94%A8%E5%AE%9E%E4%BE%8B%E5%87%BD%E6%95%B0"><span class="toc-text">常用实例函数</span></a></li></ol></li></ol></li></ol> -->
+        <div class="toc"></div>
+      </div>
+    </div>
+  </div>
+</section>
+<!-- 手机端目录按钮 -->
+<div id="toc-mobile-btn">
+  <i class="fas fa-list-ul" aria-hidden="true"></i>
+</div>
+
+      
+  <section class="widget side_recent_post">
+    
+  <header>
+    
+      <a style="color: " href='/tags/'><i class="fas fa-book fa-fw" aria-hidden="true"></i><span class='name'>最新文章</span></a>
+    
+  </header>
+
+
+    <div class='content'>
+      
+      <!-- hash算法 -->
+      
+      <div class="aside-list">
+        
+          <div class="aside-list-item">
+            
+            
+            
+
+            <div class="post-img-box">
+              <a href="/2024/04/04/kuang-jia/5.springboot-2/" class="post-img " style="background-size: cover; 
+                background-position: center center;">
+                <img class="lazyload lazyload placeholder" style="width:100%;height:100%;object-fit:cover;" data-src="https://images.wallpaperscraft.com/image/single/child_river_dreams_127495_1920x1080.jpg" class="lazyload placeholder" data-srcset="https://images.wallpaperscraft.com/image/single/child_river_dreams_127495_1920x1080.jpg" srcset="https://pic1.zhimg.com/v2-cd38920285d125be80b3eb504052c550_b.webp" alt="">
+              </a>
+            </div>
+            <div class="post-date-title">
+              <div>
+                
+                  <span class="post-date">04-04</span>
+                
+              </div>
+              <a class="post-title" href="/2024/04/04/kuang-jia/5.springboot-2/">SpringBoot-2</a>
+            </div>
+          </div>
+        
+          <div class="aside-list-item">
+            
+            
+            
+
+            <div class="post-img-box">
+              <a href="/2024/04/04/kuang-jia/5.springboot-1/" class="post-img " style="background-size: cover; 
+                background-position: center center;">
+                <img class="lazyload lazyload placeholder" style="width:100%;height:100%;object-fit:cover;" data-src="https://images.wallpaperscraft.com/image/single/child_river_dreams_127495_1920x1080.jpg" class="lazyload placeholder" data-srcset="https://images.wallpaperscraft.com/image/single/child_river_dreams_127495_1920x1080.jpg" srcset="https://pic1.zhimg.com/v2-cd38920285d125be80b3eb504052c550_b.webp" alt="">
+              </a>
+            </div>
+            <div class="post-date-title">
+              <div>
+                
+                  <span class="post-date">04-04</span>
+                
+              </div>
+              <a class="post-title" href="/2024/04/04/kuang-jia/5.springboot-1/">SpringBoot-1</a>
+            </div>
+          </div>
+        
+          <div class="aside-list-item">
+            
+            
+            
+
+            <div class="post-img-box">
+              <a href="/2024/03/03/kuang-jia/10.cloud-alibaba/" class="post-img " style="background-size: cover; 
+                background-position: center center;">
+                <img class="lazyload lazyload placeholder" style="width:100%;height:100%;object-fit:cover;" data-src="https://images.wallpaperscraft.com/image/single/landscape_art_road_127350_1920x1080.jpg" class="lazyload placeholder" data-srcset="https://images.wallpaperscraft.com/image/single/landscape_art_road_127350_1920x1080.jpg" srcset="https://pic1.zhimg.com/v2-cd38920285d125be80b3eb504052c550_b.webp" alt="">
+              </a>
+            </div>
+            <div class="post-date-title">
+              <div>
+                
+                  <span class="post-date">03-03</span>
+                
+              </div>
+              <a class="post-title" href="/2024/03/03/kuang-jia/10.cloud-alibaba/">Spring Cloud Alibaba</a>
+            </div>
+          </div>
+        
+          <div class="aside-list-item">
+            
+            
+            
+
+            <div class="post-img-box">
+              <a href="/2024/01/13/zhong-jian-jian/5.docker/" class="post-img " style="background-size: cover; 
+                background-position: center center;">
+                <img class="lazyload lazyload placeholder" style="width:100%;height:100%;object-fit:cover;" data-src="https://images.wallpaperscraft.com/image/single/deer_winter_night_129602_1920x1080.jpg" class="lazyload placeholder" data-srcset="https://images.wallpaperscraft.com/image/single/deer_winter_night_129602_1920x1080.jpg" srcset="https://pic1.zhimg.com/v2-cd38920285d125be80b3eb504052c550_b.webp" alt="">
+              </a>
+            </div>
+            <div class="post-date-title">
+              <div>
+                
+                  <span class="post-date">01-13</span>
+                
+              </div>
+              <a class="post-title" href="/2024/01/13/zhong-jian-jian/5.docker/">Docker</a>
+            </div>
+          </div>
+        
+          <div class="aside-list-item">
+            
+            
+            
+
+            <div class="post-img-box">
+              <a href="/2024/01/01/zhong-jian-jian/4.kafka/" class="post-img " style="background-size: cover; 
+                background-position: center center;">
+                <img class="lazyload lazyload placeholder" style="width:100%;height:100%;object-fit:cover;" data-src="https://images.wallpaperscraft.com/image/single/plane_sky_art_129149_1920x1080.jpg" class="lazyload placeholder" data-srcset="https://images.wallpaperscraft.com/image/single/plane_sky_art_129149_1920x1080.jpg" srcset="https://pic1.zhimg.com/v2-cd38920285d125be80b3eb504052c550_b.webp" alt="">
+              </a>
+            </div>
+            <div class="post-date-title">
+              <div>
+                
+                  <span class="post-date">01-01</span>
+                
+              </div>
+              <a class="post-title" href="/2024/01/01/zhong-jian-jian/4.kafka/">Kafka</a>
+            </div>
+          </div>
+        
+      </div>
+    </div>
+  </section>
+
+    
+  </div>
+</aside>
+
+  <!-- 图片放大 Wrap images with fancybox support -->
+  <script src="/js/wrapImage.js"></script>
+</div>
+
+<!-- 文章详情页背景图 -->
+<div id="appBgSwiper" style="position: fixed;left: 0;top: 0;width: 100%;height: 100%;z-index: -2;"
+	:style="{'background-color': bgColor ? bgColor : 'transparent'}">
+	<transition-group tag="ul" :name="names">
+		<li v-for='(image,index) in img' :key='index' v-show="index === mark" class="bg-swiper-box">
+			<img :src="image" class="bg-swiper-img no-lazy">
+		</li>
+	</transition-group>
+</div>
+<script>
+	var vm = new Vue({
+		el: '#appBgSwiper',
+		data: {
+			names: '' || 'fade' || 'fade', // translate-fade fade
+			mark: 0,
+			img: [],
+			bgColor: '',
+			time: null
+		},
+		methods: {   //添加方法
+			change(i, m) {
+				if (i > m) {
+					// this.names = 'fade';
+				} else if (i < m) {
+					// this.names = 'fade';
+				} else {
+					return;
+				}
+				this.mark = i;
+			},
+			prev() {
+				// this.names = 'fade';
+				this.mark--;
+				if (this.mark === -1) {
+					this.mark = 3;
+					return
+				}
+			},
+			next() {
+				// this.names = 'fade';
+				this.mark++;
+				if (this.mark === this.img.length) {
+					this.mark = 0;
+					return
+				}
+			},
+			autoPlay() {
+				// this.names = 'fade';
+				this.mark++;
+				if (this.mark === this.img.length) {
+					this.mark = 0;
+					return
+				}
+			},
+			play() {
+				let bgImgDelay = '' || '180000'
+				let delay = parseInt(bgImgDelay) || 180000;
+				this.time = setInterval(this.autoPlay, delay);
+			},
+			enter() {
+				clearInterval(this.time);
+			},
+			leave() {
+				this.play();
+			}
+		},
+		created() {
+			this.play()
+		},
+		beforeDestroy() {
+			clearInterval(this.time);
+		},
+		mounted() {
+			let prop = '' || 'rgba(160,238,225,0.3)';
+			let isImg = prop.includes('.bmp') || prop.includes('.jpg') || prop.includes('.png') || prop.includes('.tif') || prop.includes('.gif') || prop.includes('.pcx') || prop.includes('.tga') || prop.includes('.exif') || prop.includes('.fpx') || prop.includes('.psd') || prop.includes('.cdr') || prop.includes('.pcd') || prop.includes('.dxf') || prop.includes('.ufo') || prop.includes('.eps') || prop.includes('.ai') || prop.includes('.raw') || prop.includes('.WMF') || prop.includes('.webp') || prop.includes('.jpeg') || prop.includes('http://') || prop.includes('https://')
+			if (isImg) {
+				let img = prop.split(',');
+				let configRoot = '/'
+				let arrImg = [];
+				img.forEach(el => {
+					var Expression = /http(s)?:\/\/([\w-]+\.)+[\w-]+(\/[\w- .\/?%&=]*)?/;
+					var objExp = new RegExp(Expression);
+
+					if (objExp.test(el)) {
+						// http or https
+						arrImg.push(el);
+					} else {
+						// 非http or https开头
+						// 本地文件
+						let firstStr = el.charAt(0);
+						if (firstStr == '/') {
+							el = el.substr(1); // 删除第一个字符 '/',因为 configRoot最后一个字符为 /
+						}
+						el = configRoot + el;
+						arrImg.push(el);
+					}
+				})
+				this.img = arrImg;
+			} else {
+				this.bgColor = prop;
+			}
+		}
+	})
+</script>
+
+<style>
+	.bg-swiper-box {
+		position: absolute;
+		display: block;
+		width: 100%;
+		height: 100%;
+	}
+
+	.bg-swiper-img {
+		object-fit: cover;
+		width: 100%;
+		height: 100%;
+	}
+</style>
+
+
+
+
+  <script>
+  function loadMermaid() {
+    if (document.getElementsByClassName('mermaid').length) {
+      if (window.mermaidJsLoad) mermaid.init()
+      else {
+        loadScript('https://unpkg.com/mermaid/dist/mermaid.min.js').then(() => {
+          window.mermaidJsLoad = true
+          mermaid.initialize({
+            theme: 'default',
+          })
+          if ('true') {
+            mermaid.init();
+          }
+        })
+      }
+    }
+  };
+  document.addEventListener("DOMContentLoaded", function () {
+    loadMermaid();
+  })
+
+  document.addEventListener('pjax:complete', function () {
+    loadMermaid();
+  })
+  
+</script>
+
+
+      </main>
+    </div>
+
+    <!-- 页脚 -->
+    
+  
+  
+    <!-- 底部鱼儿跳动效果，依赖于jquery-->
+<div id="j-fish-skip" style=" position: relative;height: 153px;width: auto;"></div>
+<script>
+  var RENDERER = {
+    POINT_INTERVAL: 5,
+    FISH_COUNT: 3,
+    MAX_INTERVAL_COUNT: 50,
+    INIT_HEIGHT_RATE: .5,
+    THRESHOLD: 50,
+    FISH_COLOR: '',
+    init: function () {
+      this.setFishColor(); this.setParameters(), this.reconstructMethods(), this.setup(), this.bindEvent(), this.render()
+    },
+    setFishColor: function () {
+      let isDark = JSON.parse(localStorage.getItem('dark')) || JSON.parse('false');
+      if (isDark) {
+        this.FISH_COLOR = '#222'; // 暗黑色，有时间把这整成一个变量
+      } else {
+        this.FISH_COLOR = '' || 'rgba(160,238,225,0.8)';
+      }
+    },
+    setParameters: function () {
+      this.$window = $(window), this.$container = $("#j-fish-skip"), this.$canvas = $("<canvas />"), this.context = this.$canvas.appendTo(this.$container).get(0).getContext("2d"), this.points = [], this.fishes = [], this.watchIds = []
+    },
+    createSurfacePoints: function () {
+      var t = Math.round(this.width / this.POINT_INTERVAL);
+      this.pointInterval = this.width / (t - 1), this.points.push(new SURFACE_POINT(this, 0));
+      for (var i = 1; i < t; i++) {
+        var e = new SURFACE_POINT(this, i * this.pointInterval),
+          h = this.points[i - 1];
+        e.setPreviousPoint(h), h.setNextPoint(e), this.points.push(e)
+      }
+    },
+    reconstructMethods: function () {
+      this.watchWindowSize = this.watchWindowSize.bind(this), this.jdugeToStopResize = this.jdugeToStopResize.bind(this), this.startEpicenter = this.startEpicenter.bind(this), this.moveEpicenter = this.moveEpicenter.bind(this), this.reverseVertical = this.reverseVertical.bind(this), this.render = this.render.bind(this)
+    },
+    setup: function () {
+      this.points.length = 0, this.fishes.length = 0, this.watchIds.length = 0, this.intervalCount = this.MAX_INTERVAL_COUNT, this.width = this.$container.width(), this.height = this.$container.height(), this.fishCount = this.FISH_COUNT * this.width / 500 * this.height / 500, this.$canvas.attr({
+        width: this.width,
+        height: this.height
+      }), this.reverse = !1, this.fishes.push(new FISH(this)), this.createSurfacePoints()
+    },
+    watchWindowSize: function () {
+      this.clearTimer(), this.tmpWidth = this.$window.width(), this.tmpHeight = this.$window.height(), this.watchIds.push(setTimeout(this.jdugeToStopResize, this.WATCH_INTERVAL))
+    },
+    clearTimer: function () {
+      for (; this.watchIds.length > 0;) clearTimeout(this.watchIds.pop())
+    },
+    jdugeToStopResize: function () {
+      var t = this.$window.width(),
+        i = this.$window.height(),
+        e = t == this.tmpWidth && i == this.tmpHeight;
+      this.tmpWidth = t, this.tmpHeight = i, e && this.setup()
+    },
+    bindEvent: function () {
+      this.$window.on("resize", this.watchWindowSize), this.$container.on("mouseenter", this.startEpicenter), this.$container.on("mousemove", this.moveEpicenter)
+    },
+    getAxis: function (t) {
+      var i = this.$container.offset();
+      return {
+        x: t.clientX - i.left + this.$window.scrollLeft(),
+        y: t.clientY - i.top + this.$window.scrollTop()
+      }
+    },
+    startEpicenter: function (t) {
+      this.axis = this.getAxis(t)
+    },
+    moveEpicenter: function (t) {
+      var i = this.getAxis(t);
+      this.axis || (this.axis = i), this.generateEpicenter(i.x, i.y, i.y - this.axis.y), this.axis = i
+    },
+    generateEpicenter: function (t, i, e) {
+      if (!(i < this.height / 2 - this.THRESHOLD || i > this.height / 2 + this.THRESHOLD)) {
+        var h = Math.round(t / this.pointInterval);
+        h < 0 || h >= this.points.length || this.points[h].interfere(i, e)
+      }
+    },
+    reverseVertical: function () {
+      this.reverse = !this.reverse;
+      for (var t = 0, i = this.fishes.length; t < i; t++) this.fishes[t].reverseVertical()
+    },
+    controlStatus: function () {
+      for (var t = 0, i = this.points.length; t < i; t++) this.points[t].updateSelf();
+      for (t = 0, i = this.points.length; t < i; t++) this.points[t].updateNeighbors();
+      this.fishes.length < this.fishCount && 0 == --this.intervalCount && (this.intervalCount = this.MAX_INTERVAL_COUNT, this.fishes.push(new FISH(this)))
+    },
+    render: function () {
+      requestAnimationFrame(this.render), this.controlStatus(), this.context.clearRect(0, 0, this.width, this.height), this.context.fillStyle = this.FISH_COLOR;
+      for (var t = 0, i = this.fishes.length; t < i; t++) this.fishes[t].render(this.context);
+      this.context.save(), this.context.globalCompositeOperation = "xor", this.context.beginPath(), this.context.moveTo(0, this.reverse ? 0 : this.height);
+      for (t = 0, i = this.points.length; t < i; t++) this.points[t].render(this.context);
+      this.context.lineTo(this.width, this.reverse ? 0 : this.height), this.context.closePath(), this.context.fill(), this.context.restore()
+    }
+  },
+  SURFACE_POINT = function (t, i) {
+    this.renderer = t, this.x = i, this.init()
+  };
+  SURFACE_POINT.prototype = {
+    SPRING_CONSTANT: .03,
+    SPRING_FRICTION: .9,
+    WAVE_SPREAD: .3,
+    ACCELARATION_RATE: .01,
+    init: function () {
+      this.initHeight = this.renderer.height * this.renderer.INIT_HEIGHT_RATE, this.height = this.initHeight, this.fy = 0, this.force = {
+        previous: 0,
+        next: 0
+      }
+    },
+    setPreviousPoint: function (t) {
+      this.previous = t
+    },
+    setNextPoint: function (t) {
+      this.next = t
+    },
+    interfere: function (t, i) {
+      this.fy = this.renderer.height * this.ACCELARATION_RATE * (this.renderer.height - this.height - t >= 0 ? -1 : 1) * Math.abs(i)
+    },
+    updateSelf: function () {
+      this.fy += this.SPRING_CONSTANT * (this.initHeight - this.height), this.fy *= this.SPRING_FRICTION, this.height += this.fy
+    },
+    updateNeighbors: function () {
+      this.previous && (this.force.previous = this.WAVE_SPREAD * (this.height - this.previous.height)), this.next && (this.force.next = this.WAVE_SPREAD * (this.height - this.next.height))
+    },
+    render: function (t) {
+      this.previous && (this.previous.height += this.force.previous, this.previous.fy += this.force.previous), this.next && (this.next.height += this.force.next, this.next.fy += this.force.next), t.lineTo(this.x, this.renderer.height - this.height)
+    }
+  };
+  var FISH = function (t) {
+    this.renderer = t, this.init()
+  };
+  FISH.prototype = {
+    GRAVITY: .4,
+    init: function () {
+      this.direction = Math.random() < .5, this.x = this.direction ? this.renderer.width + this.renderer.THRESHOLD : -this.renderer.THRESHOLD, this.previousY = this.y, this.vx = this.getRandomValue(4, 10) * (this.direction ? -1 : 1), this.renderer.reverse ? (this.y = this.getRandomValue(1 * this.renderer.height / 10, 4 * this.renderer.height / 10), this.vy = this.getRandomValue(2, 5), this.ay = this.getRandomValue(.05, .2)) : (this.y = this.getRandomValue(6 * this.renderer.height / 10, 9 * this.renderer.height / 10), this.vy = this.getRandomValue(-5, -2), this.ay = this.getRandomValue(-.2, -.05)), this.isOut = !1, this.theta = 0, this.phi = 0
+    },
+    getRandomValue: function (t, i) {
+      return t + (i - t) * Math.random()
+    },
+    reverseVertical: function () {
+      this.isOut = !this.isOut, this.ay *= -1
+    },
+    controlStatus: function (t) {
+      this.previousY = this.y, this.x += this.vx, this.y += this.vy, this.vy += this.ay, this.renderer.reverse ? this.y > this.renderer.height * this.renderer.INIT_HEIGHT_RATE ? (this.vy -= this.GRAVITY, this.isOut = !0) : (this.isOut && (this.ay = this.getRandomValue(.05, .2)), this.isOut = !1) : this.y < this.renderer.height * this.renderer.INIT_HEIGHT_RATE ? (this.vy += this.GRAVITY, this.isOut = !0) : (this.isOut && (this.ay = this.getRandomValue(-.2, -.05)), this.isOut = !1), this.isOut || (this.theta += Math.PI / 20, this.theta %= 2 * Math.PI, this.phi += Math.PI / 30, this.phi %= 2 * Math.PI), this.renderer.generateEpicenter(this.x + (this.direction ? -1 : 1) * this.renderer.THRESHOLD, this.y, this.y - this.previousY), (this.vx > 0 && this.x > this.renderer.width + this.renderer.THRESHOLD || this.vx < 0 && this.x < -this.renderer.THRESHOLD) && this.init()
+    },
+    render: function (t) {
+      t.save(), t.translate(this.x, this.y), t.rotate(Math.PI + Math.atan2(this.vy, this.vx)), t.scale(1, this.direction ? 1 : -1), t.beginPath(), t.moveTo(-30, 0), t.bezierCurveTo(-20, 15, 15, 10, 40, 0), t.bezierCurveTo(15, -10, -20, -15, -30, 0), t.fill(), t.save(), t.translate(40, 0), t.scale(.9 + .2 * Math.sin(this.theta), 1), t.beginPath(), t.moveTo(0, 0), t.quadraticCurveTo(5, 10, 20, 8), t.quadraticCurveTo(12, 5, 10, 0), t.quadraticCurveTo(12, -5, 20, -8), t.quadraticCurveTo(5, -10, 0, 0), t.fill(), t.restore(), t.save(), t.translate(-3, 0), t.rotate((Math.PI / 3 + Math.PI / 10 * Math.sin(this.phi)) * (this.renderer.reverse ? -1 : 1)), t.beginPath(), this.renderer.reverse ? (t.moveTo(5, 0), t.bezierCurveTo(10, 10, 10, 30, 0, 40), t.bezierCurveTo(-12, 25, -8, 10, 0, 0)) : (t.moveTo(-5, 0), t.bezierCurveTo(-10, -10, -10, -30, 0, -40), t.bezierCurveTo(12, -25, 8, -10, 0, 0)), t.closePath(), t.fill(), t.restore(), t.restore(), this.controlStatus(t)
+    }
+  }, $(function () {
+    RENDERER.init()
+    $('.dark').click(function () {
+      setTimeout(() => {
+        RENDERER.setFishColor();
+        RENDERER.context.fill();
+      });
+    })
+  });
+</script>
+  
+  <div class="footer bg-color">
+    <div class="footer-main">
+      
+        
+          <div class="link">
+            
+              
+                <a target="_blank" rel="noopener" href="https://space.bilibili.com/409809855" class="social">
+                  
+                    <i class="iconfont icon-bilibili" aria-hidden="true"></i>
+                  
+                </a>
+              
+            
+              
+                <a target="_blank" rel="noopener" href="https://github.com/LemonPuer" class="social">
+                  
+                    <i class="fab fa-github" aria-hidden="true"></i>
+                  
+                </a>
+              
+            
+          </div>
+        
+      
+        
+          <div class="footer-copyright">
+            <p>欢迎访问本小站</p>
+
+          </div>
+        
+      
+    </div>
+  </div>
+
+
+
+    <!-- 渲染暗黑按钮 -->
+    
+      <div class="dark">
+  <div class="dark-content">
+    <i class="fas fa-moon" aria-hidden="true"></i>
+    <!-- <span>关灯</span> -->
+  </div>
+  
+</div>
+
+<script>
+  $(function() {
+    let isDark = JSON.parse(localStorage.getItem('dark'))  || JSON.parse('false');
+    if (isDark) {
+      $(".dark-content").replaceWith(
+          `
+          <div class='dark-content'>
+            <i class="fas fa-lightbulb" aria-hidden="true"></i>
+          </div>
+          `
+        );
+    }
+    $('.dark').click(function() {
+      if ($(document.body).is('.darkModel')) {
+        $(document.body).removeClass('darkModel');
+        localStorage.setItem('dark', false);
+        $(".dark-content").replaceWith(
+          `
+          <div class='dark-content'>
+            <i class="fas fa-moon" aria-hidden="true"></i>
+          </div>
+          `
+        );
+      } else {
+        $(document.body).addClass('darkModel');
+        localStorage.setItem('dark', true);
+        $(".dark-content").replaceWith(
+          `
+          <div class='dark-content'>
+            <i class="fas fa-lightbulb" aria-hidden="true"></i>
+          </div>
+          `
+        );
+      }
+    })
+  })
+</script>
+    
+    <!-- 渲染回到顶部按钮 -->
+    
+      <div class="goTop top-btn-color" pointer>
+  <i class="fas fa-arrow-up" aria-hidden="true"></i>
+</div>
+<script src="/js/goTop.js"></script>
+
+    
+    <!-- 渲染左下角音乐播放器 -->
+    
+      <link rel="stylesheet" href="/js/aplayer/APlayer@1.10.1.min.css">
+<style>
+.aplayer .aplayer-lrc p {
+  
+  font-size: 12px;
+  font-weight: 700;
+  line-height: 16px !important;
+}
+
+.aplayer .aplayer-lrc p.aplayer-lrc-current {
+  
+  font-size: 15px;
+  color: #42b983;
+}
+
+
+.aplayer.aplayer-fixed.aplayer-narrow .aplayer-body {
+  left: -66px !important;
+}
+
+.aplayer.aplayer-fixed.aplayer-narrow .aplayer-body:hover {
+  left: 0px !important;
+}
+
+
+</style>
+<meting-js  
+  class=""
+  server="netease"
+  type="playlist"
+  id="8517155639"
+  fixed='true'
+  autoplay='true'
+  theme='#42b983'
+  loop='all'
+  order='random'
+  preload='auto'
+  volume='0.7'
+  list-folded='true'
+>
+</meting-js>
+
+<!-- <style>
+  #aplayer {
+    position: fixed;
+    left: 0;
+    bottom: 300px;
+  }
+</style> -->
+<script src="https://unpkg.com/aplayer@1.10.1/dist/APlayer.min.js"></script>
+<script src="https://unpkg.com/meting@2/dist/Meting.min.js"></script>
+    
+
+    <!-- 图片放大 -->
+    
+      <script src="https://fastly.jsdelivr.net/npm/@fancyapps/ui@5.0/dist/fancybox/fancybox.umd.js"></script>
+    
+
+    <!-- 百度解析 -->
+    <!-- Baidu Analytics -->
+
+<script>
+    var _hmt = _hmt || [];
+    (function () {
+        var hm = document.createElement("script");
+        hm.src = "https://hm.baidu.com/hm.js?1dd9810333ef61187ef351132128d6dc";
+        var s = document.getElementsByTagName("script")[0];
+        s.parentNode.insertBefore(hm, s);
+    })();
+</script>
+
+    <!-- Baidu Push -->
+
+<script>
+    (function () {
+        var bp = document.createElement('script');
+        var curProtocol = window.location.protocol.split(':')[0];
+        if (curProtocol === 'https') {
+            bp.src = 'https://zz.bdstatic.com/linksubmit/push.js';
+        } else {
+            bp.src = 'http://push.zhanzhang.baidu.com/push.js';
+        }
+        var s = document.getElementsByTagName("script")[0];
+        s.parentNode.insertBefore(bp, s);
+    })();
+</script>
+
+    
+    <!-- 背景彩带 -->
+    
+      <script type="text/javascript" size="100" alpha='0.4' zIndex="-1" src="/js/ribbon.min.js"></script>
+    
+
+    <script src="/js/utils/index.js"></script>
+    <script src="/js/app.js"></script>
+    
+    <!-- 文章目录所需js -->
+<!-- <link href="/js/tocbot/tocbot.css" rel="stylesheet">
+<script src="/js/tocbot/tocbot.min.js"></script> -->
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/tocbot/4.18.2/tocbot.min.js"></script>
+
+
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/tocbot/4.18.2/tocbot.css">
+
+<script>
+  var headerEl = 'h2, h3, h4',  //headers 
+    content = '.post-detail',//文章容器
+    idArr = {};  //标题数组以确定是否增加索引id
+  //add #id
+  var option = {
+    // Where to render the table of contents.
+    tocSelector: '.toc',
+    // Where to grab the headings to build the table of contents.
+    contentSelector: content,
+    // Which headings to grab inside of the contentSelector element.
+    headingSelector: headerEl,
+    scrollSmooth: true,
+    scrollSmoothOffset: -70,
+    // headingsOffset: -($(window).height() * 0.4 - 45),
+    headingsOffset: -($(window).height() * 0.4 - 70),
+    // positionFixedSelector: '.toc-main',
+    // positionFixedClass: 'is-position-fixed',
+    fixedSidebarOffset: 'auto',
+    activeLinkClass: 'is-active-link',
+    orderedList: true,
+    collapseDepth: 20,
+    // onClick: function (e) {},
+  }
+  if ($('.toc').length > 0) {
+
+    $(content).children(headerEl).each(function () {
+      //去除空格以及多余标点
+      var headerId = $(this).text().replace(/[\s|\~|`|\!|\@|\#|\$|\%|\^|\&|\*|\(|\)|\_|\+|\=|\||\|\[|\]|\{|\}|\;|\:|\"|\'|\,|\<|\.|\>|\/|\?|\：|\，|\。]/g, '');
+
+      headerId = headerId.toLowerCase();
+      if (idArr[headerId]) {
+        //id已经存在
+        $(this).attr('id', headerId + '-' + idArr[headerId]);
+        idArr[headerId]++;
+      }
+      else {
+        //id未存在
+        idArr[headerId] = 1;
+        $(this).attr('id', headerId);
+      }
+    });
+
+    document.addEventListener("DOMContentLoaded", function () {
+      tocbot.init(option);
+      mobileTocClick();
+    });
+
+  }
+
+  window.tocScrollFn = function () {
+    return bamboo.throttle(function () {
+      findHeadPosition();
+    }, 100)()
+  }
+  window.addEventListener('scroll', tocScrollFn);
+
+  const findHeadPosition = function (top) {
+    if ($('.toc-list').length <= 0) {
+      return false;
+    }
+    setTimeout(() => {  // or DOMContentLoaded 
+      autoScrollToc();
+    }, 0);
+  }
+
+  const autoScrollToc = function () {
+    const $activeItem = document.querySelector('.is-active-link');
+    const $cardToc = document.querySelector('.toc-content');
+    const activePosition = $activeItem.getBoundingClientRect().top
+    const sidebarScrollTop = $cardToc.scrollTop
+    if (activePosition > (document.documentElement.clientHeight - 100)) {
+      $cardToc.scrollTop = sidebarScrollTop + 150
+    }
+    if (activePosition < 150) {
+      $cardToc.scrollTop = sidebarScrollTop - 150
+    }
+  }
+
+  document.addEventListener('pjax:send', function () {
+    if ($('.toc').length) {
+      tocbot.destroy();
+    }
+  });
+
+  document.addEventListener('pjax:complete', function () {
+    if ($('.toc').length) {
+      tocbot.init(option);
+      mobileTocClick();
+    }
+  });
+  
+  // 手机端toc按钮点击出现目录
+  const mobileTocClick = function () {
+    const $cardTocLayout = document.getElementsByClassName('side_toc')[0];
+    const $cardToc = $cardTocLayout.getElementsByClassName('toc-content')[0];
+    let right = '45px';
+    if (window.innerWidth >= 551 && window.innerWidth <= 992) {
+      right = '100px'
+    }
+    const mobileToc = {
+      open: () => {
+        $cardTocLayout.style.cssText = 'animation: toc-open .3s; opacity: 1; right: ' + right
+      },
+
+      close: () => {
+        $cardTocLayout.style.animation = 'toc-close .2s'
+        setTimeout(() => {
+          $cardTocLayout.style.cssText = "opacity:''; animation: ''; right: ''"
+        }, 100)
+      }
+    }
+    document.getElementById('toc-mobile-btn').addEventListener('click', () => {
+      if (window.getComputedStyle($cardTocLayout).getPropertyValue('opacity') === '0') mobileToc.open()
+      else mobileToc.close()
+    })
+
+    $cardToc.addEventListener('click', (e) => {
+      if (window.innerWidth < 992) { // 小于992px的时候
+        mobileToc.close()
+      }
+    })
+  }
+</script>
+
+<style>
+  /* .is-position-fixed {
+    position: sticky !important;
+    top: 74px;
+  }
+
+  .toc-main ul {
+    counter-reset: show-list;
+  }
+
+  .toc-main ul li::before {
+    content: counter(item)".";
+    display: block;
+    position: absolute;
+    left: 12px;
+    top: 0;
+  } */
+</style>
+ 
+
+<!-- 设置导航背景 -->
+<script>
+  let setHeaderClass = () => {
+    const nav = $('#navHeader');
+    const navTop = nav.outerHeight();
+    const winTop = $(window).scrollTop();
+    if(winTop > navTop) {
+      nav.addClass('header-bg-color');
+    }
+    else {
+      nav.removeClass('header-bg-color');
+    }
+  };
+
+  let scrollCollect = () => {
+    return bamboo.throttle(function (e) {
+      setHeaderClass();
+    }, 200)()
+  }
+
+  let initHeaderBg = () => {
+    setHeaderClass();
+  }
+
+  setHeaderClass();
+  window.addEventListener('scroll', scrollCollect);
+
+  document.addEventListener('pjax:send', function () {
+    window.removeEventListener('scroll', scrollCollect)
+  })
+  document.addEventListener('pjax:complete', function () {
+    window.addEventListener('scroll', scrollCollect);
+    setHeaderClass();
+  })
+</script> 
+
+<!-- 渲染issues标签里的内容 -->
+<script>
+  function loadIssuesJS() {
+    if ($(".post-detail").find(".issues-api").length == 0) {
+      return;
+    } 
+    loadScript('/js/issues/index.js');
+  };
+  $(function () {
+    loadIssuesJS();
+  });
+  document.addEventListener('pjax:complete', function () {
+    if (typeof IssuesAPI == "undefined") {
+      loadIssuesJS();
+    }
+  })
+</script>
+
+<!-- 渲染远程json加载的图片标签(getPhotoOnline)里的内容 -->
+<script>
+  function loadPhotoOnlineJS() {
+    if ($(".post-detail").find(".getJsonPhoto-api").length == 0) {
+      return;
+    } 
+    loadScript('/js/getPhotoOnline/index.js');
+  };
+  $(function () {
+    loadPhotoOnlineJS();
+  });
+  document.addEventListener('pjax:complete', function () {
+    if (typeof getPhotoJson == "undefined") {
+      loadPhotoOnlineJS();
+    }
+  })
+</script>
+
+<!-- 渲染远程json加载的talk标签(getTalkOnline)里的内容 -->
+<script>
+  function loadTalkOnlineJS() {
+    if ($(".post-detail").find(".getJsonTalk-api").length == 0) {
+      return;
+    } 
+    loadScript('https://cdnjs.cloudflare.com/ajax/libs/waterfall.js/1.0.2/waterfall.min.js'); // 瀑布流插件，https://raphamorim.io/waterfall.js/
+    loadScript('/js/getTalkOnline/index.js');
+  };
+  $(function () {
+    loadTalkOnlineJS();
+  });
+  document.addEventListener('pjax:complete', function () {
+    if (typeof getTalkJson == "undefined") {
+      loadTalkOnlineJS();
+    }
+  })
+</script>
+
+<!-- 渲染远程json加载的site-card标签(getSiteOnline)里的内容 -->
+<script>
+  function loadSiteOnlineJS() {
+    if ($(".post-detail").find(".getJsonSite-api").length == 0) {
+      return;
+    } 
+    loadScript('/js/getSiteOnline/index.js');
+  };
+  $(function () {
+    loadSiteOnlineJS();
+  });
+  document.addEventListener('pjax:complete', function () {
+    if (typeof getSiteJson == "undefined") {
+      loadSiteOnlineJS();
+    }
+  })
+</script>
+
+<!-- 输入框打字特效 -->
+<!-- 输入框打字特效 -->
+
+  <script src="/js/activate-power-mode.js"></script>
+  <script>
+    POWERMODE.colorful = true;  // 打开随机颜色特效
+    POWERMODE.shake = false;    // 关闭输入框抖动
+    document.body.addEventListener('input', POWERMODE);//监听打字事件
+  </script>
+
+
+<!-- markdown代码一键复制功能 -->
+
+  <link rel="stylesheet" href="https://unpkg.com/v-plugs-ayu/lib/ayu.css">
+  <script src="https://unpkg.com/v-plugs-ayu/lib/ayu.umd.min.js"></script>
+  <script src="/js/clipboard/clipboard.min.js"></script>
+  <div id="appCopy">
+  </div>
+  <script data-pjax>
+    var vm = new Vue({
+      el: '#appCopy',
+      data: {
+      },
+      computed: {
+      },
+      mounted() {
+        const that = this;
+        var copy = '复制';
+        /* code */
+        var initCopyCode = function () {
+          var copyHtml = '';
+          copyHtml += '<button class="btn-copy" data-clipboard-snippet="" style="position:absolute;top:0;right:0;z-index:1;">';
+          copyHtml += '<i class="fas fa-copy"></i><span>' + copy + '</span>';
+          copyHtml += '</button>';
+          $(".post-detail pre").not('.gutter pre').wrap("<div class='codeBox' style='position:relative;width:100%;'></div>")
+          $(".post-detail pre").not('.gutter pre').before(copyHtml);
+          new ClipboardJS('.btn-copy', {
+            target: function (trigger) {
+              return trigger.nextElementSibling;
+            }
+          });
+        }
+        initCopyCode();
+        $('.btn-copy').unbind('click').bind('click', function () {
+          doSomething();
+        })
+        $(document).unbind('keypress').bind('keypress', function (e) {
+          if (e.ctrlKey && e.keyCode == 67) {
+            doSomething();
+          }
+        })
+
+        function doSomething() {
+          that.$notify({
+            title: "成功",
+            content: "代码已复制",
+            type: 'success'
+          })
+        }
+      },
+      methods: {
+      },
+      created() { }
+    })
+  </script>
+  
+
+<!-- 图片懒加载 -->
+<script defer src="https://unpkg.com/vanilla-lazyload@17.1.0/dist/lazyload.min.js"></script>
+<script>
+  // https://www.npmjs.com/package/vanilla-lazyload
+  // Set the options globally
+  // to make LazyLoad self-initialize
+  window.lazyLoadOptions = {
+    elements_selector: ".lazyload",
+    threshold: 0
+  };
+  // Listen to the initialization event
+  // and get the instance of LazyLoad
+  window.addEventListener(
+    "LazyLoad::Initialized",
+    function (event) {
+      window.lazyLoadInstance = event.detail.instance;
+    },
+    false
+  );
+  document.addEventListener('DOMContentLoaded', function () {
+    lazyLoadInstance.update();
+  });
+  document.addEventListener('pjax:complete', function () {
+    lazyLoadInstance.update();
+  });
+</script>
+
+
+<!-- 卡片滚动动画 -->
+   
+
+<!-- 评论所需js -->
+
+  
+    <script type="text/javascript">
+  var utteranceCommon = {};
+
+  function check_utterance() {
+    let isDark = JSON.parse(localStorage.getItem('dark')) || JSON.parse('false');
+    if (isDark) {
+      utteranceCommon.Theme = 'github-dark';
+    } else {
+      utteranceCommon.Theme = 'github-light';
+    }
+
+    return document.getElementById("gitment-container");
+  }
+  comment_el = '#gitment-container';
+  load_utterance = function () {
+    if ($(comment_el).length) {
+      // 匿名函数，防止污染全局变量
+      const HEAD = check_utterance();
+
+      var utterances = document.createElement('script');
+      utterances.type = 'text/javascript';
+      utterances.async = true;
+      utterances.setAttribute('issue-term', 'pathname')
+      utterances.setAttribute('theme', utteranceCommon.Theme)
+      utterances.setAttribute('repo', 'LemonPuer/lemonpuer.github.io')
+      utterances.crossorigin = 'anonymous';
+      utterances.src = 'https://utteranc.es/client.js';
+      // content 是要插入评论的地方
+      document.getElementById('gitment-container').appendChild(utterances);
+
+    }
+  }
+
+  function dark_utterance() {
+    const HEAD = check_utterance();
+    if (!HEAD) return;
+    const message = {
+      type: 'set-theme',
+      theme: utteranceCommon.Theme
+    };
+    const utteranceIframe = document.querySelector('iframe');
+    utteranceIframe.contentWindow.postMessage(message, 'https://utteranc.es');
+  }
+
+  $(document).ready(load_utterance);
+  document.addEventListener('pjax:complete', function () {
+    load_utterance();
+  });
+
+  $('.dark').click(function () {
+    setTimeout(() => {
+      dark_utterance();
+    });
+  })
+
+</script>
+
+<style>
+  .utterances {
+    max-width: inherit !important;
+  }
+</style>
+  
+
+
+<!-- 鼠标点击特效 -->
+<!-- 爱心点击 -->
+
+  
+    <canvas class="fireworks" style="position: fixed;left: 0;top: 0;z-index: 999; pointer-events: none;" ></canvas>
+    <script src="//cdn.bootcss.com/animejs/2.2.0/anime.min.js"></script>
+    <script src="/js/cursor/explosion.min.js"></script>
+  
+
+
+
+
+  <script async src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js" data-pjax></script>
+
+
+<!-- 轮播图标签 -->
+<script>
+  var bambooSwiperTag = {};
+  function load_swiper() {
+    if (!document.querySelectorAll(".post-swiper-container")[0]) return;
+    loadCSS("https://unpkg.com/swiper@6/swiper-bundle.min.css")
+    loadScript("https://unpkg.com/swiper@6/swiper-bundle.min.js").then(() => {
+      pjax_swiper();
+    });
+  }
+
+  load_swiper();
+
+  function pjax_swiper() {
+    bambooSwiperTag.swiper = new Swiper('.post-swiper-container', {
+      slidesPerView: 'auto',
+      spaceBetween: 8,
+      centeredSlides: true,
+      loop: true,
+      autoplay: true ? {
+        delay: 3000,
+        stopOnLastSlide: false,
+        disableOnInteraction: false,
+      } : false,
+      pagination: {
+        el: '.swiper-pagination',
+        clickable: true,
+      },
+      navigation: {
+        nextEl: '.swiper-button-next',
+        prevEl: '.swiper-button-prev',
+      },
+      on:{
+        init: function(){
+          swiperAnimateCache(this); //隐藏动画元素 
+          swiperAnimate(this); //初始化完成开始动画
+        }, 
+        slideChangeTransitionEnd: function(){ 
+          swiperAnimate(this); //每个slide切换结束时也运行当前slide动画
+          //this.slides.eq(this.activeIndex).find('.ani').removeClass('ani'); 动画只展现一次，去除ani类名
+        } 
+      }
+    });
+  }
+
+  document.addEventListener('pjax:complete', function () {
+    if (!document.querySelectorAll(".post-swiper-container")[0]) return;
+    if (typeof bambooSwiperTag.swiper === "undefined") {
+      load_swiper();
+    } else {
+      pjax_swiper();
+    }
+  });
+</script>
+    <!-- pjax -->
+    
+
+<!-- pjax -->
+
+
+  <script src="/js/pjax@0.2.8/index.js"></script>
+  
+    <!-- 样式位于：source/css/_third-party/pjaxanimate.styl -->
+
+<div class="pjax-animate">
+  
+    <div class="loading-circle"><div id="loader-circle"></div></div>
+    <script>
+      window.ShowLoading = function() {
+        $(".loading-circle").css("display", "block");
+      };
+      window.HideLoading = function() {
+        $(".loading-circle").css("display", "none");
+      }
+    </script>
+  
+	<script>
+    document.addEventListener('pjax:complete', function () {
+      window.HideLoading();
+    })
+    document.addEventListener('pjax:send', function () {
+      window.ShowLoading();
+    })
+    document.addEventListener('pjax:error', function () {
+      window.HideLoading();
+    })
+	</script>
+</div>
+
+  
+
+  <script>
+    var pjax = new Pjax({
+      elements: 'a[href]:not([href^="#"]):not([href="javascript:void(0)"]):not([no-pjax])',   // 拦截正常带链接的 a 标签
+      selectors: ["#pjax-container","title"],                                   // 根据实际需要确认重载区域
+      cacheBust: false,   // url 地址追加时间戳，用以避免浏览器缓存
+      timeout: 5000
+    });
+
+    document.addEventListener('pjax:send', function (e) {
+
+      try {
+        var currentUrl = window.location.pathname;
+        var targetUrl = e.triggerElement.href;
+        var banUrl = [""];
+        if (banUrl[0] != "") {
+          banUrl.forEach(item => {
+            if(currentUrl.indexOf(item) != -1 || targetUrl.indexOf(item) != -1) {
+              window.location.href = targetUrl;
+            }
+          });
+        }
+      } catch (error) {}
+
+      $(window).unbind('resize');
+      $(window).unbind('scroll');
+      $(document).unbind('scroll');
+      $(document).unbind('click');
+      $('body').unbind('click');
+
+    })
+    
+    document.addEventListener('pjax:complete', function () {
+      $('script[data-pjax], .pjax-reload script').each(function () {
+        $(this).parent().append($(this).remove());
+      });
+    });
+
+    document.addEventListener('pjax:error', function (e) {
+      window.location.href = e.triggerElement.href;
+    })
+    
+    // 刷新不从顶部开始
+    document.addEventListener("DOMContentLoaded", function () {
+      history.scrollRestoration = 'auto';
+    })
+  </script>
+
+
+
+  </body>
+</html>

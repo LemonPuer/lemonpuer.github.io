@@ -1,0 +1,2498 @@
+<!DOCTYPE html>
+<html>
+  <!-- meta/link... -->
+  
+
+
+
+<head>
+  <meta http-equiv="content-type" content="text/html; charset=utf-8">
+  <meta content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0" name="viewport">
+  <!-- Global site tag (gtag.js) - Google Analytics -->
+
+
+  <title>Redis系列第四章 | Lemon</title>
+
+  <link rel="icon" type="image/x-icon, image/vnd.microsoft.icon" href="/bitbug_favicon.ico">
+  <link rel="stylesheet" href="https://at.alicdn.com/t/font_1911880_c1nvbyezg17.css">
+  <link href="https://unpkg.com/@fortawesome/fontawesome-free/css/all.min.css" rel="stylesheet">
+  <link href="/js/swiper/swiper@5.4.1.min.css" rel="stylesheet">
+  
+  
+    <script>
+        var themeModelId = '5';
+        if (themeModelId) {
+            localStorage.setItem('modelId', themeModelId);
+        }
+    </script>
+    
+    <script defer src="https://fastly.jsdelivr.net/gh/lemonpuer/live2d-widget@latest/autoload.js"></script>
+    <script>
+        var live2dOpen = eval('true') || false;
+        if (!live2dOpen) {
+            localStorage.setItem('waifu-display', 1609323474481);
+        }
+    </script>
+  
+  
+  
+<link rel="stylesheet" href="/css/animate.min.css">
+
+  
+<link rel="stylesheet" href="/css/style.css">
+
+  
+  
+    <link href="https://fastly.jsdelivr.net/npm/@fancyapps/ui@5.0/dist/fancybox/fancybox.css" rel="stylesheet">
+  
+  
+    
+<link rel="stylesheet" href="/js/shareJs/share.min.css">
+
+  
+  <style>
+        @media (max-width: 992px) {
+            #waifu {
+                display: none;
+            }
+        }
+    </style>
+    <script defer src="//cdn.bootcss.com/pace/1.0.2/pace.min.js"></script>
+    <link href="//cdn.bootcss.com/pace/1.0.2/themes/pink/pace-theme-flash.css" rel="stylesheet">
+
+    
+    
+    <!-- 依赖于jquery和vue -->
+    
+        <script src="https://unpkg.com/jquery@3.5.1/dist/jquery.min.js"></script>
+    
+
+    
+        <script src="https://unpkg.com/vue@2.6.11/dist/vue.min.js"></script>
+    
+
+    <!-- import link -->
+    
+        
+            <link rel="stylesheet" type="text/css" href="https://at.alicdn.com/t/c/font_4157890_fix3f9jhjk.css">
+        
+            
+        
+    
+    <!-- import script -->
+    
+        
+            
+        
+            
+        
+    
+
+<meta name="generator" content="Hexo 6.3.0"></head>
+
+  
+  <!-- 预加载动画 -->
+  <!-- 页面预加载动画 -->
+
+  
+    <div class="preloader-1" id="loader">
+  <div  aria-label="Orange and tan hamster running in a metal wheel" role="img" class="wheel-and-hamster">
+    <div class="wheel"></div>
+    <div class="hamster">
+      <div class="hamster__body">
+        <div class="hamster__head">
+          <div class="hamster__ear"></div>
+          <div class="hamster__eye"></div>
+          <div class="hamster__nose"></div>
+        </div>
+        <div class="hamster__limb hamster__limb--fr"></div>
+        <div class="hamster__limb hamster__limb--fl"></div>
+        <div class="hamster__limb hamster__limb--br"></div>
+        <div class="hamster__limb hamster__limb--bl"></div>
+        <div class="hamster__tail"></div>
+      </div>
+    </div>
+    <div class="spoke"></div>
+  </div>
+</div>
+  
+<script>
+  var endLoading = function () {
+    document.body.style.overflow = 'auto';
+    document.getElementById('loader').classList.add("loading");
+  }
+  window.addEventListener('DOMContentLoaded',endLoading);
+</script>
+
+  <body>
+    <!-- 判断是否为暗黑风格 -->
+    <!-- 判断是否为黑夜模式 -->
+<script>
+  let isDark = JSON.parse(localStorage.getItem('dark')) || JSON.parse('false');
+
+  if (isDark) {
+    $(document.body).addClass('darkModel');
+  }
+</script>
+
+    <!-- 需要在上面加载的js -->
+    <script>
+  function loadScript(src, cb) {
+    return new Promise(resolve => {
+      setTimeout(function () {
+        var HEAD = document.getElementsByTagName("head")[0] || document.documentElement;
+        var script = document.createElement("script");
+        script.setAttribute("type", "text/javascript");
+        if (cb) {
+          if (JSON.stringify(cb)) {
+            for (let p in cb) {
+              if (p == "onload") {
+                script[p] = () => {
+                  cb[p]()
+                  resolve()
+                }
+              } else {
+                script[p] = cb[p]
+                script.onload = resolve
+              }
+            }
+          } else {
+            script.onload = () => {
+              cb()
+              resolve()
+            };
+          }
+        } else {
+          script.onload = resolve
+        }
+        script.setAttribute("src", src);
+        HEAD.appendChild(script);
+      });
+    });
+  }
+
+  //https://github.com/filamentgroup/loadCSS
+  var loadCSS = function (src) {
+    return new Promise(resolve => {
+      setTimeout(function () {
+        var link = document.createElement('link');
+        link.rel = "stylesheet";
+        link.href = src;
+        link.onload = resolve;
+        document.getElementsByTagName("head")[0].appendChild(link);
+      });
+    });
+  };
+
+</script> 
+
+<!-- 轮播图所需要的js -->
+<script src="/js/swiper/swiper.min.js"></script>
+<script src="/js/swiper/vue-awesome-swiper.js"></script>
+<script src="/js/swiper/swiper.animate1.0.3.min.js"></script>
+
+<script type="text/javascript">
+  Vue.use(window.VueAwesomeSwiper)
+</script>
+
+
+  <script src="/js/vue-typed-js/index.js"></script>
+
+
+<!-- 首页的公告滚动插件的js需要重新加载 -->
+<script src="/js/vue-seamless-scroll/index.js"></script>
+
+<!-- 打字机效果js -->
+<script src="https://unpkg.com/typed.js@2.0.11"></script>
+
+
+    <div id="safearea">
+      <main class="main" id="pjax-container">
+        <!-- 头部导航 -->
+        
+<header class="header  " 
+  id="navHeader"
+  style="position: fixed;
+  left: 0; top: 0; z-index: 10;width: 100%;"
+>
+  <div class="header-content">
+    <div class="bars">
+      <div id="appDrawer" class="sidebar-image">
+  <div class="drawer-box-icon">
+    <i class="fas fa-bars" aria-hidden="true" @click="showDialogDrawer"></i>
+  </div>
+  
+  <transition name="fade">
+    <div class="drawer-box_mask" v-cloak style="display: none;" v-show="visible" @click.self="cancelDialogDrawer">
+    </div>
+  </transition>
+  <div class="drawer-box" :class="{'active': visible}">
+    <div class="drawer-box-head bg-color">
+      <img class="drawer-box-head_logo lazyload placeholder" src="https://i.postimg.cc/yNJTSNTj/image.jpg" class="lazyload placeholder" data-srcset="https://i.postimg.cc/yNJTSNTj/image.jpg" srcset="https://pic1.zhimg.com/v2-cd38920285d125be80b3eb504052c550_b.webp" alt="logo">
+      <h3 class="drawer-box-head_title">Lemon</h3>
+      <h5 class="drawer-box-head_desc">个人博客</h5>
+    </div>
+    
+    <div class="drawer-box-content">
+      <ul class="drawer-box-content_menu">
+        
+          
+            <li class="drawer-box-content_item" style="position: relative;">
+              
+                <a href="/" class="drawer-menu-item-link">
+                  
+                    <i class="fas fa-home" aria-hidden="true"></i>
+                  
+                  <span class="name">首页</span>
+                </a>
+              
+            </li>
+          
+            <li class="drawer-box-content_item" style="position: relative;">
+              
+                <a href="/archives" class="drawer-menu-item-link">
+                  
+                    <i class="fas fa-archive" aria-hidden="true"></i>
+                  
+                  <span class="name">归档</span>
+                </a>
+              
+            </li>
+          
+            <li class="drawer-box-content_item" style="position: relative;">
+              
+                <a href="/tags" class="drawer-menu-item-link">
+                  
+                    <i class="fas fa-tags" aria-hidden="true"></i>
+                  
+                  <span class="name">标签</span>
+                </a>
+              
+            </li>
+          
+            <li class="drawer-box-content_item" style="position: relative;">
+              
+                <a href="/categories" class="drawer-menu-item-link">
+                  
+                    <i class="fas fa-bookmark" aria-hidden="true"></i>
+                  
+                  <span class="name">分类</span>
+                </a>
+              
+            </li>
+          
+            <li class="drawer-box-content_item" style="position: relative;">
+              
+                <a href="/friends" class="drawer-menu-item-link">
+                  
+                    <i class="fas fa-link" aria-hidden="true"></i>
+                  
+                  <span class="name">友情链接</span>
+                </a>
+              
+            </li>
+          
+            <li class="drawer-box-content_item" style="position: relative;">
+              
+                <a href="javascript:;" class="drawer-menu-item-link has-children" @click="openOrCloseMenu(5)">
+                  <span>
+                    
+                    <span class="name">更多</span>
+                  </span>
+                  <i class="fas fa-chevron-left arrow " :class="{'icon-rotate': isOpen(5)}" aria-hidden="true"></i>
+                </a>
+                <ul class="drawer-sub-menu" v-if="isOpen(5)">
+                  
+                  <li>
+                    <a href="/about">
+                      
+                      <i class="fa fa-id-card" style="margin-top: -20px;"></i>
+                      
+                      <span>关于</span>
+                    </a>
+                  </li>
+                  
+                  <li>
+                    <a target="_blank" rel="noopener" href="https://bing.com/">
+                      
+                      <i class="fa fa-search" style="margin-top: -20px;"></i>
+                      
+                      <span>必应</span>
+                    </a>
+                  </li>
+                  
+                </ul>
+              
+            </li>
+          
+        
+        
+      </ul>
+    </div>
+  </div>
+</div>
+
+<script>
+  var body = document.body || document.documentElement || window;
+  var vm = new Vue({
+    el: '#appDrawer',
+    data: {
+      visible: false,
+      top: 0,
+      openArr: [],
+    },
+    computed: {
+    },
+    mounted() {
+    },
+    methods: {
+      isOpen(index) {
+        if (this.openArr.includes(index)) {
+          return true;
+        } else {
+          return false;
+        }
+      },
+      openOrCloseMenu(curIndex) {
+        const index = this.openArr.indexOf(curIndex);
+        if (index !== -1) {
+          this.openArr.splice(index, 1);
+        } else {
+          this.openArr.push(curIndex);
+        }
+      },
+      showDialogDrawer() {
+        this.visible = true;
+        // 防止页面滚动，只能让弹框滚动
+        this.top = $(document).scrollTop()
+        body.style.cssText = 'width: 100%; height: 100%;overflow: hidden;';
+      },
+      cancelDialogDrawer() {
+        this.visible = false;
+        body.removeAttribute('style');
+        $(document).scrollTop(this.top)
+      }
+    },
+    created() {}
+  })
+</script>
+
+    </div>
+    <div class="blog-title" id="author-avatar">
+      
+        <div class="avatar">
+          <img src="https://i.postimg.cc/yNJTSNTj/image.jpg" class="lazyload placeholder" data-srcset="https://i.postimg.cc/yNJTSNTj/image.jpg" srcset="https://pic1.zhimg.com/v2-cd38920285d125be80b3eb504052c550_b.webp" alt="logo">
+        </div>
+      
+      <a href="/" class="logo">Lemon</a>
+    </div>
+    <nav class="navbar">
+      <ul class="menu">
+        
+          
+            <li class="menu-item" style="position: relative;">
+              
+                <a href="/" class="menu-item-link" title="首页">
+                  
+                    <i class="fas fa-home" aria-hidden="true"></i>
+                  
+                  <span class="name">首页</span>
+                </a>
+              
+            </li>
+          
+            <li class="menu-item" style="position: relative;">
+              
+                <a href="/archives" class="menu-item-link" title="归档">
+                  
+                    <i class="fas fa-archive" aria-hidden="true"></i>
+                  
+                  <span class="name">归档</span>
+                </a>
+              
+            </li>
+          
+            <li class="menu-item" style="position: relative;">
+              
+                <a href="/tags" class="menu-item-link" title="标签">
+                  
+                    <i class="fas fa-tags" aria-hidden="true"></i>
+                  
+                  <span class="name">标签</span>
+                </a>
+              
+            </li>
+          
+            <li class="menu-item" style="position: relative;">
+              
+                <a href="/categories" class="menu-item-link" title="分类">
+                  
+                    <i class="fas fa-bookmark" aria-hidden="true"></i>
+                  
+                  <span class="name">分类</span>
+                </a>
+              
+            </li>
+          
+            <li class="menu-item" style="position: relative;">
+              
+                <a href="/friends" class="menu-item-link" title="友情链接">
+                  
+                    <i class="fas fa-link" aria-hidden="true"></i>
+                  
+                  <span class="name">友情链接</span>
+                </a>
+              
+            </li>
+          
+            <li class="menu-item" style="position: relative;">
+              
+                <a href="javascript:;" class="menu-item-link" title="更多">
+                  
+                  <span class="name">更多</span>
+                  <i class="fas fa-chevron-down arrow" aria-hidden="true"></i>
+                </a>
+                <ul class="sub-menu">
+                  
+                  <li>
+                    <a href="/about">
+                      
+                      <i class="fa fa-id-card" style="margin-top: -20px;"></i>
+                      
+                      <span>关于</span>
+                    </a>
+                  </li>
+                  
+                  <li>
+                    <a target="_blank" rel="noopener" href="https://bing.com/">
+                      
+                      <i class="fa fa-search" style="margin-top: -20px;"></i>
+                      
+                      <span>必应</span>
+                    </a>
+                  </li>
+                  
+                </ul>
+              
+            </li>
+          
+        
+      </ul>
+      
+      
+        <div id="appSearch">
+  <div class="search"  @click="showDialog()"><i class="fas fa-search" aria-hidden="true"></i></div>
+  <transition name="fade">
+    <div class="message-box_wrapper" style="display: none;" v-cloak v-show="dialogVisible" @click.self="cancelDialogVisible()">
+      <div class="message-box animated bounceInDown">
+        <h2>
+          <span>
+            <i class="fas fa-search" aria-hidden="true"></i>
+            <span class="title">本地搜索</span>
+          </span>
+          <i class="fas fa-times close" pointer style="float:right;" aria-hidden="true" @click.self="cancelDialogVisible()"></i>
+        </h2>
+        <form class="site-search-form">
+          <input type="text"
+            placeholder="请输入关键字"
+            id="local-search-input" 
+            @click="getSearchFile()"
+            class="st-search-input"
+            v-model="searchInput"
+          />
+        </form>
+        <div class="result-wrapper">
+          <div id="local-search-result" class="local-search-result-cls"></div>
+        </div>
+      </div>
+    </div>
+  </transition>
+</div>
+<script src="/js/local_search.js"></script>
+<script>
+  var body = document.body || document.documentElement || window;
+  var vm = new Vue({
+    el: '#appSearch',
+    data: {
+      dialogVisible: false,
+      searchInput: '',
+      top: 0,
+    },
+    computed: {
+    },
+    mounted() {
+      window.addEventListener('pjax:complete', () => {
+        this.cancelDialogVisible();
+      })
+    },
+    methods: {
+      showDialog() {
+        this.dialogVisible = true;
+        // 防止页面滚动，只能让弹框滚动
+        this.top = $(document).scrollTop()
+        body.style.cssText = 'overflow: hidden;';
+      },
+      getSearchFile() {
+        if (!this.searchInput) {
+          getSearchFile("/search.xml");
+        }
+      },
+      cancelDialogVisible() {
+        this.dialogVisible = false;
+        body.removeAttribute('style');
+        $(document).scrollTop(this.top)
+      },
+    },
+    created() {}
+  })
+</script>
+<!-- 解决刷新页面闪烁问题，可以在元素上添加display: none, 或者用vue.extend方法，详情：https://blog.csdn.net/qq_31393401/article/details/81017912 -->
+<!-- 下面是搜索基本写法 -->
+<!-- <script type="text/javascript" id="local.search.active">
+  var inputArea = document.querySelector("#local-search-input");
+  inputArea.onclick   = function(){ getSearchFile(); this.onclick = null }
+  inputArea.onkeydown = function(){ if(event.keyCode == 13) return false }
+</script> -->
+
+      
+
+    </nav>
+  </div>
+  
+  
+    <div id="he-plugin-simple"></div>
+    <script>
+      WIDGET = {
+        CONFIG: {
+          "modules": "012",
+          "background": 5,
+          "tmpColor": "4A4A4A",
+          "tmpSize": 16,
+          "cityColor": "4A4A4A",
+          "citySize": 16,
+          "aqiSize": 16,
+          "weatherIconSize": 24,
+          "alertIconSize": 18,
+          "padding": "10px 10px 10px 10px",
+          "shadow": "1",
+          "language": "auto",
+          "borderRadius": 5,
+          "fixed": "false",
+          "vertical": "middle",
+          "horizontal": "center",
+          "key": "2784dd3fcb1e4f0f9a9b579bf69641f2"
+        }
+      }
+    </script>
+    <script defer src="https://widget.qweather.net/simple/static/js/he-simple-common.js?v=2.0"></script> 
+    
+</header>
+        <!-- 内容区域 -->
+        
+ <!-- prismjs 代码高亮 -->
+ 
+
+
+<div class="bg-dark-floor" style="position: fixed;left: 0;top: 0;width: 100%;height: 100%;z-index: -1;"></div>
+
+
+  <!-- 文章详情页顶部图片和标题 -->
+
+
+
+
+<div class="post-detail-header" id="thumbnail_canvas" style="background-repeat: no-repeat; background-size: cover; 
+  background-position: center center;position: relative;background-image:url('https://images.wallpaperscraft.com/image/single/fern_plant_leaves_108470_1920x1080.jpg')">
+  <div class="post-detail-header-mask"></div>
+  <canvas id="header_canvas"style="position:absolute;bottom:0;pointer-events:none;"></canvas>
+  
+  <div class="post-detail-header_info-box">
+    <div class="title-box">
+      <span class="title">
+        Redis系列第四章
+      </span>
+    </div>
+    
+    
+      
+        <span class="post-detail-header_date">
+          <i class="fas fa-calendar"></i> 发表于：2023-12-16 |
+        </span>
+      
+
+      
+        <span class="post-detail-header_categories">
+          <i class="iconfont iconbookmark1"></i> 分类：
+          
+            <a href="/categories/%E4%B8%AD%E9%97%B4%E4%BB%B6/" class="post-detail-header_category">
+              中间件
+            </a>
+          
+        </span>
+      
+
+      
+        <div class="post-detail-header_wordcount">
+          <span class="totalcount">
+            <i class="fas fa-file-text-o"></i> 字数统计: 7.6k |
+          </span>
+  
+          <span class="min2read">
+            <i class="fas fa-clock"></i> 阅读时长: 27分钟 |
+          </span>
+  
+          
+            <span class="reading">
+              <i class="fas fa-eye"></i> 阅读量：<span id="busuanzi_value_page_pv"></span>
+            </span>
+          
+        </div>
+      
+    
+  </div>
+  
+  
+    <script src="/js/bubble/bubble.js"></script>
+  
+</div>
+
+
+
+
+
+<div class="post-detail-content post-row" 
+  style="padding-top: 0px;">
+  <div class="main-content">
+    <article class="post post-detail">
+      <div class="post-content">
+        <h1 id="Redis-主从集群"><a href="#Redis-主从集群" class="headerlink" title="Redis 主从集群"></a>Redis 主从集群</h1><p>为了避免 Redis 的单点故障问题，我们可以搭建一个 Redis 集群，将数据备份到集群中的其它节点上。</p>
+<p>Redis 的主从集群是一个“一主多从”的读写分离集群。对于数据库集群，写操作压力一般都较小，压力大多数来自于读操作请求，所以集群中的 Master 节点负责处理客户端的读写请求，而 Slave 节点仅能处理客户端的读请求。</p>
+<h2 id="主从集群搭建"><a href="#主从集群搭建" class="headerlink" title="主从集群搭建"></a>主从集群搭建</h2><h3 id="伪集群搭建与配置"><a href="#伪集群搭建与配置" class="headerlink" title="伪集群搭建与配置"></a>伪集群搭建与配置</h3><p>在采用单线程 IO 模型时，为了提高处理器的利用率，一般会在一个主机中安装多台 Redis， 构建一个 Redis 主从伪集群。</p>
+<ol>
+<li>复制 redis.conf，用于设置每个 Redis 节点的公共属性。修改：</li>
+</ol>
+<ul>
+<li>masterauth</li>
+</ul>
+<p>如果需要设置置密码验证属性 requirepass，每个主机的密码都要设置为相同的。且要设置两个值完全相同的属性：requirepass 与 masterauth。其中 requirepass 用于指定当前主机的访问密码，而 masterauth 用于指定当前 slave 访问 master 时向 master 提交的访问密码，用于让 master 验证自己身份是否合法。</p>
+<ul>
+<li>repl-disable-tcp-nodelay</li>
+</ul>
+<p><img src="https://cdn.jsdelivr.net/gh/lemonpuer/figure@latest/blog-images/20231216171038.png" class="lazyload placeholder" data-srcset="https://cdn.jsdelivr.net/gh/lemonpuer/figure@latest/blog-images/20231216171038.png" srcset="https://pic1.zhimg.com/v2-cd38920285d125be80b3eb504052c550_b.webp" alt="150052854a7ce448021caae348d9b771.png"></p>
+<p>该属性用于设置是否禁用 TCP 特性 tcp-nodelay。设为 yes 则禁用 tcp-nodelay，此时 master 与 slave 间的通信会产生延迟，但使用的 TCP 包数量会较少，占用的网络带宽会较小。设置为 no，则网络延迟会变小，但使用的 TCP 包数量会较多，相应占用的网络带宽会大。</p>
+<blockquote>
+<p>tcp-nodelay：为了充分复用网络带宽，TCP 总是希望发送尽可能大的数据块。为了达到该目的，TCP 中使用了名为 Nagle 的算法。</p>
+<p>Nagle 算法的工作原理：网络在接收到要发送的数据后，并不直接发送，而是等待着数据量足够大（由 TCP 网络特性决定）时再一次性发送出去。这样，网络上传输的有效数据比例就得到了大大提升，无效数据传递量极大减少，于是就节省了网络带宽，缓解了网络压力。</p>
+<p>tcp-nodelay 则是 TCP 协议中 Nagle 算法的开头。</p>
+</blockquote>
+<ol start="2">
+<li>创建 slave 的配置文件：</li>
+</ol>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">include redis.conf</span><br><span class="line">pidfile /var/run/redis_6380.pid #设置进程id</span><br><span class="line">port 6380 #设置端口号</span><br><span class="line">dbfilename dump6380.rdb #设置持久化文件名</span><br><span class="line">appendfilename appendonly6380.aof # 设置增量文件名</span><br><span class="line">replica-priority 90 #设置选举优先级，默认100，值越小优先级越高</span><br><span class="line"></span><br><span class="line"># logfile access6380.log #指定日志文件</span><br></pre></td></tr></table></figure>
+
+<p>另外两个文件类似，不在赘述</p>
+<p>启动 redis</p>
+<p><img src="https://cdn.jsdelivr.net/gh/lemonpuer/figure@latest/blog-images/20231216171042.png" class="lazyload placeholder" data-srcset="https://cdn.jsdelivr.net/gh/lemonpuer/figure@latest/blog-images/20231216171042.png" srcset="https://pic1.zhimg.com/v2-cd38920285d125be80b3eb504052c550_b.webp" alt="0489022eac57defba2121b6dac27d27c.png"></p>
+<h4 id="设置主从关系："><a href="#设置主从关系：" class="headerlink" title="设置主从关系："></a>设置主从关系：</h4><ul>
+<li><strong>slaveof</strong></li>
+</ul>
+<p><img src="https://cdn.jsdelivr.net/gh/lemonpuer/figure@latest/blog-images/20231216171052.png" class="lazyload placeholder" data-srcset="https://cdn.jsdelivr.net/gh/lemonpuer/figure@latest/blog-images/20231216171052.png" srcset="https://pic1.zhimg.com/v2-cd38920285d125be80b3eb504052c550_b.webp" alt="b768f3d15040acdcf6b8bc89f515a31e.png"></p>
+<h4 id="查看状态信息："><a href="#查看状态信息：" class="headerlink" title="查看状态信息："></a>查看状态信息：</h4><ul>
+<li><strong>info replication</strong></li>
+</ul>
+<p><img src="https://cdn.jsdelivr.net/gh/lemonpuer/figure@latest/blog-images/20231216171055.png" class="lazyload placeholder" data-srcset="https://cdn.jsdelivr.net/gh/lemonpuer/figure@latest/blog-images/20231216171055.png" srcset="https://pic1.zhimg.com/v2-cd38920285d125be80b3eb504052c550_b.webp" alt="fb501b034af9219356069518fb5fb3a7.png"></p>
+<h3 id="分级管理"><a href="#分级管理" class="headerlink" title="分级管理"></a>分级管理</h3><p>Redis 主从集群中的 Slave 较多时，它们的数据同步过程会对 Master 形成较大的性能压力。此时可以对这些 Slave 进行分级管理。</p>
+<p>只需要让低级别 Slave 指定其 slaveof 的主机为其上一级 Slave 即可。上一级 Slave 的状态仍为 Slave，只不过其是更上一级的 Slave。</p>
+<p><img src="https://cdn.jsdelivr.net/gh/lemonpuer/figure@latest/blog-images/20231216171059.png" class="lazyload placeholder" data-srcset="https://cdn.jsdelivr.net/gh/lemonpuer/figure@latest/blog-images/20231216171059.png" srcset="https://pic1.zhimg.com/v2-cd38920285d125be80b3eb504052c550_b.webp" alt="427938264eba60056c1bab450c6eab69.png"></p>
+<p>当然，此时 Master 的 Slave 只有 6381 一个主机。</p>
+<h3 id="容灾冷处理"><a href="#容灾冷处理" class="headerlink" title="容灾冷处理"></a>容灾冷处理</h3><p>在 Master&#x2F;Slave 的 Redis 集群中，若 Master 出现宕机，有两种处理方式，一种是通过手工角色调整，使 Slave 晋升为 Master 的冷处理；一种是使用哨兵模式，实现 Redis 集群的高可用 HA，即热处理。</p>
+<p>无论 Master 是否宕机，Slave 都可通过 <strong>slaveof no one</strong> 将自己由 Slave 晋升为 Master。如果其原本有下一级的 Slave，那么其就直接变为了这些 Slave 的 Master 了。而原来的 Master 也会失去这个原来的 Slave。</p>
+<h2 id="主从复制原理"><a href="#主从复制原理" class="headerlink" title="主从复制原理"></a>主从复制原理</h2><h3 id="主从复制过程"><a href="#主从复制过程" class="headerlink" title="主从复制过程"></a>主从复制过程</h3><p>当一个 slave 节点接收到类似 slaveof 127.0.0.1 6380 的指令后直至其可以从 master 持续复制数据，大体经历了如下几个过程：</p>
+<ol>
+<li>保存 master 地址</li>
+<li>建立连接</li>
+</ol>
+<p>slave 中维护着一个定时任务，该定时任务会尝试着与该 master 建立 socket 连接。如果连接无法建立，则其会不断定时重试，直到连接成功或接收到 slaveof no one 指令。</p>
+<ol start="3">
+<li>slave 发送 ping 命令</li>
+</ol>
+<p>连接建立成功后，slave 会发送 ping 命令进行首次通信。如果 slave 没有收到 master 的 回复，则 slave 会主动断开连接，下次的定时任务会重新尝试连接。</p>
+<ol start="4">
+<li>对 slave 身份验证</li>
+</ol>
+<p>master 收到了 slave 的 ping 命令，并不会立即回复，而是先进行身份验证。如果验证失败，则会发送消息拒绝连接；如果验证成功，则向 slave 发送连接成功响应。</p>
+<ol start="5">
+<li>master 持久化</li>
+</ol>
+<p>首次通信成功后，slave 会向 master 发送数据同步请求。当 master 接收到请求后，会 fork 出一个子进程，让子进程以异步方式立即进行持久化。</p>
+<ol start="6">
+<li>数据发送</li>
+</ol>
+<p>持久化完毕后 master 会再 fork 出一个子进程，让该子进程以异步方式将数据发送给 slave。slave 会将接收到的数据不断写入到本地的持久化文件中。</p>
+<p>在 slave 数据同步过程中，master 的主进程仍在不断地接受着客户端的写操作，且不仅将新的数据写入到了 master 内存，同时也写入到了同步缓存。当 master 的持久化文件中的数据发送完毕后，master 会再将同步缓存中新的数据发送给 slave，由 slave 将其写入到本地持久化文件中。数据同步完成。</p>
+<ol start="7">
+<li>slave 恢复内存数据</li>
+</ol>
+<p>当 slave 与 master 的数据同步完成后，slave 就会读取本地的持久化文件，将其恢复到本地内存，然后就可以对外提供读服务了。</p>
+<ol start="8">
+<li>持续增量复制</li>
+</ol>
+<p>在 slave 对外提供服务过程中，master 会持续不断的将新的数据以增量方式发送给 slave，以保证主从数据的一致性。</p>
+<h3 id="数据同步演变过程"><a href="#数据同步演变过程" class="headerlink" title="数据同步演变过程"></a>数据同步演变过程</h3><h4 id="sync-同步"><a href="#sync-同步" class="headerlink" title="sync 同步"></a>sync 同步</h4><p>Redis 2.8 版本之前，首次通信成功后，slave 会向 master 发送 sync 数据同步请求。然后 master 就会将其所有数据全部发送给 slave，由 slave 保存到其本地的持久化文件中。这个过程称为全量复制。</p>
+<p>由于全量复制过程非常耗时，期间出现网络抖动的概率很高。而中断后的从头开始不仅需要消耗大量的系统资源、网络带宽，而且可能会出现长时间无法完成全量复制的情况。</p>
+<h4 id="psync-同步"><a href="#psync-同步" class="headerlink" title="psync 同步"></a>psync 同步</h4><p>Redis 2.8 版本之后，全量复制采用了 psync（Partial Sync，不完全同步）同步策略。当全量复制过程出现由于网络抖动而导致复制过程中断时，当重新连接成功后，复制过程可以“断点续传”。</p>
+<p>为了实现 psync，整个系统做了三个大的变化：</p>
+<ol>
+<li>复制偏移量</li>
+</ol>
+<p>系统为每个要传送数据进行了编号，该编号从 0 开始，每个字节一个编号。该编号称为复制偏移量。参与复制的主从节点都会维护该复制偏移量。</p>
+<p><img src="https://cdn.jsdelivr.net/gh/lemonpuer/figure@latest/blog-images/20231216171114.png" class="lazyload placeholder" data-srcset="https://cdn.jsdelivr.net/gh/lemonpuer/figure@latest/blog-images/20231216171114.png" srcset="https://pic1.zhimg.com/v2-cd38920285d125be80b3eb504052c550_b.webp" alt="709f8e98c2b2d17c882e1eff7a1ef476.png"></p>
+<p>master 每发送过一个字节数据后就会进行累计。统计信息通过 info replication 的 master_repl_offset 可查看到。同时，slave 会定时向 master 上报其自身已完成的复制偏移量给 master，所以 master 也会保存 slave 的复制偏移量 offset。</p>
+<p>slave在接收到master的数据后，也会累计接收到的偏移量。统计信息通过info replication 的 slave_repl_offset 可查看到。</p>
+<ol start="2">
+<li>主节点复制 ID</li>
+</ol>
+<p>当 master 启动后就会动态生成一个长度为 40 位的 16 进制字符串作为当前 master 的复制 ID，该 ID 是在进行数据同步时 slave 识别 master 使用的。通过 info replication 的 master_replid 属性可查看到该 ID。</p>
+<ol start="3">
+<li>复制积压缓冲区</li>
+</ol>
+<p>当 master 有连接的 slave 时，在 master 中就会创建并维护一个队列 backlog，默认大小为 1MB，该队列称为复制积压缓冲区。master 接收到了写操作数据不仅会写入到 master 主 存，写入到 master 中为每个 slave 配置的发送缓存，而且还会写入到复制积压缓冲区。其作用就是用于保存最近操作的数据，以备“断点续传”时做数据补偿，防止数据丢失。</p>
+<h5 id="psync-同步过程"><a href="#psync-同步过程" class="headerlink" title="psync 同步过程"></a>psync 同步过程</h5><p>psync 是一个由 slave 提交的命令，其格式为 psync &lt;master_replid&gt; &lt;repl_offset&gt;，表示当前 slave 要从指定的 master 中的 repl_offset+1 处开始复制。repl_offset 表示当前 slave 已经 完成复制的数据的 offset。该命令保证了“断点续传”的实现。</p>
+<p>在第一次开始复制时，slave 并不知道 master 的动态 ID，并且一定是从头开始复制，所以其提交的 psync 命令为 PSYNC ? -1。</p>
+<p>此时 master 可能有两种响应：</p>
+<ul>
+<li>FULLRESYNC &lt;master_replid&gt; &lt;repl_offset&gt;：告知 slave 当前 master 的动态 ID 及可以开始全量复制了，这里的 repl_offset 一般为 0</li>
+<li>ERR：告知 slave，当前 master 的版本低于 Redis 2.8，不支持 psyn，你可以开始全量复制了</li>
+</ul>
+<p>如果复制过程中断后 slave 与 master 成功连接，则 slave 再次提交 psyn 命令。此时的 psyn 命令的 repl_offset 参数为其前面已经完成复制的数据的偏移量。</p>
+<p>master 相应：CONTINUE；告知 slave 可以按照你提交的 repl_offset 后面位置开始“续传”了</p>
+<h5 id="psync-存在的问题"><a href="#psync-存在的问题" class="headerlink" title="psync 存在的问题"></a>psync 存在的问题</h5><ul>
+<li>在 psync 数据同步过程中，若 slave 重启，在 slave 内存中保存的 master 的动态 ID 与续传 offset 都会消失，“断点续传”将无法进行，从而只能进行全量复制，导致资源浪费。</li>
+<li>在 psync 数据同步过程中，master 宕机后 slave 会发生“易主”，从而导致 slave 需要从新 master 进行全量复制，形成资源浪费。</li>
+</ul>
+<h5 id="psync-同步的改进"><a href="#psync-同步的改进" class="headerlink" title="psync 同步的改进"></a>psync 同步的改进</h5><p>Redis 4.0 对 psync 进行了改进，提出了“同源增量同步”策略。</p>
+<ol>
+<li>解决 slave 重启问题</li>
+</ol>
+<p>针对“slave 重启时 master 动态 ID 丢失问题”，改进后的 psync 将 master 的动态 ID 直接写入到了 slave 的持久化文件中。</p>
+<p>slave 重启后直接从本地持久化文件中读取 master 的动态 ID，然后向 master 提交获取复制偏移量的请求。master 会根据提交请求的 slave 地址，查找到保存在 master 中的复制偏移量</p>
+<ol start="2">
+<li>解决 slave 易主问题</li>
+</ol>
+<p>如果 slave 发送 PSYNC &lt;原 master_replid&gt; &lt;repl_offset&gt; 命令，新master能够识别出该slave要从原master复制数据，而自己的数据也都是从该master复制来的。那么新 master 就会明白，其与该 slave“师出同门”，应该接收其“断点续传”同步请求。</p>
+<h6 id="无盘操作"><a href="#无盘操作" class="headerlink" title="无盘操作"></a>无盘操作</h6><p>Redis 6.0 对同步过程又进行了改进，提出了“无盘全量同步”与“无盘加载”策略，避免了耗时的 IO 操作。</p>
+<ul>
+<li>无盘全量同步：master 的主进程 fork 出的子进程直接将内存中的数据发送给 slave，无需经过磁盘。</li>
+<li>无盘加载：slave 在接收到 master 发送来的数据后不需要将其写入到磁盘文件，而是直接写入到内存，这样 slave 就可快速完成数据恢复。</li>
+</ul>
+<h6 id="共享复制积压缓冲区"><a href="#共享复制积压缓冲区" class="headerlink" title="共享复制积压缓冲区"></a>共享复制积压缓冲区</h6><p>Redis 7.0 版本对复制积压缓冲区进行了改进，让各个 slave 的发送缓冲区共享复制积压缓冲区。这使得复制积压缓冲区的作用，除了可以保障数据的安全性外，还作为所有 slave 的发送缓冲区，充分利用了复制积压缓冲区。</p>
+<h2 id="哨兵机制"><a href="#哨兵机制" class="headerlink" title="哨兵机制"></a>哨兵机制</h2><p>对于 Master 宕机后的冷处理方式是无法实现高可用的。Redis 从 2.6 版本开始提供了高可用的解决方案—— Sentinel 哨兵机制。在集群中再引入一个节点，该节点充当 Sentinel 哨兵，用于监视 Master 的运行状态，并在 Master 宕机后自动指定一个 Slave 作为新的 Master。 整个过程无需人工参与，完全由哨兵自动完成。</p>
+<p>为了解决 Sentinel 的单点问题，又要为 Sentinel 创建一个集群，即 Sentinel 哨兵集群。</p>
+<p>Sentinel 哨兵工作原理：</p>
+<p>每个 Sentinel 都会定时会向 Master 发送心跳，如果 Master 在有效时间内向它们都进行了响应，则说明 Master 是“活着的”。如果 Sentinel 中有 quorum 个哨兵没有收到响应，那么就认为 Master 已经宕机，然后会有一个 Sentinel 做 Failover 故障转移。即将原来的某一个 Slave 晋升为 Master。</p>
+<h3 id="哨兵机制实现"><a href="#哨兵机制实现" class="headerlink" title="哨兵机制实现"></a>哨兵机制实现</h3><ol>
+<li>复制 sentinel.conf</li>
+<li>修改 sentinel.conf</li>
+</ol>
+<ul>
+<li>sentinel monitor</li>
+</ul>
+<p><img src="https://cdn.jsdelivr.net/gh/lemonpuer/figure@latest/blog-images/20231216171125.png" class="lazyload placeholder" data-srcset="https://cdn.jsdelivr.net/gh/lemonpuer/figure@latest/blog-images/20231216171125.png" srcset="https://pic1.zhimg.com/v2-cd38920285d125be80b3eb504052c550_b.webp" alt="448a85e8c2549a94e6f8b1a0a02a6834.png"></p>
+<p>该配置用于指定 Sentinel 要监控的 master，为 master 起了一个名字。同时指定 Sentinel 集群中决定该master“客观下线状态”判断的法定 sentinel 数量&lt;quorum&gt;。&lt;quorum&gt;的另一个用途与sentinel 的 Leader 选举有关。要求中至少要有 max(quorum, sentinelNum&#x2F;2+1)个 sentinel 参与，选举才能进行。</p>
+<p>这里将该配置注释掉，因为要在后面的其它配置文件中设置，如果不注释就会出现配置冲突。</p>
+<ul>
+<li>sentinel auth-pass</li>
+</ul>
+<p>如果 Redis 主从集群中的主机设置了访问密码，那么该属性就需要指定 master 的主机名与访问密码。以方便 sentinel 监控 master。</p>
+<p><img src="https://cdn.jsdelivr.net/gh/lemonpuer/figure@latest/blog-images/20231216171130.png" class="lazyload placeholder" data-srcset="https://cdn.jsdelivr.net/gh/lemonpuer/figure@latest/blog-images/20231216171130.png" srcset="https://pic1.zhimg.com/v2-cd38920285d125be80b3eb504052c550_b.webp" alt="1039dffe4d72a19e948432d51921e2ed.png"></p>
+<ol start="3">
+<li>新建sentinel配置文件</li>
+</ol>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">include sentinel.conf</span><br><span class="line">pidfile /var/run/sentinel_26380.pid</span><br><span class="line">port 26380</span><br><span class="line">sentinel monitor mymaster 192.168.64.100 6380 2</span><br><span class="line"></span><br><span class="line"># logfile access26380.log</span><br></pre></td></tr></table></figure>
+
+<p>另外两个文件类似，不再赘述</p>
+<h4 id="Redis-高可用集群的启动"><a href="#Redis-高可用集群的启动" class="headerlink" title="Redis 高可用集群的启动"></a>Redis 高可用集群的启动</h4><ol>
+<li>启动并关联 Redis 集群</li>
+<li>启动 Sentinel 集群</li>
+</ol>
+<p>在&#x2F;usr&#x2F;local&#x2F;bin 目录下有一个命令 redis-sentinel 用于启动 Sentinel。</p>
+<blockquote>
+<p>redis-sentinel 命令是 redis-server 命令的软链接</p>
+</blockquote>
+<p>方式一：使用 redis-sentinel 命令：redis-sentinel sentinel26380.conf</p>
+<p>方式二，使用 redis-server 命令：redis-server sentinel26380.conf –sentinel</p>
+<ol start="3">
+<li>查看 Sentinel 信息</li>
+</ol>
+<p>运行中的 Sentinel 就是一个特殊 Redis，其也可以通过客户端连接，然后通过 <strong>info sentinel</strong> 来查看当前连接的 Sentinel 的信息。</p>
+<p><img src="https://cdn.jsdelivr.net/gh/lemonpuer/figure@latest/blog-images/20231216171203.png" class="lazyload placeholder" data-srcset="https://cdn.jsdelivr.net/gh/lemonpuer/figure@latest/blog-images/20231216171203.png" srcset="https://pic1.zhimg.com/v2-cd38920285d125be80b3eb504052c550_b.webp" alt="6f5e5ff4cea251afb04c54e2e9cf1678.png"></p>
+<ol start="4">
+<li>查看 sentinel 配置文件</li>
+</ol>
+<p>打开任意 sentinel 的配置文件，发现其配置内容中新增加了很多配置。</p>
+<p><img src="https://cdn.jsdelivr.net/gh/lemonpuer/figure@latest/blog-images/20231216171139.png" class="lazyload placeholder" data-srcset="https://cdn.jsdelivr.net/gh/lemonpuer/figure@latest/blog-images/20231216171139.png" srcset="https://pic1.zhimg.com/v2-cd38920285d125be80b3eb504052c550_b.webp" alt="79ba5bc7f2e91bdc2825553e847b7e57.png"></p>
+<h4 id="Sentinel-优化配置"><a href="#Sentinel-优化配置" class="headerlink" title="Sentinel 优化配置"></a>Sentinel 优化配置</h4><p>在公共的 sentinel.conf 文件中，还可以通过修改一些其它属性的值来达到对 Sentinel 的配置优化。</p>
+<ul>
+<li>sentinel down-after-milliseconds</li>
+</ul>
+<p>每个 Sentinel 会通过定期发送 ping 命令来判断 master、slave 及其它 Sentinel 是否存活。如果 Sentinel 在该属性指定的时间内没有收到它们的响应，那么该 Sentinel 就会主观认为该主机宕机。默认为 30 秒。</p>
+<p><img src="https://cdn.jsdelivr.net/gh/lemonpuer/figure@latest/blog-images/20231216171210.png" class="lazyload placeholder" data-srcset="https://cdn.jsdelivr.net/gh/lemonpuer/figure@latest/blog-images/20231216171210.png" srcset="https://pic1.zhimg.com/v2-cd38920285d125be80b3eb504052c550_b.webp" alt="c157fbd1e2b78afeb8d80ab9cbeee7af.png"></p>
+<ul>
+<li>sentinel parallel-syncs</li>
+</ul>
+<p>该属性用于指定在故障转移期间，即老的 master 出现问题，新的 master 刚晋升后，允许多少个 slave 同时从新 master 进行数据同步。默认值为 1 表示所有 slave 逐个从新 master 进行数据同步。</p>
+<p><img src="https://cdn.jsdelivr.net/gh/lemonpuer/figure@latest/blog-images/20231216171215.png" class="lazyload placeholder" data-srcset="https://cdn.jsdelivr.net/gh/lemonpuer/figure@latest/blog-images/20231216171215.png" srcset="https://pic1.zhimg.com/v2-cd38920285d125be80b3eb504052c550_b.webp" alt="99295bb612b2da7b9606eb5d62932928.png"></p>
+<ul>
+<li>sentinel failover-timeout</li>
+</ul>
+<p>指定故障转移的超时时间，默认时间为 3 分钟。该超时时间的用途：</p>
+<ol>
+<li>第一次故障转移失败，在同一个 master 上进行第二次故障转移尝试的时间为该 failover-timeout 的两倍</li>
+<li>新 master 晋升完毕，slave 从老 master 强制转到新 master 进行数据同步的时间阈值。(当超时了就不会再逐个同步)</li>
+<li>取消正在进行的故障转换所需的时间阈值。</li>
+<li>新 master 晋升完毕，所有 replicas 的配置文件更新为新 master 的时间阈值。</li>
+</ol>
+<p><img src="https://cdn.jsdelivr.net/gh/lemonpuer/figure@latest/blog-images/20231216171223.png" class="lazyload placeholder" data-srcset="https://cdn.jsdelivr.net/gh/lemonpuer/figure@latest/blog-images/20231216171223.png" srcset="https://pic1.zhimg.com/v2-cd38920285d125be80b3eb504052c550_b.webp" alt="0ec15eebd2f7e9f820eb47c0d9ed37a2.png"></p>
+<ul>
+<li>sentinel deny-scripts-reconfig</li>
+</ul>
+<p>指定是否可以通过命令 sentinel set 动态修改 notification-script 与 client-reconfig-script 两个脚本。默认是不能的。这两个脚本如果允许动态修改，可能会引发安全问题。</p>
+<p><img src="https://cdn.jsdelivr.net/gh/lemonpuer/figure@latest/blog-images/20231216171229.png" class="lazyload placeholder" data-srcset="https://cdn.jsdelivr.net/gh/lemonpuer/figure@latest/blog-images/20231216171229.png" srcset="https://pic1.zhimg.com/v2-cd38920285d125be80b3eb504052c550_b.webp" alt="d0c0fe2b05551c095e409d5e1497bbed.png"></p>
+<ul>
+<li>动态修改配置</li>
+</ul>
+<p>通过 redis-cli 连接上 Sentinel 后，通过 sentinel set 命令可动态修改配置信息。</p>
+<p>sentinel set 命令支持的参数：</p>
+<p><img src="https://cdn.jsdelivr.net/gh/lemonpuer/figure@latest/blog-images/20231216171236.png" class="lazyload placeholder" data-srcset="https://cdn.jsdelivr.net/gh/lemonpuer/figure@latest/blog-images/20231216171236.png" srcset="https://pic1.zhimg.com/v2-cd38920285d125be80b3eb504052c550_b.webp" alt="e9e8b6a30d1032c92a0f6cce5297658c.png"></p>
+<h3 id="哨兵机制原理"><a href="#哨兵机制原理" class="headerlink" title="哨兵机制原理"></a>哨兵机制原理</h3><h4 id="三个定时任务"><a href="#三个定时任务" class="headerlink" title="三个定时任务"></a>三个定时任务</h4><p>Sentinel 维护着三个定时任务以监测 Redis 节点及其它 Sentinel 节点的状态。</p>
+<ul>
+<li>info 任务</li>
+</ul>
+<p>每个 Sentinel 节点每 10 秒就会向 Redis 集群中的每个节点发送 info 命令，以获得最新的 Redis 拓扑结构。</p>
+<ul>
+<li>心跳任务</li>
+</ul>
+<p>每个Sentinel节点每1秒就会向所有Redis节点及其它Sentinel节点发送一条ping命令，以检测这些节点的存活状态。该任务是判断节点在线状态的重要依据。</p>
+<ul>
+<li>发布&#x2F;订阅任务</li>
+</ul>
+<p>每个 Sentinel 节点在启动时都会向所有 Redis 节点订阅_ _sentinel_ _:hello 主题的信息， 当 Redis 节点中该主题的信息发生了变化，就会立即通知到所有订阅者。</p>
+<p><img src="https://cdn.jsdelivr.net/gh/lemonpuer/figure@latest/blog-images/20231216171303.png" class="lazyload placeholder" data-srcset="https://cdn.jsdelivr.net/gh/lemonpuer/figure@latest/blog-images/20231216171303.png" srcset="https://pic1.zhimg.com/v2-cd38920285d125be80b3eb504052c550_b.webp" alt="12ccf46201ea219f46bb7efe243bb972.png"></p>
+<p>Sentinel 节点每 2 秒就会向每个 Redis 节点发布一条_ _sentinel_ _:hello 主题的信息，该信息是当前 Sentinel 对每个 Redis 节点在线状态的判断结果及当前 Sentinel 节点信息。</p>
+<p>当 Sentinel 节点接收到_ _sentinel_ _:hello 主题信息后，就会读取并解析这些信息，然后主要完成以下三项工作：</p>
+<ol>
+<li>如果发现有新的 Sentinel 节点加入，则记录下新加入 Sentinel 节点信息，并与其建立连接。</li>
+<li>如果发现有 Sentinel Leader 选举的选票信息，则执行 Leader 选举过程。</li>
+<li>汇总其它 Sentinel 节点对当前 Redis 节点在线状态的判断结果，作为 Redis 节点客观下线的判断依据。</li>
+</ol>
+<h4 id="Redis-节点下线判断"><a href="#Redis-节点下线判断" class="headerlink" title="Redis 节点下线判断"></a>Redis 节点下线判断</h4><ul>
+<li>主观下线</li>
+</ul>
+<p>每个 Sentinel 节点每秒会向每个 Redis 节点发送 ping 心跳检测，如果 Sentinel 在 down-after-milliseconds 时间内没有收到某 Redis 节点的回复，则 Sentinel 节点就会对该 Redis 节点做出“下线状态”的判断</p>
+<ul>
+<li>客观下线</li>
+</ul>
+<p>当 Sentinel 主观下线的节点是 master 时，该 Sentinel 节点会向每个其它 Sentinel 节点发送 sentinel is-master-down-by-addr 命令，以询问其对 master 在线状态的判断结果。这些 Sentinel 节点在收到命令后会向这个发问 Sentinel 节点响应 0（在线）或 1（下线）。当 Sentinel 收到超过 quorum 个下线判断后，就会对 master 做出客观下线判断。</p>
+<h4 id="Sentinel-Leader-选举"><a href="#Sentinel-Leader-选举" class="headerlink" title="Sentinel Leader 选举"></a>Sentinel Leader 选举</h4><p>当 Sentinel 节点对 master 做出客观下线判断后会由 Sentinel Leader 来完成后续的故障转移。Sentinel 集群的 Leader 选举是通过 Raft 算法实现的。</p>
+<p>大致思路：</p>
+<p>每个选举参与者都具有当选 Leader 的资格，当其完成了“客观下线”判断后，就会立即推选自己做 Leader，然后将自己的提案发送给所有参与者。其它参与者在收到提案后，只要自己手中的选票没有投出去，其就会立即通过该提案并将同意结果反馈给提案者，后续再过来的提案会由于该参与者没有了选票而被拒绝。当提案者收到了同意反馈数量大于等于 max(quorum，sentinelNum&#x2F;2+1)时，该提案者当选 Leader。</p>
+<p>说明：Sentinel Leader 选举会在次故障转移发生之前进行。在网络没有问题的前提下，谁先做出了“客观下线”的判断，谁就更容易当选Leader。故障转移结束后 Leader 就不再存在。</p>
+<h4 id="master-选择算法"><a href="#master-选择算法" class="headerlink" title="master 选择算法"></a>master 选择算法</h4><p>在进行故障转移时，Sentinel Leader 需要从所有 Redis 的 Slave 节点中选择出新的 Master。</p>
+<ol>
+<li>过滤掉所有主观下线的，或心跳没有响应 Sentinel 的，或 replica-priority 值为 0 的 Redis 节点</li>
+<li>在剩余 Redis 节点中选择出 replica-priority 最小的的节点列表。如果只有一个节点，则直接返回</li>
+<li>从优先级相同的节点列表中选择复制偏移量最大的节点。如果只有一个节点，则直接返回</li>
+<li>从复制偏移值量相同的节点列表中选择动态 ID 最小的节点返回</li>
+</ol>
+<h4 id="故障转移过程"><a href="#故障转移过程" class="headerlink" title="故障转移过程"></a>故障转移过程</h4><p>Sentinel Leader 负责整个故障转移过程：</p>
+<ol>
+<li>根据 master 选择算法选择出一个 slave 节点作为新的 master</li>
+<li>向新 master 节点发送 slaveof no one 指令，使其晋升为 master</li>
+<li>向新 master 发送 info replication 指令，获取到 master 的动态 ID</li>
+<li>向其余 Redis 节点发送消息，以告知它们新 master 的动态 ID</li>
+<li>向其余 Redis 节点发送 slaveof 指令，使它们成为新 master 的 slave</li>
+<li>从所有 slave 节点中每次选择出 parallel-syncs 个 slave 从新 master 同步数 据，直至所有 slave 全部同步完毕</li>
+<li>故障转移完毕</li>
+</ol>
+<h4 id="节点上线"><a href="#节点上线" class="headerlink" title="节点上线"></a>节点上线</h4><ul>
+<li>原 Redis 节点上线</li>
+</ul>
+<p>只要是原 Redis 集群中的节点上线，只需启动 Redis 即可。因为每个 Sentinel 中都保存有原来其监控的所有 Redis 节点列表， Sentinel 会定时查看这些 Redis 节点是否恢复。如果查看到其已经恢复，则会命其从当前 master 进行数据同步。如果是原 master 上线，在新 master 晋升后 Sentinel Leader 会立即先将原 master 节点更新为 slave，然后才会定时查看其是否恢复。</p>
+<ul>
+<li>新 Redis 节点上线</li>
+</ul>
+<p>如果需要在 Redis 集群中添加一个新的节点，则上线操作只能手工完成。即添加者在添加之前必须知道当前 master 是谁，然后在新节点启动后运行 slaveof 命令加入集群。</p>
+<ul>
+<li>Sentinel 节点上线</li>
+</ul>
+<p>添加 Sentinel 节点需要手工完成。即在添加之前必须知道当前 master 是谁，然后在配置文件中修改 sentinel monitor 属性，指定要监控的 master。</p>
+<h2 id="CAP定理"><a href="#CAP定理" class="headerlink" title="CAP定理"></a>CAP定理</h2><p>CAP 定理的内容是：对于分布式系统，网络环境相对是不可控的，出现网络分区是不可避免的，因此系统必须具备分区容错性。但系统不能同时保证一致性与可用性。即要么 CP，要么 AP。</p>
+<ul>
+<li>一致性（C）：</li>
+</ul>
+<p>分布式系统中多个主机之间是否能够保持数据一致的特性。即，当系统数 据发生更新操作后，各个主机中的数据仍然处于一致的状态。</p>
+<ul>
+<li>可用性（A）：</li>
+</ul>
+<p>系统提供的服务必须一直处于可用的状态，即对于用户的每一个请求，系统总是可以在有限的时间内对用户做出响应。</p>
+<ul>
+<li>分区容错性（P）：</li>
+</ul>
+<p>分布式系统在遇到任何网络分区故障时，仍能够保证对外提供满足一致性和可用性的服务。</p>
+<blockquote>
+<p>分布式系统中，节点之间必然会有不同，比如网络、服务器等等，所以在分布式系统中分区容错性必然存在</p>
+</blockquote>
+<h3 id="BASE-理论"><a href="#BASE-理论" class="headerlink" title="BASE 理论"></a>BASE 理论</h3><p>BASE 是 Basically Available（基本可用）、Soft state（软状态）和 Eventually consistent（最终一致性）三个短语的简写，BASE 是对 CAP 中一致性和可用性权衡的结果</p>
+<p>BASE 理论的核心思想是：即使无法做到强一致性，但每个系统都可以根据自身的业务特点，采用适当的方式来使系统达到最终一致性。</p>
+<ul>
+<li>基本可用</li>
+</ul>
+<p>基本可用是指分布式系统在出现不可预知故障的时候，允许损失部分可用性。</p>
+<ul>
+<li>软状态</li>
+</ul>
+<p>软状态，是指允许系统数据存在的中间状态，并认为该中间状态的存在不会影响系统的整体可用性，即允许系统主机间进行数据同步的过程存在一定延时。</p>
+<ul>
+<li>最终一致性</li>
+</ul>
+<p>最终一致性强调的是系统中所有的数据副本，在经过一段时间的同步后，最终能够达到一个一致的状态。</p>
+<p>CAP 应用：</p>
+<ol>
+<li>Zookeeper</li>
+</ol>
+<p>Zookeeper 遵循的是 CP 模式，当 Leader 节点中的数据发生了变化后，在 Follower 还没有同步完成之前，整个 Zookeeper集群是不对外提供服务的。</p>
+<ol start="2">
+<li>Consul</li>
+</ol>
+<p>Consul 遵循的是 CP 模式</p>
+<ol start="3">
+<li>Redis</li>
+</ol>
+<p>Redis 遵循的是 AP 模式</p>
+<ol start="4">
+<li>Eureka</li>
+</ol>
+<p>Eureka 遵循的是 AP 模式</p>
+<ol start="5">
+<li>Nacos</li>
+</ol>
+<p>Nacos 在做注册中心时，默认是 AP 的。但其也支持 CP 模式，但需要用户提交请求进行转换。</p>
+<h2 id="Raft-算法"><a href="#Raft-算法" class="headerlink" title="Raft 算法"></a>Raft 算法</h2><p>Raft 算法是一种通过对日志复制管理来达到集群节点一致性的算法。这个日志复制管理发生在集群节点中的 Leader 与 Followers 之间。Raft 通过选举出的 Leader 节点负责管理日志复制过程，以实现各个节点间数据的一致性。</p>
+<p>在 Raft 中，节点有三种角色：</p>
+<ul>
+<li>Leader：唯一负责处理客户端写请求的节点；同时负责日志复制工作</li>
+<li>Candidate：Leader 选举的候选人，其可能会成为 Leader。是一个选举中的过程角色</li>
+<li>Follower：可以处理客户端读请求；负责同步来自于 Leader 的日志；当接收到其它 Cadidate 的投票请求后可以进行投票；当发现 Leader 挂了，其会转变为 Candidate 发起 Leader 选举</li>
+</ul>
+<h3 id="leader-选举"><a href="#leader-选举" class="headerlink" title="leader 选举"></a>leader 选举</h3><ol>
+<li>选举</li>
+</ol>
+<p>若 follower 在心跳超时范围内没有接收到来自于 leader 的心跳，则认为 leader 挂了。此时其首先本地 term 增一。然后 follower 会完成以下步骤：</p>
+<ul>
+<li>若接收到了其它 candidate 的投票请求，则会将选票投出</li>
+<li>由 follower 转变为 candidate</li>
+<li>若之前尚未投票，则向自己投一票</li>
+<li>向其它节点发出投票请求，然后等待响应</li>
+</ul>
+<ol start="2">
+<li>投票</li>
+</ol>
+<p>follower 在接收到投票请求后，其会根据以下情况来判断是否投票：</p>
+<ul>
+<li>发来投票请求的 candidate 的 term 不能小于我的 term</li>
+<li>在当前 term 内，我的选票还没有投出去</li>
+<li>若接收到多个 candidate 的请求，采取 first-come-first-served 方式投票</li>
+</ul>
+<ol start="3">
+<li>等待响应</li>
+</ol>
+<p>当一个 Candidate 发出投票请求后会等待其它节点的响应结果。</p>
+<ul>
+<li>收到过半选票，成为新的 leader。然后会将消息广播给所有其它节点，消息中包含 term 值</li>
+<li>接收到别的 candidate 发来的新 leader 通知，比较新 leader 的 term 并不比自己的 term 小，则转变为 follower</li>
+<li>一段时间内没有收到过半选票，也没有收到新 leader 通知，则重新发出选举</li>
+</ul>
+<ol start="4">
+<li>选举时机</li>
+</ol>
+<p>可能会出现较多 candidate 票数相同的情况，即无法选举出 Leader。</p>
+<p>为了防止这种情况的发生，Raft 算法采用了 randomized election timeouts 策略。其会为这些 Follower 随机分配一个选举发起时间 election timeout，这个 timeout 在 150-300ms 范围内。只有到达了 election timeout 时间的 Follower 才能转变为 candidate， 否则等待。</p>
+<h3 id="数据同步"><a href="#数据同步" class="headerlink" title="数据同步"></a>数据同步</h3><p>正常运行期间， Leader 通过日志复制管理实现集群中各节点数据的同步。</p>
+<p>Raft 算法一致性的实现，是基于日志复制状态机的。状态机的最大特征是，不同 Server 中的状态机若当前状态相同，然后接受了相同的输入，则一定会得到相同的输出。</p>
+<h4 id="处理流程"><a href="#处理流程" class="headerlink" title="处理流程"></a>处理流程</h4><p>当 leader 接收到 client 的写操作请求后，大体会经历以下流程：</p>
+<ul>
+<li>leader 在接收到 client 的写操作请求后，leader 会将数据与 term 封装为一个 box，并随着下一次心跳发送给所有 followers，以征求大家对该 box 的意见。同时在本地将数据封 装为日志</li>
+<li>follower 在接收到来自 leader 的 box 后首先会比较该 box 的 term 与本地记录的曾接受过的 box 的最大 term，只要不比自己的小就接受该 box，并向 leader 回复同意。同时会将 该 box 中的数据封装为日志。</li>
+<li>当 leader 接收到过半同意响应后，会将日志 commit 到自己的状态机，状态机会输出一个结果，同时日志状态变为了 committed</li>
+<li>同时 leader 还会通知所有 follower 将日志 commit 到它们本地的状态机，日志状态变为了 committed</li>
+<li>在 commit 通知发出的同时，leader 也会向 client 发出成功处理的响应</li>
+</ul>
+<h3 id="脑裂"><a href="#脑裂" class="headerlink" title="脑裂"></a>脑裂</h3><p>在多机房部署中，由于网络连接问题，很容易形成多个分区。而多分区的形成，很容易产生脑裂，从而导致数据不一致。</p>
+<p>三机房部署的容灾能力最强，下面以三机房部署为例进行分析</p>
+<p>1. </p>
+<img src="https://cdn.jsdelivr.net/gh/lemonpuer/figure@latest/blog-images/247a6c5585c613f749024b58fefa4d3d.png" class="lazyload placeholder" data-srcset="https://cdn.jsdelivr.net/gh/lemonpuer/figure@latest/blog-images/247a6c5585c613f749024b58fefa4d3d.png" srcset="https://pic1.zhimg.com/v2-cd38920285d125be80b3eb504052c550_b.webp" alt="247a6c5585c613f749024b58fefa4d3d.png" >
+
+<p>B 机房中的主机感知不到 Leader 的存在，所以 B 机房中的主机会发起新一轮的 Leader 选举。由于 B 机房与 C 机房是相连的，虽然 C 机房中的 Follower 能够感 知到 A 机房中的 Leader，但由于其接收到了更大 term 的投票请求，所以 C 机房的 Follower 也就放弃了 A 机房中的 Leader，参与了新 Leader 的选举。</p>
+<p>若新 Leader 出现在 B 机房，A 机房感知不到新 Leader 的诞生，不会转为follower，形成脑裂。此时 A 机房 Leader 处理的写操作请求无法获取到过半响应，所以无法完成写操作。若新 Leader 出现在 C 机房，A 机房中的 Leader 会自动下线。</p>
+<p>2. </p>
+<img src="https://cdn.jsdelivr.net/gh/lemonpuer/figure@latest/blog-images/d631f10ecca6818b6c4282c620f39108.png" class="lazyload placeholder" data-srcset="https://cdn.jsdelivr.net/gh/lemonpuer/figure@latest/blog-images/d631f10ecca6818b6c4282c620f39108.png" srcset="https://pic1.zhimg.com/v2-cd38920285d125be80b3eb504052c550_b.webp" alt="d631f10ecca6818b6c4282c620f39108.png" >
+
+<p>不会形成脑裂</p>
+<p>3. </p>
+<img src="https://cdn.jsdelivr.net/gh/lemonpuer/figure@latest/blog-images/197ceb97649f1a83a21a9a55162d5efb.png" class="lazyload placeholder" data-srcset="https://cdn.jsdelivr.net/gh/lemonpuer/figure@latest/blog-images/197ceb97649f1a83a21a9a55162d5efb.png" srcset="https://pic1.zhimg.com/v2-cd38920285d125be80b3eb504052c550_b.webp" alt="197ceb97649f1a83a21a9a55162d5efb.png" >
+
+<p>B 无法选举出新的 Leader，无法提供任何服务</p>
+<p>4. </p>
+<p><img src="https://cdn.jsdelivr.net/gh/lemonpuer/figure@latest/blog-images/df2452663c93db94c26df3f274a2ee1d.png" class="lazyload placeholder" data-srcset="https://cdn.jsdelivr.net/gh/lemonpuer/figure@latest/blog-images/df2452663c93db94c26df3f274a2ee1d.png" srcset="https://pic1.zhimg.com/v2-cd38920285d125be80b3eb504052c550_b.webp" alt="df2452663c93db94c26df3f274a2ee1d.png"></p>
+<p>对于集群的运作不产生影响</p>
+<ol start="5">
+<li>A、B、C 全部断开</li>
+</ol>
+<p>A 机房无法处理写操作请求，但可以对外提供读服务。B、C 无法提供服务</p>
+<h3 id="Leader-宕机处理"><a href="#Leader-宕机处理" class="headerlink" title="Leader 宕机处理"></a>Leader 宕机处理</h3><ol>
+<li>请求到达前宕机</li>
+</ol>
+<p>对集群数据的一致性没有任何影响。</p>
+<ol start="2">
+<li>未开始同步数据前宕机</li>
+</ol>
+<p>接受到的数据丢失</p>
+<ol start="3">
+<li>同步完部分后宕机</li>
+</ol>
+<p>client 发送写操作请求给 Leader，Leader 接收完数据后向所有 Follower 发送数据。在部分 Follower 接收到数据后 Leader 挂了。</p>
+<ul>
+<li>若 Leader 产生于已完成数据接收的 Follower，其会继续将前面接收到的写操作请求转换为日志，并写入到本地状态机，并向所有 Flollower 发出询问。在获取过半同意响应后会向所有 Followers 发送 commit 指令，同时向 client 进行响应。</li>
+<li>若 Leader 产生于尚未完成数据接收的 Follower，那么原来已完成接收的 Follower 则会放弃曾接收到的数据。</li>
+</ul>
+
+      </div>
+      <div class="post-tags-categories">
+        
+        <div class="tags">
+          
+            <a href="/tags/Redis/" class="">
+              Redis
+            </a>
+          
+        </div>
+        
+      </div>
+      
+    </article>
+    <!-- 上一篇文章和下一篇文章 -->
+    
+      <!-- 文章详情页的上一页和下一页 -->
+<div class="post-nav">
+
+
+
+  
+  <div class="post-nav-prev post-nav-item">
+    <div class="post-nav-img" style="background-size: cover; 
+      background-position: center center;">
+      <img class="lazyload lazyload placeholder" src="https://images.wallpaperscraft.com/image/single/fern_plant_leaves_108470_1920x1080.jpg" class="lazyload placeholder" data-srcset="https://images.wallpaperscraft.com/image/single/fern_plant_leaves_108470_1920x1080.jpg" srcset="https://pic1.zhimg.com/v2-cd38920285d125be80b3eb504052c550_b.webp" alt="">
+    </div>
+    <a href="/2023/12/18/zhong-jian-jian/redis/5.fen-bu-shi-xi-tong-yu-huan-cun/" class="post-nav-link">
+      <div class="title">
+        <i class="fas fa-angle-left"></i> 上一篇:
+        <div class="title-text">Redis系列第五章</div>
+      </div>
+      
+      <!-- <div class="content">
+        Redis 分布式系统Redis 分布式系统，官方称为 Redis Cluster，Redis 集群，其是 Redis 
+      </div> -->
+    </a>
+  </div>
+
+
+
+  
+  <div class="post-nav-next post-nav-item">
+    <div class="post-nav-img" style="background-size: cover; 
+      background-position: center center;">
+      <img class="lazyload lazyload placeholder" src="https://images.wallpaperscraft.com/image/single/fern_plant_leaves_108470_1920x1080.jpg" class="lazyload placeholder" data-srcset="https://images.wallpaperscraft.com/image/single/fern_plant_leaves_108470_1920x1080.jpg" srcset="https://pic1.zhimg.com/v2-cd38920285d125be80b3eb504052c550_b.webp" src="" alt="">
+    </div>
+    <a href="/2023/12/16/zhong-jian-jian/redis/3.redis-chi-jiu-hua/" class="post-nav-link">
+      <div class="title">
+        下一篇: <i class="fas fa-angle-right"></i>
+        <div class="title-text">Redis系列第三章</div>
+      </div>
+      <!-- <div class="content">
+        Redis 持久化Redis 具有持久化功能，其会按照设置以快照或操作日志的形式将数据持久化到磁盘。根据持久化使用技术的
+      </div> -->
+    </a>
+  </div>
+
+</div>
+
+    
+    
+
+    <!-- 打赏 -->
+    
+
+    <!-- 分享 -->
+    
+      <!-- https://github.com/overtrue/share.js -->
+<!-- 文章详情页的分享 -->
+<div class="social-share" data-sites="twitter,facebook,google,qq,qzone,wechat,weibo,douban,linkedin" data-wechat-qrcode-helper="<p>微信扫一扫即可分享！</p>"></div>
+
+<script src="/js/shareJs/social-share.min.js"></script>
+</script>
+
+<style>
+  .social-share {
+    margin: 20px 0;
+  }
+</style>
+
+
+    
+    
+    <!-- 评论 -->
+    <!-- 评论 -->
+
+  <div id="myComment">
+    
+      <div id="gitment-container"></div>
+
+    
+  </div>
+
+<!-- comment script in themes\hexo-theme-bamboo\layout\_partial\scripts\index.ejs -->
+
+
+  </div>
+
+  <!-- 目录 -->
+  <aside id='l_side'>
+  
+    
+      <section class="widget side_blogger">
+  <div class='content'>
+    
+      
+        <a class='avatar flat-box rectangle' href='/about/'>
+          <img src='https://i.postimg.cc/yNJTSNTj/image.jpg'/>
+        </a>
+      
+    
+    
+      <div class='text'>
+        
+          <h2>LemonPuer</h2>
+        
+        
+          <p>个人博客</p>
+
+        
+        
+          <p><span id="jinrishici-sentence">Lemon</span></p>
+          <script src="https://sdk.jinrishici.com/v2/browser/jinrishici.js" charset="utf-8"></script>
+        
+      </div>
+    
+    
+      <div class="social-wrapper">
+        
+          
+            <a href="https://api.dzzui.com/api/ip"
+              class="social fa fa-wifi flat-btn"
+              target="_blank"
+              rel="external nofollow noopener noreferrer">
+              
+            </a>
+          
+        
+          
+            <a href="mailto:1695812011@qq.com"
+              class="social fas fa-envelope flat-btn"
+              target="_blank"
+              rel="external nofollow noopener noreferrer">
+              
+            </a>
+          
+        
+          
+            <a href="https://github.com/LemonPuer"
+              class="social fab fa-github flat-btn"
+              target="_blank"
+              rel="external nofollow noopener noreferrer">
+              
+            </a>
+          
+        
+          
+            <a href="tencent://AddContact/?fromId=50&amp;fromSubId=1&amp;subcmd=all&amp;uin=1695812011"
+              class="social fab fa-qq flat-btn"
+              target="_blank"
+              rel="external nofollow noopener noreferrer">
+              
+            </a>
+          
+        
+      </div>
+    
+  </div>
+</section>
+
+    
+  
+  
+  
+    
+  
+
+  <div class="layout_sticky">    
+    
+      
+<section class="widget side_toc">
+  
+  <header>
+    
+      <i style="color: " class="fas fa-list fa-fw" aria-hidden="true"></i><span class='name' style="color: ">本文目录</span>
+    
+  </header>
+
+
+  <div class='content'>
+    <div class="toc-main">
+      <div class="toc-content">
+        <!-- <ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#Redis-%E4%B8%BB%E4%BB%8E%E9%9B%86%E7%BE%A4"><span class="toc-text">Redis 主从集群</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E4%B8%BB%E4%BB%8E%E9%9B%86%E7%BE%A4%E6%90%AD%E5%BB%BA"><span class="toc-text">主从集群搭建</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E4%BC%AA%E9%9B%86%E7%BE%A4%E6%90%AD%E5%BB%BA%E4%B8%8E%E9%85%8D%E7%BD%AE"><span class="toc-text">伪集群搭建与配置</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#%E8%AE%BE%E7%BD%AE%E4%B8%BB%E4%BB%8E%E5%85%B3%E7%B3%BB%EF%BC%9A"><span class="toc-text">设置主从关系：</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%E6%9F%A5%E7%9C%8B%E7%8A%B6%E6%80%81%E4%BF%A1%E6%81%AF%EF%BC%9A"><span class="toc-text">查看状态信息：</span></a></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%88%86%E7%BA%A7%E7%AE%A1%E7%90%86"><span class="toc-text">分级管理</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%AE%B9%E7%81%BE%E5%86%B7%E5%A4%84%E7%90%86"><span class="toc-text">容灾冷处理</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E4%B8%BB%E4%BB%8E%E5%A4%8D%E5%88%B6%E5%8E%9F%E7%90%86"><span class="toc-text">主从复制原理</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E4%B8%BB%E4%BB%8E%E5%A4%8D%E5%88%B6%E8%BF%87%E7%A8%8B"><span class="toc-text">主从复制过程</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E6%95%B0%E6%8D%AE%E5%90%8C%E6%AD%A5%E6%BC%94%E5%8F%98%E8%BF%87%E7%A8%8B"><span class="toc-text">数据同步演变过程</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#sync-%E5%90%8C%E6%AD%A5"><span class="toc-text">sync 同步</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#psync-%E5%90%8C%E6%AD%A5"><span class="toc-text">psync 同步</span></a><ol class="toc-child"><li class="toc-item toc-level-5"><a class="toc-link" href="#psync-%E5%90%8C%E6%AD%A5%E8%BF%87%E7%A8%8B"><span class="toc-text">psync 同步过程</span></a></li><li class="toc-item toc-level-5"><a class="toc-link" href="#psync-%E5%AD%98%E5%9C%A8%E7%9A%84%E9%97%AE%E9%A2%98"><span class="toc-text">psync 存在的问题</span></a></li><li class="toc-item toc-level-5"><a class="toc-link" href="#psync-%E5%90%8C%E6%AD%A5%E7%9A%84%E6%94%B9%E8%BF%9B"><span class="toc-text">psync 同步的改进</span></a><ol class="toc-child"><li class="toc-item toc-level-6"><a class="toc-link" href="#%E6%97%A0%E7%9B%98%E6%93%8D%E4%BD%9C"><span class="toc-text">无盘操作</span></a></li><li class="toc-item toc-level-6"><a class="toc-link" href="#%E5%85%B1%E4%BA%AB%E5%A4%8D%E5%88%B6%E7%A7%AF%E5%8E%8B%E7%BC%93%E5%86%B2%E5%8C%BA"><span class="toc-text">共享复制积压缓冲区</span></a></li></ol></li></ol></li></ol></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%93%A8%E5%85%B5%E6%9C%BA%E5%88%B6"><span class="toc-text">哨兵机制</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%93%A8%E5%85%B5%E6%9C%BA%E5%88%B6%E5%AE%9E%E7%8E%B0"><span class="toc-text">哨兵机制实现</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#Redis-%E9%AB%98%E5%8F%AF%E7%94%A8%E9%9B%86%E7%BE%A4%E7%9A%84%E5%90%AF%E5%8A%A8"><span class="toc-text">Redis 高可用集群的启动</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#Sentinel-%E4%BC%98%E5%8C%96%E9%85%8D%E7%BD%AE"><span class="toc-text">Sentinel 优化配置</span></a></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%93%A8%E5%85%B5%E6%9C%BA%E5%88%B6%E5%8E%9F%E7%90%86"><span class="toc-text">哨兵机制原理</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#%E4%B8%89%E4%B8%AA%E5%AE%9A%E6%97%B6%E4%BB%BB%E5%8A%A1"><span class="toc-text">三个定时任务</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#Redis-%E8%8A%82%E7%82%B9%E4%B8%8B%E7%BA%BF%E5%88%A4%E6%96%AD"><span class="toc-text">Redis 节点下线判断</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#Sentinel-Leader-%E9%80%89%E4%B8%BE"><span class="toc-text">Sentinel Leader 选举</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#master-%E9%80%89%E6%8B%A9%E7%AE%97%E6%B3%95"><span class="toc-text">master 选择算法</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%E6%95%85%E9%9A%9C%E8%BD%AC%E7%A7%BB%E8%BF%87%E7%A8%8B"><span class="toc-text">故障转移过程</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%E8%8A%82%E7%82%B9%E4%B8%8A%E7%BA%BF"><span class="toc-text">节点上线</span></a></li></ol></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#CAP%E5%AE%9A%E7%90%86"><span class="toc-text">CAP定理</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#BASE-%E7%90%86%E8%AE%BA"><span class="toc-text">BASE 理论</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Raft-%E7%AE%97%E6%B3%95"><span class="toc-text">Raft 算法</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#leader-%E9%80%89%E4%B8%BE"><span class="toc-text">leader 选举</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E6%95%B0%E6%8D%AE%E5%90%8C%E6%AD%A5"><span class="toc-text">数据同步</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#%E5%A4%84%E7%90%86%E6%B5%81%E7%A8%8B"><span class="toc-text">处理流程</span></a></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E8%84%91%E8%A3%82"><span class="toc-text">脑裂</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Leader-%E5%AE%95%E6%9C%BA%E5%A4%84%E7%90%86"><span class="toc-text">Leader 宕机处理</span></a></li></ol></li></ol></li></ol> -->
+        <div class="toc"></div>
+      </div>
+    </div>
+  </div>
+</section>
+<!-- 手机端目录按钮 -->
+<div id="toc-mobile-btn">
+  <i class="fas fa-list-ul" aria-hidden="true"></i>
+</div>
+
+      
+  <section class="widget side_recent_post">
+    
+  <header>
+    
+      <a style="color: " href='/tags/'><i class="fas fa-book fa-fw" aria-hidden="true"></i><span class='name'>最新文章</span></a>
+    
+  </header>
+
+
+    <div class='content'>
+      
+      <!-- hash算法 -->
+      
+      <div class="aside-list">
+        
+          <div class="aside-list-item">
+            
+            
+            
+
+            <div class="post-img-box">
+              <a href="/2024/04/04/kuang-jia/5.springboot-2/" class="post-img " style="background-size: cover; 
+                background-position: center center;">
+                <img class="lazyload lazyload placeholder" style="width:100%;height:100%;object-fit:cover;" data-src="https://images.wallpaperscraft.com/image/single/child_river_dreams_127495_1920x1080.jpg" class="lazyload placeholder" data-srcset="https://images.wallpaperscraft.com/image/single/child_river_dreams_127495_1920x1080.jpg" srcset="https://pic1.zhimg.com/v2-cd38920285d125be80b3eb504052c550_b.webp" alt="">
+              </a>
+            </div>
+            <div class="post-date-title">
+              <div>
+                
+                  <span class="post-date">04-04</span>
+                
+              </div>
+              <a class="post-title" href="/2024/04/04/kuang-jia/5.springboot-2/">SpringBoot-2</a>
+            </div>
+          </div>
+        
+          <div class="aside-list-item">
+            
+            
+            
+
+            <div class="post-img-box">
+              <a href="/2024/04/04/kuang-jia/5.springboot-1/" class="post-img " style="background-size: cover; 
+                background-position: center center;">
+                <img class="lazyload lazyload placeholder" style="width:100%;height:100%;object-fit:cover;" data-src="https://images.wallpaperscraft.com/image/single/child_river_dreams_127495_1920x1080.jpg" class="lazyload placeholder" data-srcset="https://images.wallpaperscraft.com/image/single/child_river_dreams_127495_1920x1080.jpg" srcset="https://pic1.zhimg.com/v2-cd38920285d125be80b3eb504052c550_b.webp" alt="">
+              </a>
+            </div>
+            <div class="post-date-title">
+              <div>
+                
+                  <span class="post-date">04-04</span>
+                
+              </div>
+              <a class="post-title" href="/2024/04/04/kuang-jia/5.springboot-1/">SpringBoot-1</a>
+            </div>
+          </div>
+        
+          <div class="aside-list-item">
+            
+            
+            
+
+            <div class="post-img-box">
+              <a href="/2024/03/03/kuang-jia/10.cloud-alibaba/" class="post-img " style="background-size: cover; 
+                background-position: center center;">
+                <img class="lazyload lazyload placeholder" style="width:100%;height:100%;object-fit:cover;" data-src="https://images.wallpaperscraft.com/image/single/landscape_art_road_127350_1920x1080.jpg" class="lazyload placeholder" data-srcset="https://images.wallpaperscraft.com/image/single/landscape_art_road_127350_1920x1080.jpg" srcset="https://pic1.zhimg.com/v2-cd38920285d125be80b3eb504052c550_b.webp" alt="">
+              </a>
+            </div>
+            <div class="post-date-title">
+              <div>
+                
+                  <span class="post-date">03-03</span>
+                
+              </div>
+              <a class="post-title" href="/2024/03/03/kuang-jia/10.cloud-alibaba/">Spring Cloud Alibaba</a>
+            </div>
+          </div>
+        
+          <div class="aside-list-item">
+            
+            
+            
+
+            <div class="post-img-box">
+              <a href="/2024/01/13/zhong-jian-jian/5.docker/" class="post-img " style="background-size: cover; 
+                background-position: center center;">
+                <img class="lazyload lazyload placeholder" style="width:100%;height:100%;object-fit:cover;" data-src="https://images.wallpaperscraft.com/image/single/deer_winter_night_129602_1920x1080.jpg" class="lazyload placeholder" data-srcset="https://images.wallpaperscraft.com/image/single/deer_winter_night_129602_1920x1080.jpg" srcset="https://pic1.zhimg.com/v2-cd38920285d125be80b3eb504052c550_b.webp" alt="">
+              </a>
+            </div>
+            <div class="post-date-title">
+              <div>
+                
+                  <span class="post-date">01-13</span>
+                
+              </div>
+              <a class="post-title" href="/2024/01/13/zhong-jian-jian/5.docker/">Docker</a>
+            </div>
+          </div>
+        
+          <div class="aside-list-item">
+            
+            
+            
+
+            <div class="post-img-box">
+              <a href="/2024/01/01/zhong-jian-jian/4.kafka/" class="post-img " style="background-size: cover; 
+                background-position: center center;">
+                <img class="lazyload lazyload placeholder" style="width:100%;height:100%;object-fit:cover;" data-src="https://images.wallpaperscraft.com/image/single/plane_sky_art_129149_1920x1080.jpg" class="lazyload placeholder" data-srcset="https://images.wallpaperscraft.com/image/single/plane_sky_art_129149_1920x1080.jpg" srcset="https://pic1.zhimg.com/v2-cd38920285d125be80b3eb504052c550_b.webp" alt="">
+              </a>
+            </div>
+            <div class="post-date-title">
+              <div>
+                
+                  <span class="post-date">01-01</span>
+                
+              </div>
+              <a class="post-title" href="/2024/01/01/zhong-jian-jian/4.kafka/">Kafka</a>
+            </div>
+          </div>
+        
+      </div>
+    </div>
+  </section>
+
+    
+  </div>
+</aside>
+
+  <!-- 图片放大 Wrap images with fancybox support -->
+  <script src="/js/wrapImage.js"></script>
+</div>
+
+<!-- 文章详情页背景图 -->
+<div id="appBgSwiper" style="position: fixed;left: 0;top: 0;width: 100%;height: 100%;z-index: -2;"
+	:style="{'background-color': bgColor ? bgColor : 'transparent'}">
+	<transition-group tag="ul" :name="names">
+		<li v-for='(image,index) in img' :key='index' v-show="index === mark" class="bg-swiper-box">
+			<img :src="image" class="bg-swiper-img no-lazy">
+		</li>
+	</transition-group>
+</div>
+<script>
+	var vm = new Vue({
+		el: '#appBgSwiper',
+		data: {
+			names: '' || 'fade' || 'fade', // translate-fade fade
+			mark: 0,
+			img: [],
+			bgColor: '',
+			time: null
+		},
+		methods: {   //添加方法
+			change(i, m) {
+				if (i > m) {
+					// this.names = 'fade';
+				} else if (i < m) {
+					// this.names = 'fade';
+				} else {
+					return;
+				}
+				this.mark = i;
+			},
+			prev() {
+				// this.names = 'fade';
+				this.mark--;
+				if (this.mark === -1) {
+					this.mark = 3;
+					return
+				}
+			},
+			next() {
+				// this.names = 'fade';
+				this.mark++;
+				if (this.mark === this.img.length) {
+					this.mark = 0;
+					return
+				}
+			},
+			autoPlay() {
+				// this.names = 'fade';
+				this.mark++;
+				if (this.mark === this.img.length) {
+					this.mark = 0;
+					return
+				}
+			},
+			play() {
+				let bgImgDelay = '' || '180000'
+				let delay = parseInt(bgImgDelay) || 180000;
+				this.time = setInterval(this.autoPlay, delay);
+			},
+			enter() {
+				clearInterval(this.time);
+			},
+			leave() {
+				this.play();
+			}
+		},
+		created() {
+			this.play()
+		},
+		beforeDestroy() {
+			clearInterval(this.time);
+		},
+		mounted() {
+			let prop = '' || 'rgba(160,238,225,0.3)';
+			let isImg = prop.includes('.bmp') || prop.includes('.jpg') || prop.includes('.png') || prop.includes('.tif') || prop.includes('.gif') || prop.includes('.pcx') || prop.includes('.tga') || prop.includes('.exif') || prop.includes('.fpx') || prop.includes('.psd') || prop.includes('.cdr') || prop.includes('.pcd') || prop.includes('.dxf') || prop.includes('.ufo') || prop.includes('.eps') || prop.includes('.ai') || prop.includes('.raw') || prop.includes('.WMF') || prop.includes('.webp') || prop.includes('.jpeg') || prop.includes('http://') || prop.includes('https://')
+			if (isImg) {
+				let img = prop.split(',');
+				let configRoot = '/'
+				let arrImg = [];
+				img.forEach(el => {
+					var Expression = /http(s)?:\/\/([\w-]+\.)+[\w-]+(\/[\w- .\/?%&=]*)?/;
+					var objExp = new RegExp(Expression);
+
+					if (objExp.test(el)) {
+						// http or https
+						arrImg.push(el);
+					} else {
+						// 非http or https开头
+						// 本地文件
+						let firstStr = el.charAt(0);
+						if (firstStr == '/') {
+							el = el.substr(1); // 删除第一个字符 '/',因为 configRoot最后一个字符为 /
+						}
+						el = configRoot + el;
+						arrImg.push(el);
+					}
+				})
+				this.img = arrImg;
+			} else {
+				this.bgColor = prop;
+			}
+		}
+	})
+</script>
+
+<style>
+	.bg-swiper-box {
+		position: absolute;
+		display: block;
+		width: 100%;
+		height: 100%;
+	}
+
+	.bg-swiper-img {
+		object-fit: cover;
+		width: 100%;
+		height: 100%;
+	}
+</style>
+
+
+
+
+  <script>
+  function loadMermaid() {
+    if (document.getElementsByClassName('mermaid').length) {
+      if (window.mermaidJsLoad) mermaid.init()
+      else {
+        loadScript('https://unpkg.com/mermaid/dist/mermaid.min.js').then(() => {
+          window.mermaidJsLoad = true
+          mermaid.initialize({
+            theme: 'default',
+          })
+          if ('true') {
+            mermaid.init();
+          }
+        })
+      }
+    }
+  };
+  document.addEventListener("DOMContentLoaded", function () {
+    loadMermaid();
+  })
+
+  document.addEventListener('pjax:complete', function () {
+    loadMermaid();
+  })
+  
+</script>
+
+
+      </main>
+    </div>
+
+    <!-- 页脚 -->
+    
+  
+  
+    <!-- 底部鱼儿跳动效果，依赖于jquery-->
+<div id="j-fish-skip" style=" position: relative;height: 153px;width: auto;"></div>
+<script>
+  var RENDERER = {
+    POINT_INTERVAL: 5,
+    FISH_COUNT: 3,
+    MAX_INTERVAL_COUNT: 50,
+    INIT_HEIGHT_RATE: .5,
+    THRESHOLD: 50,
+    FISH_COLOR: '',
+    init: function () {
+      this.setFishColor(); this.setParameters(), this.reconstructMethods(), this.setup(), this.bindEvent(), this.render()
+    },
+    setFishColor: function () {
+      let isDark = JSON.parse(localStorage.getItem('dark')) || JSON.parse('false');
+      if (isDark) {
+        this.FISH_COLOR = '#222'; // 暗黑色，有时间把这整成一个变量
+      } else {
+        this.FISH_COLOR = '' || 'rgba(160,238,225,0.8)';
+      }
+    },
+    setParameters: function () {
+      this.$window = $(window), this.$container = $("#j-fish-skip"), this.$canvas = $("<canvas />"), this.context = this.$canvas.appendTo(this.$container).get(0).getContext("2d"), this.points = [], this.fishes = [], this.watchIds = []
+    },
+    createSurfacePoints: function () {
+      var t = Math.round(this.width / this.POINT_INTERVAL);
+      this.pointInterval = this.width / (t - 1), this.points.push(new SURFACE_POINT(this, 0));
+      for (var i = 1; i < t; i++) {
+        var e = new SURFACE_POINT(this, i * this.pointInterval),
+          h = this.points[i - 1];
+        e.setPreviousPoint(h), h.setNextPoint(e), this.points.push(e)
+      }
+    },
+    reconstructMethods: function () {
+      this.watchWindowSize = this.watchWindowSize.bind(this), this.jdugeToStopResize = this.jdugeToStopResize.bind(this), this.startEpicenter = this.startEpicenter.bind(this), this.moveEpicenter = this.moveEpicenter.bind(this), this.reverseVertical = this.reverseVertical.bind(this), this.render = this.render.bind(this)
+    },
+    setup: function () {
+      this.points.length = 0, this.fishes.length = 0, this.watchIds.length = 0, this.intervalCount = this.MAX_INTERVAL_COUNT, this.width = this.$container.width(), this.height = this.$container.height(), this.fishCount = this.FISH_COUNT * this.width / 500 * this.height / 500, this.$canvas.attr({
+        width: this.width,
+        height: this.height
+      }), this.reverse = !1, this.fishes.push(new FISH(this)), this.createSurfacePoints()
+    },
+    watchWindowSize: function () {
+      this.clearTimer(), this.tmpWidth = this.$window.width(), this.tmpHeight = this.$window.height(), this.watchIds.push(setTimeout(this.jdugeToStopResize, this.WATCH_INTERVAL))
+    },
+    clearTimer: function () {
+      for (; this.watchIds.length > 0;) clearTimeout(this.watchIds.pop())
+    },
+    jdugeToStopResize: function () {
+      var t = this.$window.width(),
+        i = this.$window.height(),
+        e = t == this.tmpWidth && i == this.tmpHeight;
+      this.tmpWidth = t, this.tmpHeight = i, e && this.setup()
+    },
+    bindEvent: function () {
+      this.$window.on("resize", this.watchWindowSize), this.$container.on("mouseenter", this.startEpicenter), this.$container.on("mousemove", this.moveEpicenter)
+    },
+    getAxis: function (t) {
+      var i = this.$container.offset();
+      return {
+        x: t.clientX - i.left + this.$window.scrollLeft(),
+        y: t.clientY - i.top + this.$window.scrollTop()
+      }
+    },
+    startEpicenter: function (t) {
+      this.axis = this.getAxis(t)
+    },
+    moveEpicenter: function (t) {
+      var i = this.getAxis(t);
+      this.axis || (this.axis = i), this.generateEpicenter(i.x, i.y, i.y - this.axis.y), this.axis = i
+    },
+    generateEpicenter: function (t, i, e) {
+      if (!(i < this.height / 2 - this.THRESHOLD || i > this.height / 2 + this.THRESHOLD)) {
+        var h = Math.round(t / this.pointInterval);
+        h < 0 || h >= this.points.length || this.points[h].interfere(i, e)
+      }
+    },
+    reverseVertical: function () {
+      this.reverse = !this.reverse;
+      for (var t = 0, i = this.fishes.length; t < i; t++) this.fishes[t].reverseVertical()
+    },
+    controlStatus: function () {
+      for (var t = 0, i = this.points.length; t < i; t++) this.points[t].updateSelf();
+      for (t = 0, i = this.points.length; t < i; t++) this.points[t].updateNeighbors();
+      this.fishes.length < this.fishCount && 0 == --this.intervalCount && (this.intervalCount = this.MAX_INTERVAL_COUNT, this.fishes.push(new FISH(this)))
+    },
+    render: function () {
+      requestAnimationFrame(this.render), this.controlStatus(), this.context.clearRect(0, 0, this.width, this.height), this.context.fillStyle = this.FISH_COLOR;
+      for (var t = 0, i = this.fishes.length; t < i; t++) this.fishes[t].render(this.context);
+      this.context.save(), this.context.globalCompositeOperation = "xor", this.context.beginPath(), this.context.moveTo(0, this.reverse ? 0 : this.height);
+      for (t = 0, i = this.points.length; t < i; t++) this.points[t].render(this.context);
+      this.context.lineTo(this.width, this.reverse ? 0 : this.height), this.context.closePath(), this.context.fill(), this.context.restore()
+    }
+  },
+  SURFACE_POINT = function (t, i) {
+    this.renderer = t, this.x = i, this.init()
+  };
+  SURFACE_POINT.prototype = {
+    SPRING_CONSTANT: .03,
+    SPRING_FRICTION: .9,
+    WAVE_SPREAD: .3,
+    ACCELARATION_RATE: .01,
+    init: function () {
+      this.initHeight = this.renderer.height * this.renderer.INIT_HEIGHT_RATE, this.height = this.initHeight, this.fy = 0, this.force = {
+        previous: 0,
+        next: 0
+      }
+    },
+    setPreviousPoint: function (t) {
+      this.previous = t
+    },
+    setNextPoint: function (t) {
+      this.next = t
+    },
+    interfere: function (t, i) {
+      this.fy = this.renderer.height * this.ACCELARATION_RATE * (this.renderer.height - this.height - t >= 0 ? -1 : 1) * Math.abs(i)
+    },
+    updateSelf: function () {
+      this.fy += this.SPRING_CONSTANT * (this.initHeight - this.height), this.fy *= this.SPRING_FRICTION, this.height += this.fy
+    },
+    updateNeighbors: function () {
+      this.previous && (this.force.previous = this.WAVE_SPREAD * (this.height - this.previous.height)), this.next && (this.force.next = this.WAVE_SPREAD * (this.height - this.next.height))
+    },
+    render: function (t) {
+      this.previous && (this.previous.height += this.force.previous, this.previous.fy += this.force.previous), this.next && (this.next.height += this.force.next, this.next.fy += this.force.next), t.lineTo(this.x, this.renderer.height - this.height)
+    }
+  };
+  var FISH = function (t) {
+    this.renderer = t, this.init()
+  };
+  FISH.prototype = {
+    GRAVITY: .4,
+    init: function () {
+      this.direction = Math.random() < .5, this.x = this.direction ? this.renderer.width + this.renderer.THRESHOLD : -this.renderer.THRESHOLD, this.previousY = this.y, this.vx = this.getRandomValue(4, 10) * (this.direction ? -1 : 1), this.renderer.reverse ? (this.y = this.getRandomValue(1 * this.renderer.height / 10, 4 * this.renderer.height / 10), this.vy = this.getRandomValue(2, 5), this.ay = this.getRandomValue(.05, .2)) : (this.y = this.getRandomValue(6 * this.renderer.height / 10, 9 * this.renderer.height / 10), this.vy = this.getRandomValue(-5, -2), this.ay = this.getRandomValue(-.2, -.05)), this.isOut = !1, this.theta = 0, this.phi = 0
+    },
+    getRandomValue: function (t, i) {
+      return t + (i - t) * Math.random()
+    },
+    reverseVertical: function () {
+      this.isOut = !this.isOut, this.ay *= -1
+    },
+    controlStatus: function (t) {
+      this.previousY = this.y, this.x += this.vx, this.y += this.vy, this.vy += this.ay, this.renderer.reverse ? this.y > this.renderer.height * this.renderer.INIT_HEIGHT_RATE ? (this.vy -= this.GRAVITY, this.isOut = !0) : (this.isOut && (this.ay = this.getRandomValue(.05, .2)), this.isOut = !1) : this.y < this.renderer.height * this.renderer.INIT_HEIGHT_RATE ? (this.vy += this.GRAVITY, this.isOut = !0) : (this.isOut && (this.ay = this.getRandomValue(-.2, -.05)), this.isOut = !1), this.isOut || (this.theta += Math.PI / 20, this.theta %= 2 * Math.PI, this.phi += Math.PI / 30, this.phi %= 2 * Math.PI), this.renderer.generateEpicenter(this.x + (this.direction ? -1 : 1) * this.renderer.THRESHOLD, this.y, this.y - this.previousY), (this.vx > 0 && this.x > this.renderer.width + this.renderer.THRESHOLD || this.vx < 0 && this.x < -this.renderer.THRESHOLD) && this.init()
+    },
+    render: function (t) {
+      t.save(), t.translate(this.x, this.y), t.rotate(Math.PI + Math.atan2(this.vy, this.vx)), t.scale(1, this.direction ? 1 : -1), t.beginPath(), t.moveTo(-30, 0), t.bezierCurveTo(-20, 15, 15, 10, 40, 0), t.bezierCurveTo(15, -10, -20, -15, -30, 0), t.fill(), t.save(), t.translate(40, 0), t.scale(.9 + .2 * Math.sin(this.theta), 1), t.beginPath(), t.moveTo(0, 0), t.quadraticCurveTo(5, 10, 20, 8), t.quadraticCurveTo(12, 5, 10, 0), t.quadraticCurveTo(12, -5, 20, -8), t.quadraticCurveTo(5, -10, 0, 0), t.fill(), t.restore(), t.save(), t.translate(-3, 0), t.rotate((Math.PI / 3 + Math.PI / 10 * Math.sin(this.phi)) * (this.renderer.reverse ? -1 : 1)), t.beginPath(), this.renderer.reverse ? (t.moveTo(5, 0), t.bezierCurveTo(10, 10, 10, 30, 0, 40), t.bezierCurveTo(-12, 25, -8, 10, 0, 0)) : (t.moveTo(-5, 0), t.bezierCurveTo(-10, -10, -10, -30, 0, -40), t.bezierCurveTo(12, -25, 8, -10, 0, 0)), t.closePath(), t.fill(), t.restore(), t.restore(), this.controlStatus(t)
+    }
+  }, $(function () {
+    RENDERER.init()
+    $('.dark').click(function () {
+      setTimeout(() => {
+        RENDERER.setFishColor();
+        RENDERER.context.fill();
+      });
+    })
+  });
+</script>
+  
+  <div class="footer bg-color">
+    <div class="footer-main">
+      
+        
+          <div class="link">
+            
+              
+                <a target="_blank" rel="noopener" href="https://space.bilibili.com/409809855" class="social">
+                  
+                    <i class="iconfont icon-bilibili" aria-hidden="true"></i>
+                  
+                </a>
+              
+            
+              
+                <a target="_blank" rel="noopener" href="https://github.com/LemonPuer" class="social">
+                  
+                    <i class="fab fa-github" aria-hidden="true"></i>
+                  
+                </a>
+              
+            
+          </div>
+        
+      
+        
+          <div class="footer-copyright">
+            <p>欢迎访问本小站</p>
+
+          </div>
+        
+      
+    </div>
+  </div>
+
+
+
+    <!-- 渲染暗黑按钮 -->
+    
+      <div class="dark">
+  <div class="dark-content">
+    <i class="fas fa-moon" aria-hidden="true"></i>
+    <!-- <span>关灯</span> -->
+  </div>
+  
+</div>
+
+<script>
+  $(function() {
+    let isDark = JSON.parse(localStorage.getItem('dark'))  || JSON.parse('false');
+    if (isDark) {
+      $(".dark-content").replaceWith(
+          `
+          <div class='dark-content'>
+            <i class="fas fa-lightbulb" aria-hidden="true"></i>
+          </div>
+          `
+        );
+    }
+    $('.dark').click(function() {
+      if ($(document.body).is('.darkModel')) {
+        $(document.body).removeClass('darkModel');
+        localStorage.setItem('dark', false);
+        $(".dark-content").replaceWith(
+          `
+          <div class='dark-content'>
+            <i class="fas fa-moon" aria-hidden="true"></i>
+          </div>
+          `
+        );
+      } else {
+        $(document.body).addClass('darkModel');
+        localStorage.setItem('dark', true);
+        $(".dark-content").replaceWith(
+          `
+          <div class='dark-content'>
+            <i class="fas fa-lightbulb" aria-hidden="true"></i>
+          </div>
+          `
+        );
+      }
+    })
+  })
+</script>
+    
+    <!-- 渲染回到顶部按钮 -->
+    
+      <div class="goTop top-btn-color" pointer>
+  <i class="fas fa-arrow-up" aria-hidden="true"></i>
+</div>
+<script src="/js/goTop.js"></script>
+
+    
+    <!-- 渲染左下角音乐播放器 -->
+    
+      <link rel="stylesheet" href="/js/aplayer/APlayer@1.10.1.min.css">
+<style>
+.aplayer .aplayer-lrc p {
+  
+  font-size: 12px;
+  font-weight: 700;
+  line-height: 16px !important;
+}
+
+.aplayer .aplayer-lrc p.aplayer-lrc-current {
+  
+  font-size: 15px;
+  color: #42b983;
+}
+
+
+.aplayer.aplayer-fixed.aplayer-narrow .aplayer-body {
+  left: -66px !important;
+}
+
+.aplayer.aplayer-fixed.aplayer-narrow .aplayer-body:hover {
+  left: 0px !important;
+}
+
+
+</style>
+<meting-js  
+  class=""
+  server="netease"
+  type="playlist"
+  id="8517155639"
+  fixed='true'
+  autoplay='true'
+  theme='#42b983'
+  loop='all'
+  order='random'
+  preload='auto'
+  volume='0.7'
+  list-folded='true'
+>
+</meting-js>
+
+<!-- <style>
+  #aplayer {
+    position: fixed;
+    left: 0;
+    bottom: 300px;
+  }
+</style> -->
+<script src="https://unpkg.com/aplayer@1.10.1/dist/APlayer.min.js"></script>
+<script src="https://unpkg.com/meting@2/dist/Meting.min.js"></script>
+    
+
+    <!-- 图片放大 -->
+    
+      <script src="https://fastly.jsdelivr.net/npm/@fancyapps/ui@5.0/dist/fancybox/fancybox.umd.js"></script>
+    
+
+    <!-- 百度解析 -->
+    <!-- Baidu Analytics -->
+
+<script>
+    var _hmt = _hmt || [];
+    (function () {
+        var hm = document.createElement("script");
+        hm.src = "https://hm.baidu.com/hm.js?1dd9810333ef61187ef351132128d6dc";
+        var s = document.getElementsByTagName("script")[0];
+        s.parentNode.insertBefore(hm, s);
+    })();
+</script>
+
+    <!-- Baidu Push -->
+
+<script>
+    (function () {
+        var bp = document.createElement('script');
+        var curProtocol = window.location.protocol.split(':')[0];
+        if (curProtocol === 'https') {
+            bp.src = 'https://zz.bdstatic.com/linksubmit/push.js';
+        } else {
+            bp.src = 'http://push.zhanzhang.baidu.com/push.js';
+        }
+        var s = document.getElementsByTagName("script")[0];
+        s.parentNode.insertBefore(bp, s);
+    })();
+</script>
+
+    
+    <!-- 背景彩带 -->
+    
+      <script type="text/javascript" size="100" alpha='0.4' zIndex="-1" src="/js/ribbon.min.js"></script>
+    
+
+    <script src="/js/utils/index.js"></script>
+    <script src="/js/app.js"></script>
+    
+    <!-- 文章目录所需js -->
+<!-- <link href="/js/tocbot/tocbot.css" rel="stylesheet">
+<script src="/js/tocbot/tocbot.min.js"></script> -->
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/tocbot/4.18.2/tocbot.min.js"></script>
+
+
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/tocbot/4.18.2/tocbot.css">
+
+<script>
+  var headerEl = 'h2, h3, h4',  //headers 
+    content = '.post-detail',//文章容器
+    idArr = {};  //标题数组以确定是否增加索引id
+  //add #id
+  var option = {
+    // Where to render the table of contents.
+    tocSelector: '.toc',
+    // Where to grab the headings to build the table of contents.
+    contentSelector: content,
+    // Which headings to grab inside of the contentSelector element.
+    headingSelector: headerEl,
+    scrollSmooth: true,
+    scrollSmoothOffset: -70,
+    // headingsOffset: -($(window).height() * 0.4 - 45),
+    headingsOffset: -($(window).height() * 0.4 - 70),
+    // positionFixedSelector: '.toc-main',
+    // positionFixedClass: 'is-position-fixed',
+    fixedSidebarOffset: 'auto',
+    activeLinkClass: 'is-active-link',
+    orderedList: true,
+    collapseDepth: 20,
+    // onClick: function (e) {},
+  }
+  if ($('.toc').length > 0) {
+
+    $(content).children(headerEl).each(function () {
+      //去除空格以及多余标点
+      var headerId = $(this).text().replace(/[\s|\~|`|\!|\@|\#|\$|\%|\^|\&|\*|\(|\)|\_|\+|\=|\||\|\[|\]|\{|\}|\;|\:|\"|\'|\,|\<|\.|\>|\/|\?|\：|\，|\。]/g, '');
+
+      headerId = headerId.toLowerCase();
+      if (idArr[headerId]) {
+        //id已经存在
+        $(this).attr('id', headerId + '-' + idArr[headerId]);
+        idArr[headerId]++;
+      }
+      else {
+        //id未存在
+        idArr[headerId] = 1;
+        $(this).attr('id', headerId);
+      }
+    });
+
+    document.addEventListener("DOMContentLoaded", function () {
+      tocbot.init(option);
+      mobileTocClick();
+    });
+
+  }
+
+  window.tocScrollFn = function () {
+    return bamboo.throttle(function () {
+      findHeadPosition();
+    }, 100)()
+  }
+  window.addEventListener('scroll', tocScrollFn);
+
+  const findHeadPosition = function (top) {
+    if ($('.toc-list').length <= 0) {
+      return false;
+    }
+    setTimeout(() => {  // or DOMContentLoaded 
+      autoScrollToc();
+    }, 0);
+  }
+
+  const autoScrollToc = function () {
+    const $activeItem = document.querySelector('.is-active-link');
+    const $cardToc = document.querySelector('.toc-content');
+    const activePosition = $activeItem.getBoundingClientRect().top
+    const sidebarScrollTop = $cardToc.scrollTop
+    if (activePosition > (document.documentElement.clientHeight - 100)) {
+      $cardToc.scrollTop = sidebarScrollTop + 150
+    }
+    if (activePosition < 150) {
+      $cardToc.scrollTop = sidebarScrollTop - 150
+    }
+  }
+
+  document.addEventListener('pjax:send', function () {
+    if ($('.toc').length) {
+      tocbot.destroy();
+    }
+  });
+
+  document.addEventListener('pjax:complete', function () {
+    if ($('.toc').length) {
+      tocbot.init(option);
+      mobileTocClick();
+    }
+  });
+  
+  // 手机端toc按钮点击出现目录
+  const mobileTocClick = function () {
+    const $cardTocLayout = document.getElementsByClassName('side_toc')[0];
+    const $cardToc = $cardTocLayout.getElementsByClassName('toc-content')[0];
+    let right = '45px';
+    if (window.innerWidth >= 551 && window.innerWidth <= 992) {
+      right = '100px'
+    }
+    const mobileToc = {
+      open: () => {
+        $cardTocLayout.style.cssText = 'animation: toc-open .3s; opacity: 1; right: ' + right
+      },
+
+      close: () => {
+        $cardTocLayout.style.animation = 'toc-close .2s'
+        setTimeout(() => {
+          $cardTocLayout.style.cssText = "opacity:''; animation: ''; right: ''"
+        }, 100)
+      }
+    }
+    document.getElementById('toc-mobile-btn').addEventListener('click', () => {
+      if (window.getComputedStyle($cardTocLayout).getPropertyValue('opacity') === '0') mobileToc.open()
+      else mobileToc.close()
+    })
+
+    $cardToc.addEventListener('click', (e) => {
+      if (window.innerWidth < 992) { // 小于992px的时候
+        mobileToc.close()
+      }
+    })
+  }
+</script>
+
+<style>
+  /* .is-position-fixed {
+    position: sticky !important;
+    top: 74px;
+  }
+
+  .toc-main ul {
+    counter-reset: show-list;
+  }
+
+  .toc-main ul li::before {
+    content: counter(item)".";
+    display: block;
+    position: absolute;
+    left: 12px;
+    top: 0;
+  } */
+</style>
+ 
+
+<!-- 设置导航背景 -->
+<script>
+  let setHeaderClass = () => {
+    const nav = $('#navHeader');
+    const navTop = nav.outerHeight();
+    const winTop = $(window).scrollTop();
+    if(winTop > navTop) {
+      nav.addClass('header-bg-color');
+    }
+    else {
+      nav.removeClass('header-bg-color');
+    }
+  };
+
+  let scrollCollect = () => {
+    return bamboo.throttle(function (e) {
+      setHeaderClass();
+    }, 200)()
+  }
+
+  let initHeaderBg = () => {
+    setHeaderClass();
+  }
+
+  setHeaderClass();
+  window.addEventListener('scroll', scrollCollect);
+
+  document.addEventListener('pjax:send', function () {
+    window.removeEventListener('scroll', scrollCollect)
+  })
+  document.addEventListener('pjax:complete', function () {
+    window.addEventListener('scroll', scrollCollect);
+    setHeaderClass();
+  })
+</script> 
+
+<!-- 渲染issues标签里的内容 -->
+<script>
+  function loadIssuesJS() {
+    if ($(".post-detail").find(".issues-api").length == 0) {
+      return;
+    } 
+    loadScript('/js/issues/index.js');
+  };
+  $(function () {
+    loadIssuesJS();
+  });
+  document.addEventListener('pjax:complete', function () {
+    if (typeof IssuesAPI == "undefined") {
+      loadIssuesJS();
+    }
+  })
+</script>
+
+<!-- 渲染远程json加载的图片标签(getPhotoOnline)里的内容 -->
+<script>
+  function loadPhotoOnlineJS() {
+    if ($(".post-detail").find(".getJsonPhoto-api").length == 0) {
+      return;
+    } 
+    loadScript('/js/getPhotoOnline/index.js');
+  };
+  $(function () {
+    loadPhotoOnlineJS();
+  });
+  document.addEventListener('pjax:complete', function () {
+    if (typeof getPhotoJson == "undefined") {
+      loadPhotoOnlineJS();
+    }
+  })
+</script>
+
+<!-- 渲染远程json加载的talk标签(getTalkOnline)里的内容 -->
+<script>
+  function loadTalkOnlineJS() {
+    if ($(".post-detail").find(".getJsonTalk-api").length == 0) {
+      return;
+    } 
+    loadScript('https://cdnjs.cloudflare.com/ajax/libs/waterfall.js/1.0.2/waterfall.min.js'); // 瀑布流插件，https://raphamorim.io/waterfall.js/
+    loadScript('/js/getTalkOnline/index.js');
+  };
+  $(function () {
+    loadTalkOnlineJS();
+  });
+  document.addEventListener('pjax:complete', function () {
+    if (typeof getTalkJson == "undefined") {
+      loadTalkOnlineJS();
+    }
+  })
+</script>
+
+<!-- 渲染远程json加载的site-card标签(getSiteOnline)里的内容 -->
+<script>
+  function loadSiteOnlineJS() {
+    if ($(".post-detail").find(".getJsonSite-api").length == 0) {
+      return;
+    } 
+    loadScript('/js/getSiteOnline/index.js');
+  };
+  $(function () {
+    loadSiteOnlineJS();
+  });
+  document.addEventListener('pjax:complete', function () {
+    if (typeof getSiteJson == "undefined") {
+      loadSiteOnlineJS();
+    }
+  })
+</script>
+
+<!-- 输入框打字特效 -->
+<!-- 输入框打字特效 -->
+
+  <script src="/js/activate-power-mode.js"></script>
+  <script>
+    POWERMODE.colorful = true;  // 打开随机颜色特效
+    POWERMODE.shake = false;    // 关闭输入框抖动
+    document.body.addEventListener('input', POWERMODE);//监听打字事件
+  </script>
+
+
+<!-- markdown代码一键复制功能 -->
+
+  <link rel="stylesheet" href="https://unpkg.com/v-plugs-ayu/lib/ayu.css">
+  <script src="https://unpkg.com/v-plugs-ayu/lib/ayu.umd.min.js"></script>
+  <script src="/js/clipboard/clipboard.min.js"></script>
+  <div id="appCopy">
+  </div>
+  <script data-pjax>
+    var vm = new Vue({
+      el: '#appCopy',
+      data: {
+      },
+      computed: {
+      },
+      mounted() {
+        const that = this;
+        var copy = '复制';
+        /* code */
+        var initCopyCode = function () {
+          var copyHtml = '';
+          copyHtml += '<button class="btn-copy" data-clipboard-snippet="" style="position:absolute;top:0;right:0;z-index:1;">';
+          copyHtml += '<i class="fas fa-copy"></i><span>' + copy + '</span>';
+          copyHtml += '</button>';
+          $(".post-detail pre").not('.gutter pre').wrap("<div class='codeBox' style='position:relative;width:100%;'></div>")
+          $(".post-detail pre").not('.gutter pre').before(copyHtml);
+          new ClipboardJS('.btn-copy', {
+            target: function (trigger) {
+              return trigger.nextElementSibling;
+            }
+          });
+        }
+        initCopyCode();
+        $('.btn-copy').unbind('click').bind('click', function () {
+          doSomething();
+        })
+        $(document).unbind('keypress').bind('keypress', function (e) {
+          if (e.ctrlKey && e.keyCode == 67) {
+            doSomething();
+          }
+        })
+
+        function doSomething() {
+          that.$notify({
+            title: "成功",
+            content: "代码已复制",
+            type: 'success'
+          })
+        }
+      },
+      methods: {
+      },
+      created() { }
+    })
+  </script>
+  
+
+<!-- 图片懒加载 -->
+<script defer src="https://unpkg.com/vanilla-lazyload@17.1.0/dist/lazyload.min.js"></script>
+<script>
+  // https://www.npmjs.com/package/vanilla-lazyload
+  // Set the options globally
+  // to make LazyLoad self-initialize
+  window.lazyLoadOptions = {
+    elements_selector: ".lazyload",
+    threshold: 0
+  };
+  // Listen to the initialization event
+  // and get the instance of LazyLoad
+  window.addEventListener(
+    "LazyLoad::Initialized",
+    function (event) {
+      window.lazyLoadInstance = event.detail.instance;
+    },
+    false
+  );
+  document.addEventListener('DOMContentLoaded', function () {
+    lazyLoadInstance.update();
+  });
+  document.addEventListener('pjax:complete', function () {
+    lazyLoadInstance.update();
+  });
+</script>
+
+
+<!-- 卡片滚动动画 -->
+   
+
+<!-- 评论所需js -->
+
+  
+    <script type="text/javascript">
+  var utteranceCommon = {};
+
+  function check_utterance() {
+    let isDark = JSON.parse(localStorage.getItem('dark')) || JSON.parse('false');
+    if (isDark) {
+      utteranceCommon.Theme = 'github-dark';
+    } else {
+      utteranceCommon.Theme = 'github-light';
+    }
+
+    return document.getElementById("gitment-container");
+  }
+  comment_el = '#gitment-container';
+  load_utterance = function () {
+    if ($(comment_el).length) {
+      // 匿名函数，防止污染全局变量
+      const HEAD = check_utterance();
+
+      var utterances = document.createElement('script');
+      utterances.type = 'text/javascript';
+      utterances.async = true;
+      utterances.setAttribute('issue-term', 'pathname')
+      utterances.setAttribute('theme', utteranceCommon.Theme)
+      utterances.setAttribute('repo', 'LemonPuer/lemonpuer.github.io')
+      utterances.crossorigin = 'anonymous';
+      utterances.src = 'https://utteranc.es/client.js';
+      // content 是要插入评论的地方
+      document.getElementById('gitment-container').appendChild(utterances);
+
+    }
+  }
+
+  function dark_utterance() {
+    const HEAD = check_utterance();
+    if (!HEAD) return;
+    const message = {
+      type: 'set-theme',
+      theme: utteranceCommon.Theme
+    };
+    const utteranceIframe = document.querySelector('iframe');
+    utteranceIframe.contentWindow.postMessage(message, 'https://utteranc.es');
+  }
+
+  $(document).ready(load_utterance);
+  document.addEventListener('pjax:complete', function () {
+    load_utterance();
+  });
+
+  $('.dark').click(function () {
+    setTimeout(() => {
+      dark_utterance();
+    });
+  })
+
+</script>
+
+<style>
+  .utterances {
+    max-width: inherit !important;
+  }
+</style>
+  
+
+
+<!-- 鼠标点击特效 -->
+<!-- 爱心点击 -->
+
+  
+    <canvas class="fireworks" style="position: fixed;left: 0;top: 0;z-index: 999; pointer-events: none;" ></canvas>
+    <script src="//cdn.bootcss.com/animejs/2.2.0/anime.min.js"></script>
+    <script src="/js/cursor/explosion.min.js"></script>
+  
+
+
+
+
+  <script async src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js" data-pjax></script>
+
+
+<!-- 轮播图标签 -->
+<script>
+  var bambooSwiperTag = {};
+  function load_swiper() {
+    if (!document.querySelectorAll(".post-swiper-container")[0]) return;
+    loadCSS("https://unpkg.com/swiper@6/swiper-bundle.min.css")
+    loadScript("https://unpkg.com/swiper@6/swiper-bundle.min.js").then(() => {
+      pjax_swiper();
+    });
+  }
+
+  load_swiper();
+
+  function pjax_swiper() {
+    bambooSwiperTag.swiper = new Swiper('.post-swiper-container', {
+      slidesPerView: 'auto',
+      spaceBetween: 8,
+      centeredSlides: true,
+      loop: true,
+      autoplay: true ? {
+        delay: 3000,
+        stopOnLastSlide: false,
+        disableOnInteraction: false,
+      } : false,
+      pagination: {
+        el: '.swiper-pagination',
+        clickable: true,
+      },
+      navigation: {
+        nextEl: '.swiper-button-next',
+        prevEl: '.swiper-button-prev',
+      },
+      on:{
+        init: function(){
+          swiperAnimateCache(this); //隐藏动画元素 
+          swiperAnimate(this); //初始化完成开始动画
+        }, 
+        slideChangeTransitionEnd: function(){ 
+          swiperAnimate(this); //每个slide切换结束时也运行当前slide动画
+          //this.slides.eq(this.activeIndex).find('.ani').removeClass('ani'); 动画只展现一次，去除ani类名
+        } 
+      }
+    });
+  }
+
+  document.addEventListener('pjax:complete', function () {
+    if (!document.querySelectorAll(".post-swiper-container")[0]) return;
+    if (typeof bambooSwiperTag.swiper === "undefined") {
+      load_swiper();
+    } else {
+      pjax_swiper();
+    }
+  });
+</script>
+    <!-- pjax -->
+    
+
+<!-- pjax -->
+
+
+  <script src="/js/pjax@0.2.8/index.js"></script>
+  
+    <!-- 样式位于：source/css/_third-party/pjaxanimate.styl -->
+
+<div class="pjax-animate">
+  
+    <div class="loading-circle"><div id="loader-circle"></div></div>
+    <script>
+      window.ShowLoading = function() {
+        $(".loading-circle").css("display", "block");
+      };
+      window.HideLoading = function() {
+        $(".loading-circle").css("display", "none");
+      }
+    </script>
+  
+	<script>
+    document.addEventListener('pjax:complete', function () {
+      window.HideLoading();
+    })
+    document.addEventListener('pjax:send', function () {
+      window.ShowLoading();
+    })
+    document.addEventListener('pjax:error', function () {
+      window.HideLoading();
+    })
+	</script>
+</div>
+
+  
+
+  <script>
+    var pjax = new Pjax({
+      elements: 'a[href]:not([href^="#"]):not([href="javascript:void(0)"]):not([no-pjax])',   // 拦截正常带链接的 a 标签
+      selectors: ["#pjax-container","title"],                                   // 根据实际需要确认重载区域
+      cacheBust: false,   // url 地址追加时间戳，用以避免浏览器缓存
+      timeout: 5000
+    });
+
+    document.addEventListener('pjax:send', function (e) {
+
+      try {
+        var currentUrl = window.location.pathname;
+        var targetUrl = e.triggerElement.href;
+        var banUrl = [""];
+        if (banUrl[0] != "") {
+          banUrl.forEach(item => {
+            if(currentUrl.indexOf(item) != -1 || targetUrl.indexOf(item) != -1) {
+              window.location.href = targetUrl;
+            }
+          });
+        }
+      } catch (error) {}
+
+      $(window).unbind('resize');
+      $(window).unbind('scroll');
+      $(document).unbind('scroll');
+      $(document).unbind('click');
+      $('body').unbind('click');
+
+    })
+    
+    document.addEventListener('pjax:complete', function () {
+      $('script[data-pjax], .pjax-reload script').each(function () {
+        $(this).parent().append($(this).remove());
+      });
+    });
+
+    document.addEventListener('pjax:error', function (e) {
+      window.location.href = e.triggerElement.href;
+    })
+    
+    // 刷新不从顶部开始
+    document.addEventListener("DOMContentLoaded", function () {
+      history.scrollRestoration = 'auto';
+    })
+  </script>
+
+
+
+  </body>
+</html>
